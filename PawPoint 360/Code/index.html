@@ -15,7 +15,7 @@
     </div>
     <nav>
       <a href="#">Inicio</a>
-      <a href="#">Services</a>
+      <a href="#our-services">Services</a>
       <a href="#">Reservations</a>
       <a href="#">Contact</a>
       <button class="login-btn">Log In</button>
@@ -29,7 +29,7 @@
       <p>Comprehensive services for the well-being of your furry friends.</p>
       <div class="btn-container">
         <button class="book-btn">Book Now</button>
-        <button class="see_services-btn">See services</button>
+        <a href="#our-services"><button class="see_services-btn">See services</button></a>
       </div>
     </div>
     <div class="hero-img">
@@ -37,11 +37,15 @@
     </div>
   </section>
 
-  <section class="our-services">
+  <section class="our-services" id="our-services">
     <div class="services-container">
       <h2>Our Services</h2>
       <div class="cards">
         <div class="service-card">
+            <!--<a href="Frontend/Html/ShopHome.html">
+              <i class="fas fa-store"></i>
+              <h3>Petshop</h3>
+            </a>-->
             <i class="fas fa-store"></i>
             <h3>Petshop</h3>
           </div>
@@ -50,8 +54,10 @@
             <h3>Dog Salon</h3>
           </div>
           <div class="service-card">
-            <i class="fas fa-stethoscope"></i>
-            <h3>Vet</h3>
+            <a href="Frontend/Html/VeterinaryHome.html">
+              <i class="fas fa-stethoscope"></i>
+              <h3>Vet</h3>
+            </a>
           </div>
           <div class="service-card">
             <i class="fas fa-dog"></i>
@@ -59,6 +65,7 @@
           </div>
       </div>
     </div>
+    <p>&nbsp;</p>
   </section>
 
   <section class="reviews">
