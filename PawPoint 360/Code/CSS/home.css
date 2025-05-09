@@ -1,0 +1,204 @@
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #E3F2FD;
+    color: #253662;
+  }
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #95eaff;
+    padding: 1rem 2rem;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+  }
+  .logo img {
+    height: 80px;
+  }
+  nav a {
+    margin: 0 1rem;
+    text-decoration: none;
+    color: #253662;
+    font-weight: bold;
+  }
+  .login-btn {
+    background-color: #acffaf;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #253662;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  .signin-btn {
+    background-color: #fffc9b;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #253662;box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .book-btn {
+    background-color: #e9c4d0;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #253662;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    padding: 1rem 2rem; /* más espacio interno */
+  font-size: 1.2rem; 
+  }
+  .see_services-btn {
+    background-color: #D1C4E9;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #253662;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    padding: 1rem 2rem; /* más espacio interno */
+  font-size: 1.2rem; 
+  }
+  .hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4rem 2rem;
+    background-color: #ffdfe4;
+  }
+  .hero-text {
+    max-width: 50%;
+    text-align: center;
+  }
+  .hero-text h1 {
+    font-size: 2.5rem;
+  }
+  .hero-text p {
+    font-size: 1.2rem;
+    color: #253662;
+  }
+  .hero img {
+    display: block;
+    margin: 0 auto;
+    max-width: 70%;
+    border-radius: 10px;
+  }
+  .btn-container {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+  .our-services {
+    min-height: 50vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    height: fit-content;
+  }
+  .services-container {
+    text-align: center;
+  }
+  .services-container h1{
+    text-align: center;
+    font-size: 50px;
+  }
+  .services {
+    background-color: #FFFFFF;
+    padding: 3rem 2rem;
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+  }
+  .cards {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+  }
+  
+  .service-card {
+    background-color: #D1C4E9;
+    padding: 10px;
+    border-radius: 1rem;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+    text-align: center;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    vertical-align: middle;
+  }
+  .service-card i {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  .reviews {
+    background-color: #FFAB91;
+    padding: 3rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+  }
+  .review-img img {
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+  .review-content {
+    max-width: 50%;
+  }
+  .review-content h2 {
+    margin-bottom: 0.5rem;
+    font-size: 45px;
+  }
+  .review-content p {
+    font-size: 0.95rem;
+    color: #253662;
+    font-size: 25px;
+  }
+  .review-user {
+    display: flex;
+    align-items: center;
+    margin-top: 1rem;
+  }
+  .review-user img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+  }
+  footer {
+    background-color: rgba(0, 255, 21, 0.1);
+    padding: 2rem;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  .footer-logo img {
+    height: 90px;
+    justify-content: center;
+  }
+  .footer-links a {
+    display: block;
+    margin: 0.3rem 0;
+    text-decoration: none;
+    color: #253662;
+  }
+  .social-icons i {
+    margin: 0 0.5rem;
+    font-size: 1.2rem;
+    color: #253662;
+  }
