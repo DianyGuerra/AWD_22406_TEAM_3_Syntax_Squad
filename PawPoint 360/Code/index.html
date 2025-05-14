@@ -7,6 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link rel="stylesheet" href="CSS/home.css">
+  <link rel="stylesheet" href="CSS/modalServices.css">
 </head>
 <body>
   <header>
@@ -15,13 +16,45 @@
     </div>
     <nav>
       <a href="#">Home</a>
-      <a href="#our-services">Services</a>
+      <a href="#services" id="openServices">Services</a>
       <a href="#">Reservations</a>
       <a href="#">Contact</a>
       <button class="login-btn">Log In</button>
       <button class="signin-btn">Sign In</button>
     </nav>
   </header>
+
+  <!-- Modal -->
+  <div id="servicesModalOverlay" class="custom-modal-overlay">
+    <div class="custom-modal-content">
+      <span class="custom-modal-close">&times;</span>
+      <div class="services-modal-container">
+      <h2>Our Services</h2>
+      <div class="services-modal-cards">
+        <div class="services-modal-card">
+          <a href="Frontend/Html/ShopHome.html">
+            <i class="fas fa-store"></i>
+            <h3>Petshop</h3>
+          </a>
+        </div>
+        <div class="services-modal-card">
+            <i class="fas fa-cut"></i>
+            <h3>Dog Salon</h3>
+          </div>
+        <div class="services-modal-card">
+          <a href="Frontend/Html/VeterinaryHome.html">
+            <i class="fas fa-stethoscope"></i>
+            <h3>Vet</h3>
+          </a>
+        </div>
+        <div class="services-modal-card">
+            <i class="fas fa-dog"></i>
+            <h3>Walks</h3>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
 
   <section class="hero">
     <div class="hero-text">
@@ -96,5 +129,7 @@
       <i class="fab fa-whatsapp"></i>
     </div>
   </footer>
+
+  <script src="JS/modal.js"></script>
 </body>
 </html>
