@@ -1,7 +1,0 @@
-#E3F2FD - Baby Blue (fondo principal)
-#D1C4E9 - Lavender (secundario)
-#FFAB91 - Coral claro (acento cálido)
-#A5D6A7 - Verde menta (acciones)
-#37474F - Gris oscuro (texto principal)
-#607D8B - Gris medio (texto secundario)
-#CFD8DC - Azul grisáceo (footer)

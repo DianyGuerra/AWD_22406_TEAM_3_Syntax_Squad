@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pet Shop - PawPoint360</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="../../CSS/home.css">
+  <link rel="stylesheet" href="../../CSS/modalServices.css">
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="../../Resources/vertical_logo-removebg-preview.png" alt="PawPoint360 logo">
+    </div>
+    <nav>
+      <a href="../../index.html">Home</a>
+      <a href="#services" id="openServices">Services</a>
+      <a href="#">Reservations</a>
+      <a href="#">Contact</a>
+      <a href="Login.html"><button class="login-btn">Log In</button></a>
+      <a href="Register.html"><button class="signin-btn">Sign In</button></a>
+    </nav>
+  </header>
+
+  
+  <!-- Modal -->
+  <div id="servicesModalOverlay" class="custom-modal-overlay">
+    <div class="custom-modal-content">
+      <span class="custom-modal-close">&times;</span>
+      <div class="services-modal-container">
+      <h2>Our Services</h2>
+      <div class="services-modal-cards">
+        <div class="services-modal-card">
+          <a href="ShopHome.html">
+            <i class="fas fa-store"></i>
+            <h3>Petshop</h3>
+          </a>
+        </div>
+        <div class="services-modal-card">
+            <i class="fas fa-cut"></i>
+            <h3>Dog Salon</h3>
+          </div>
+        <div class="services-modal-card">
+          <a href="VeterinaryHome.html">
+            <i class="fas fa-stethoscope"></i>
+            <h3>Vet</h3>
+          </a>
+        </div>
+        <div class="services-modal-card">
+            <i class="fas fa-dog"></i>
+            <h3>Walks</h3>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+
+
+  <section class="hero petshop-hero">
+    <div class="hero-text">
+      <h1>Find everything for your pet in one place</h1>
+      <p>Food, toys, accessories and more. Guaranteed quality for their well-being.</p>
+      <div class="btn-container">
+        <button class="book-btn">Buy Now</button>
+        <a href="#our-products"><button class="see_services-btn">View Catalog</button></a>
+      </div>
+    </div>
+    <div class="hero-img">
+      <img src="../../Resources/petshop.png" alt="Pet Shop">
+    </div>
+  </section>
+
+  <div class="services-container">
+    <section class="our-products" id="our-products">
+      <h2>Featured Products</h2>
+      <div class="cards">
+        <div class="service-card">
+          <img src="../../Resources/pet_food.png" alt="Dog Food" />
+          <h3>Premium Food</h3>
+          <p>Complete nutrition for all breeds.</p>
+        </div>
+        <div class="service-card">
+          <img src="../../Resources/pet_toy.png" alt="Cat Toy" />
+          <h3>Interactive Toys</h3>
+          <p>Stimulates your pet's mind and body.</p>
+        </div>
+        <div class="service-card">
+          <img src="../../Resources/pet_accessories.png" alt="Leash" />
+          <h3>Accessories</h3>
+          <p>Leashes, collars and more with style and safety.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="benefits">
+      <h2>Why choose our Pet Shop?</h2>
+      <div class="cards">
+        <div class="service-card">
+          <i class="fas fa-check-circle"></i> High quality products
+        </div>
+        <div class="service-card">
+          <i class="fas fa-check-circle"></i> Personalized advice
+        </div>
+        <div class="service-card">  
+          <i class="fas fa-check-circle"></i> Fast and safe shipping
+        </div>
+        <div class="service-card">
+          <i class="fas fa-check-circle"></i> Weekly promotions
+        </div>
+      </div>   
+    </section>
+    <p>&nbsp;</p>
+  </div>
+
+  <section class="reviews">
+    <div class="review-img">
+      <img src="../../Resources/costumer.jpg" alt="Client">
+    </div>
+    <div class="review-content">
+      <h2>Customer Reviews</h2>
+      <p>"My cat loves her new bed and toys. Everything arrived quickly and in perfect condition!"</p>
+      <div class="review-user">
+        <img src="../../Resources/customer_circle.png" alt="Client thumbnail">
+        <span>Martín García</span>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-logo">
+      <img src="../../Resources/vertical_logo-removebg-preview.png" alt="Small Logo">
+    </div>
+    <div class="footer-links">
+      <a href="#">Terms</a>
+      <a href="#">Policies</a>
+      <a href="#">Help</a>
+      <a href="#">Social networks</a>
+    </div>
+    <div class="social-icons">
+      <i class="fab fa-instagram"></i>
+      <i class="fab fa-facebook"></i>
+      <i class="fab fa-whatsapp"></i>
+    </div>
+  </footer>
+
+  <script src="../../JS/modal.js"></script>
+</body>
+</html>
