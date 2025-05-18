@@ -68,7 +68,44 @@ while ($row = $result->fetch_assoc()) {
 
     
     <main class="flex-fill bg-purple-darker p-4">
-      <h1>Products</h1>
+      <div class="product-form-container">
+        <h2 class="form-title">Add New Product</h2>
+        <form action="../../backend/models/InsertProduct.php" method="POST" class="product-form">
+          <div class="form-group">
+            <label for="name">Product Name</label>
+            <input type="text" id="name" name="name" required>
+          </div>
+
+          <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" name="description" required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="price">Price ($)</label>
+            <input type="number" id="price" name="price" step="0.01" required>
+          </div>
+
+          <div class="form-group">
+            <label for="stock">Stock</label>
+            <input type="number" id="stock" name="stock" required>
+          </div>
+
+          <div class="form-group">
+            <label for="categoryId">Category</label>
+            <select id="categoryId" name="categoryId" required>
+              <option value="" disabled selected>Select a category</option>
+              <?php foreach ($categories as $category): ?>
+                <option value="<?= $category['categoryId'] ?>"><?= htmlspecialchars($category['name']) ?></option>
+              <?php endforeach; ?>
+            </select>
+          </div>
+
+          <button type="submit" class="submit-btn">Add Product</button>
+        </form>
+      </div>
+
+
     </main>
   </div>
 
