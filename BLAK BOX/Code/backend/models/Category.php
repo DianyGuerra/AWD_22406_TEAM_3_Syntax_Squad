@@ -1,4 +1,6 @@
 <?php
+include('ConnectionDB.php');
+
 class Category {
     public $id, $name, $description;
 

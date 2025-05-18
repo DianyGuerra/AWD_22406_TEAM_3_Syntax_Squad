@@ -1,5 +1,5 @@
 <?php
-include_once('ConnectionDB.php');
+include('ConnectionDB.php');
 
 class CartProduct {
     public $cartId;

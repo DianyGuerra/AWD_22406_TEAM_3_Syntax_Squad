@@ -1,4 +1,6 @@
 <?php
+include('ConnectionDB.php');
+
 class OrderTable {
     public $id, $userId, $orderDate, $total, $status;
 

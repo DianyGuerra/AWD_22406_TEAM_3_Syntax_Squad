@@ -1,4 +1,6 @@
 <?php
+include('ConnectionDB.php');
+
 class Cart {
     public $id, $userId, $createdDate;
 
