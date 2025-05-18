@@ -70,7 +70,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['productId'])) {
         <li class="nav-item"><a class="nav-link text-white" href="#">Home</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="productsUser.php">Products</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="cartUser.php">Cart</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="#">Perfil</a></li>
         <li class="nav-item"><a class="nav-link text-danger" href="#">Log out</a></li>
       </ul>
     </div>
@@ -86,7 +85,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['productId'])) {
         <li class="nav-item"><a class="nav-link text-white" href="#">Home</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="productsUser.php">Products</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="cartUser.php">Cart</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="#">Perfil</a></li>
         <li class="nav-item"><a class="nav-link text-danger" href="#">Log out</a></li>
       </ul>
     </aside>
