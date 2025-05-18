@@ -71,42 +71,78 @@ while ($row = $result->fetch_assoc()) {
     
     <main class="flex-fill bg-purple-darker p-4">
       <h1>Product Manager</h1>
-      <div class="product-form-container">
-        <h2 class="form-title">Add New Product</h2>
-        <form action="../../backend/models/InsertProduct.php" method="POST" class="product-form">
-          <div class="form-group">
-            <label for="name">Product Name</label>
-            <input type="text" id="name" name="name" required>
-          </div>
+      <div class="parent-container">
+        <div class="product-form-container">
+          <h2 class="form-title">Add New Product</h2>
+          <form action="../../backend/models/InsertProduct.php" method="POST" class="product-form">
+            <div class="form-group">
+              <label for="name">Product Name</label>
+              <input type="text" id="name" name="name" required>
+            </div>
 
-          <div class="form-group">
-            <label for="description">Description</label>
-            <textarea id="description" name="description" required></textarea>
-          </div>
+            <div class="form-group">
+              <label for="description">Description</label>
+              <textarea id="description" name="description" required></textarea>
+            </div>
 
-          <div class="form-group">
-            <label for="price">Price ($)</label>
-            <input type="number" id="price" name="price" step="0.01" required>
-          </div>
+            <div class="form-group">
+              <label for="price">Price ($)</label>
+              <input type="number" id="price" name="price" step="0.01" required>
+            </div>
 
-          <div class="form-group">
-            <label for="stock">Stock</label>
-            <input type="number" id="stock" name="stock" required>
-          </div>
+            <div class="form-group">
+              <label for="stock">Stock</label>
+              <input type="number" id="stock" name="stock" required>
+            </div>
 
-          <div class="form-group">
-            <label for="categoryId">Category</label>
-            <select id="categoryId" name="categoryId" required>
-              <option value="" disabled selected>Select a category</option>
-              <?php foreach ($categories as $category): ?>
-                <option value="<?= $category['categoryId'] ?>"><?= htmlspecialchars($category['name']) ?></option>
-              <?php endforeach; ?>
-            </select>
-          </div>
+            <div class="form-group">
+              <label for="categoryId">Category</label>
+              <select id="categoryId" name="categoryId" required>
+                <option value="" disabled selected>Select a category</option>
+                <?php foreach ($categories as $category): ?>
+                  <option value="<?= $category['categoryId'] ?>"><?= htmlspecialchars($category['name']) ?></option>
+                <?php endforeach; ?>
+              </select>
+            </div>
 
-          <button type="submit" class="submit-btn">Add Product</button>
-        </form>
+            <button type="submit" class="submit-btn">Add Product</button>
+          </form>
+        </div>
       </div>
+  <table id="productTable" class="table-products">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Descripción</th>
+      <th>Description</th>
+      <th>Stock</th>
+      <th>Category</th>
+      <th>Accions</th>
+    </tr>
+  </thead>
+  
+  <tbody>
+    <?php
+    include('../../backend/models/Products.php');
+    $productos = Product::listAllProducts();
+    foreach ($productos as $p) {
+      echo "<tr data-id='{$p['productId']}'>
+        <td contenteditable='true' class='editable' data-field='name'>{$p['name']}</td>
+        <td contenteditable='true' class='editable' data-field='description'>{$p['description']}</td>
+        <td contenteditable='true' class='editable' data-field='price'>{$p['price']}</td>
+        <td contenteditable='true' class='editable' data-field='stock'>{$p['stock']}</td>
+        <td contenteditable='true' class='editable' data-field='categoryId'>{$p['categoryId']}</td>
+        <td>
+          <button class='btn-edit'>Update</button>
+          <button class='btn-delete'>Delete</button>
+        </td>
+      </tr>";
+    }
+    ?>
+  </tbody>
+</table>
+
+
 
 
     </main>
@@ -114,6 +150,71 @@ while ($row = $result->fetch_assoc()) {
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <script>
+    document.querySelectorAll('.btn-edit').forEach(btn => {
+  btn.addEventListener('click', async function () {
+    const row = this.closest('tr');
+    const id = row.dataset.id;
+    const data = {
+      action: 'update',
+      id: id,
+      name: row.querySelector("[data-field='name']").textContent,
+      description: row.querySelector("[data-field='description']").textContent,
+      price: row.querySelector("[data-field='price']").textContent,
+      stock: row.querySelector("[data-field='stock']").textContent,
+      category: row.querySelector("[data-field='categoryId']").textContent
+    };
+
+    const result = await Swal.fire({
+      title: '¿Actualizar producto?',
+      text: "¿Estás seguro de modificar este producto?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, modificar',
+      cancelButtonText: 'Cancelar'
+    });
+
+    if (result.isConfirmed) {
+      fetch('../controllers/ProductController.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(data)
+      }).then(res => res.json())
+        .then(res => {
+          if (res.success) Swal.fire('¡Actualizado!', '', 'success');
+        });
+    }
+  });
+});
+
+document.querySelectorAll('.btn-delete').forEach(btn => {
+  btn.addEventListener('click', async function () {
+    const row = this.closest('tr');
+    const id = row.dataset.id;
+
+    const result = await Swal.fire({
+      title: '¿Eliminar producto?',
+      text: "Esta acción no se puede deshacer",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    });
+
+    if (result.isConfirmed) {
+      fetch('../controllers/ProductController.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ action: 'delete', id: id })
+      }).then(res => res.json())
+        .then(res => {
+          if (res.success) {
+            row.remove();
+            Swal.fire('¡Eliminado!', '', 'success');
+          }
+        });
+    }
+  });
+});
     
     const urlParams = new URLSearchParams(window.location.search);
     const status = urlParams.get('status');

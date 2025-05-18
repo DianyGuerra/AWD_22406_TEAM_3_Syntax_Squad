@@ -1,6 +1,5 @@
 <?php
-include('ConnectionDB.php');
-
+require_once('ConnectionDB.php');
 class Product {
 
     public $id;
