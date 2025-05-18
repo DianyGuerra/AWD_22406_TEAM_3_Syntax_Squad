@@ -6,7 +6,8 @@ CREATE TABLE User (
     email VARCHAR(100) UNIQUE,
     password VARCHAR(255),
     userType VARCHAR(20),
-    address VARCHAR(255)
+    address VARCHAR(255),
+    phoneNumber VARCHAR(10)
 );
 
 CREATE TABLE Admin (
@@ -89,11 +90,6 @@ CREATE TABLE Shipping (
     shippingId INT AUTO_INCREMENT PRIMARY KEY,
     orderId INT,
     shippingAddress VARCHAR(255),
-    shippingCompany VARCHAR(100),
-    trackingNumber VARCHAR(100),
-    shippingStatus VARCHAR(50),
-    shippingDate DATE,
-    estimatedDeliveryDate DATE,
     FOREIGN KEY (orderId) REFERENCES OrderTable(orderId)
 );
 
