@@ -7,12 +7,12 @@ class connectionDB {
     public $conn;
 
     public function __construct() {
-        $this->servername = "localhost";
-        $this->username = "admin";
-        $this->password = "admin";
-        $this->database = "blak_blox";
+        $this->servername = "b1fuvnecmmc28bqzjpgn-mysql.services.clever-cloud.com";
+        $this->username = "ug6b6t7x9suqwcjk";
+        $this->password = "fiuWwgYy7rAlu0PPPMOM";
+        $this->database = "b1fuvnecmmc28bqzjpgn";
 
-        $this->conn = new mysqli($this->servername, $this->username, $this->password, $this->database);
+        $this->conn = new mysqli($this->servername, $this->username, $this->password, $this->database, 3306);
 
         if ($this->conn->connect_error) {
             die("Connection error: " . $this->conn->connect_error);
