@@ -15,12 +15,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $stmt->bind_param("ssdii", $name, $description, $price, $stock, $categoryId);
 
     if ($stmt->execute()) {
-        echo "Product registered successfully.";
+        header("Location: ../../src/pages/productsAdmin.php?status=success");
     } else {
-        echo "Error inserting product: " . $stmt->error;
+        $errorMsg = urlencode($stmt->error);
+        header("Location: ../../src/pages/productsAdmin.php?status=error&msg=$errorMsg");
     }
 
     $stmt->close();
     $conn->close();
+    exit();
 }
 ?>

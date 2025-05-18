@@ -20,6 +20,8 @@ while ($row = $result->fetch_assoc()) {
   <title>Admin - Products</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="../../src/styles/styleAdmin.css" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 <body>
   
@@ -109,6 +111,31 @@ while ($row = $result->fetch_assoc()) {
 
     </main>
   </div>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <script>
+    
+    const urlParams = new URLSearchParams(window.location.search);
+    const status = urlParams.get('status');
+    const msg = urlParams.get('msg');
+
+    if (status === 'success') {
+      Swal.fire({
+        icon: 'success',
+        title: '¡Éxito!',
+        text: 'Producto registrado correctamente.',
+        confirmButtonColor: '#7B2CBF',
+      });
+    } else if (status === 'error') {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: decodeURIComponent(msg),
+        confirmButtonColor: '#C77DFF',
+      });
+    }
+  </script>
+
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
