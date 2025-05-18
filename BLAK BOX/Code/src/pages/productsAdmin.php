@@ -1,3 +1,17 @@
+<?php
+require_once '../../backend/models/ConnectionDB.php';
+
+$db = new connectionDB();
+$conn = $db->connection();
+
+// Obtener las categorías
+$categories = [];
+$result = $conn->query("SELECT categoryId, name FROM Category");
+while ($row = $result->fetch_assoc()) {
+    $categories[] = $row;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
