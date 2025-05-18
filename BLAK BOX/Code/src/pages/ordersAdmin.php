@@ -1,3 +1,10 @@
+<?php
+require_once '../../backend/models/ConnectionDB.php';
+
+$db = new connectionDB();
+$conn = $db->connection();
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
