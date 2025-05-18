@@ -1,3 +1,11 @@
+<?php
+require_once '../../backend/models/ConnectionDB.php';
+
+$db = new connectionDB();
+$conn = $db->connection();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -46,7 +54,7 @@
       </div>
       <ul class="nav flex-column">
         <li class="nav-item"><a class="nav-link text-white" href="#">Dashboard</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="./productsAdmin.html">Products</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="./productsAdmin.php">Products</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="./ordersAdmin.html">Orders</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="#">Users</a></li>
         <li class="nav-item"><a class="nav-link text-danger" href="#">Logout</a></li>

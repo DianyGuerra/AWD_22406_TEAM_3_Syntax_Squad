@@ -68,6 +68,7 @@ while ($row = $result->fetch_assoc()) {
 
     
     <main class="flex-fill bg-purple-darker p-4">
+      <h1>Product Manager</h1>
       <div class="product-form-container">
         <h2 class="form-title">Add New Product</h2>
         <form action="../../backend/models/InsertProduct.php" method="POST" class="product-form">
