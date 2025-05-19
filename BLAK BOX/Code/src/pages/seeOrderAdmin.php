@@ -21,36 +21,38 @@ if (!$order) {
   <meta charset="UTF-8" />
   <title>Detalle de Orden</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/styleUser.css"/>
+
 </head>
-<body class="bg-dark text-white">
+<main class="flex-fill bg-purple-darker p-4">
 
   <div class="container mt-5">
-    <h2 class="mb-4">Detalle de Orden #<?= $order->orderId ?></h2>
+    <h2 class="mb-4">Detalle de Orden #<?= $order['orderId'] ?></h2>
 
     <div class="mb-4">
-      <p><strong>Cliente:</strong> <?= $order->firstName . ' ' . $order->lastName ?></p>
-      <p><strong>Fecha:</strong> <?= $order->orderDate ?></p>
-      <p><strong>Estado:</strong> <?= $order->status ?></p>
-      <p><strong>Total:</strong> $<?= number_format($order->total, 2) ?></p>
+      <p><strong>User:</strong> <?= $order['firstName'] . ' ' . $order['lastName'] ?></p>
+      <p><strong>Date:</strong> <?= $order['orderDate'] ?></p>
+      <p><strong>Status:</strong> <?= $order['status'] ?></p>
+      <p><strong>Total:</strong> $<?= number_format($order['total'], 2) ?></p>
     </div>
 
     <h4>Productos en la orden</h4>
     <table class="table table-bordered table-dark table-hover">
       <thead>
         <tr>
-          <th>Producto</th>
-          <th>Cantidad</th>
-          <th>Precio</th>
+          <th>Product</th>
+          <th>Amount</th>
+          <th>Price</th>
           <th>Subtotal</th>
         </tr>
       </thead>
       <tbody>
-        <?php foreach ($order->products as $product): ?>
+        <?php foreach ($order['products'] as $product): ?>
           <tr>
-            <td><?= $product->name ?></td>
-            <td><?= $product->quantity ?></td>
-            <td>$<?= number_format($product->price, 2) ?></td>
-            <td>$<?= number_format($product->price * $product->quantity, 2) ?></td>
+            <td><?= $product['name'] ?></td>
+            <td><?= $product['quantity'] ?></td>
+            <td>$<?= number_format($product['price'], 2) ?></td>
+            <td>$<?= number_format($product['subtotal'], 2) ?></td>
           </tr>
         <?php endforeach; ?>
       </tbody>
@@ -58,6 +60,6 @@ if (!$order) {
 
     <a href="ordersAdmin.php" class="btn btn-secondary mt-3">Volver</a>
   </div>
-
+</main>
 </body>
 </html>
