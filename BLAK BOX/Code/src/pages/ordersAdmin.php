@@ -62,7 +62,7 @@ $orders = OrderTable::getAllOrders();
     
     <main class="flex-fill bg-purple-darker p-4">
       
-        <h2>Órdenes Registradas</h2>
+        <h2>Orders</h2>
         <table class="table-products">
           <thead>
             <tr>
@@ -83,8 +83,9 @@ $orders = OrderTable::getAllOrders();
                 <td><?= $order->total ?></td>
                 <td><?= $order->status ?></td>
                 <td>
-                  <button class="btn btn-sm btn-primary">Ver</button>
+                  <a href="seeOrderAdmin.php?orderId=<?= $order->orderId ?>" class="btn btn-sm btn-primary">See</a>
                 </td>
+
               </tr>
             <?php endforeach; ?>
           </tbody>
