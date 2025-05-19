@@ -46,7 +46,6 @@ while ($row = $result->fetch_assoc()) {
         <li class="nav-item"><a class="nav-link text-white" href="./admin.php">Dashboard</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="./productsAdmin.php">Products</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="./ordersAdmin.php">Orders</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="#">Users</a></li>
         <li class="nav-item"><a class="nav-link text-danger" href="#">Logout</a></li>
       </ul>
     </div>
@@ -63,7 +62,6 @@ while ($row = $result->fetch_assoc()) {
         <li class="nav-item"><a class="nav-link text-white" href="./admin.php">Dashboard</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="./productsAdmin.php">Products</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="./ordersAdmin.php">Orders</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="#">Users</a></li>
         <li class="nav-item"><a class="nav-link text-danger" href="#">Logout</a></li>
       </ul>
     </aside>
