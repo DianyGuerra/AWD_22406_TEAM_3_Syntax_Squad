@@ -4,9 +4,9 @@ session_start();
 if (isset($_GET['remove'])) {
     $removeId = $_GET['remove'];
     if (isset($_SESSION['cart'])) {
-      $_SESSION['cart'] = array_filter($_SESSION['cart'], function($item) use ($removeId) {
-          return $item['productId'] != $removeId;
-      });
+        $_SESSION['cart'] = array_filter($_SESSION['cart'], function($item) use ($removeId) {
+            return $item['productId'] != $removeId;
+        });
     }
     header("Location: cartUser.php");
     exit();
@@ -52,10 +52,9 @@ $cart = $_SESSION['cart'] ?? [];
       </ul>
     </div>
   </div>
-
   <div class="d-flex flex-column flex-lg-row min-vh-100">
 
-    <aside class="bg-dark text-white p-3 sidebar d-none d-lg-block">
+  <aside class="bg-dark text-white p-3 sidebar d-none d-lg-block">
       <div class="text-center mb-4">
         <img src="../../Images/Logoblanco-removebg-preview.png" alt="Blak Box Logo" class="img-fluid" style="max-height: 150px; filter: invert(1) brightness(2);" />
       </div>
@@ -90,16 +89,26 @@ $cart = $_SESSION['cart'] ?? [];
           </div>
         <?php endforeach; ?>
 
-        <div class="d-flex justify-content-between align-items-center">
-          <h4>Total: $<?= number_format($total, 2) ?></h4>
-          <button class="btn btn-accent">Proceed to Payment</button>
-        </div>
+        <div class="d-flex justify-content-between align-items-center flex-column flex-md-row gap-3 mt-4">
+        <h4>Total: $<?= number_format($total, 2) ?></h4>
+        
+        <form action="checkout.php" method="post" class="d-flex flex-column flex-md-row align-items-center gap-2">
+          <select name="paymentMethod" class="form-select bg-dark text-white border-secondary" required>
+            <option value="" disabled selected>Select Payment Method</option>
+            <option value="Credit Card">Credit Card</option>
+            <option value="Debit Card">Debit Card</option>
+            <option value="PayPal">PayPal</option>
+            <option value="Bank Transfer">Bank Transfer</option>
+          </select>
+          <button type="submit" class="btn btn-accent">Proceed to Payment</button>
+        </form>
+      </div>
+
       <?php endif; ?>
     </div>
 
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
 </html>
