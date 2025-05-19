@@ -1,12 +1,18 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+require_once '../../backend/models/auth.php';
+requireLogin();
+checkUserType('user');
 
 include('../../backend/models/Products.php');
 
 $productId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
 $product = Product::getProductById($productId);
-$productName = $product['name'];
+
 if (!$product) {
   $notFound = true;
 }
@@ -36,27 +42,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['productId'])) {
     ];
   }
 
-  header("Location: detail_products.php?id=" . $id);
+  header("Location: cartUser.php");
   exit();
 }
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Detail Products - Blak Box</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <link rel="stylesheet" href="../styles/styleUser.css"/>
-
 </head>
 <body class="bg-purple-darker text-white">
 
   <nav class="navbar navbar-dark bg-dark d-lg-none">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">
-        <img src="../../Images/Logoblanco-removebg-preview.png" alt="Blak Box Logo" style="height: 50px; filter: invert(1) brightness(2);">
+        <img src="../../Images/Logoblanco-removebg-preview.png" alt="Blak Box Logo" style="height: 40px; filter: invert(1) brightness(2);">
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu">
         <span class="navbar-toggler-icon"></span>
@@ -75,13 +80,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['productId'])) {
         <li class="nav-item"><a class="nav-link text-white" href="productsUser.php">Products</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="cartUser.php">Cart</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="profileUser.php">Profile</a></li>
-        <li class="nav-item"><a class="nav-link text-danger" href="#">Log out</a></li>
+        <li class="nav-item"><a class="nav-link text-danger" href="../../backend/models/logOut.php">Log out</a></li>
       </ul>
     </div>
   </div>
 
   <div class="d-flex flex-column flex-lg-row min-vh-100">
-    <aside class="bg-dark text-white p-3 sidebar d-none d-lg-block">
+    <aside class="bg-dark text-white p-3 d-none d-lg-block" style="min-width: 220px;">
       <div class="text-center mb-4">
         <img src="../../Images/Logoblanco-removebg-preview.png" alt="Blak Box Logo" class="img-fluid" style="max-height: 150px; filter: invert(1) brightness(2);">
       </div>
@@ -90,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['productId'])) {
         <li class="nav-item"><a class="nav-link text-white" href="productsUser.php">Products</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="cartUser.php">Cart</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="profileUser.php">Profile</a></li>
-        <li class="nav-item"><a class="nav-link text-danger" href="#">Log out</a></li>
+        <li class="nav-item"><a class="nav-link text-danger" href="../../backend/models/logOut.php">Log out</a></li>
       </ul>
     </aside>
 
@@ -103,20 +108,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['productId'])) {
 
         <?php if (!isset($notFound)): ?>
           <div class="row">
-            <div class="text-center d-flex flex-column align-items-center">
+            <div class="col-md-6">
+              <img src="<?= htmlspecialchars($product['image'] ?? 'https://via.placeholder.com/400x400') ?>" class="img-fluid rounded" alt="<?= htmlspecialchars($product['name']) ?>"/>
+            </div>
+            <div class="col-md-6">
               <h2 class="text-accent"><?= htmlspecialchars($product['name']) ?></h2>
               <p><?= htmlspecialchars($product['description']) ?></p>
-              <p><strong>Stock:</strong> <?= htmlspecialchars($product['stock']) ?></p>
-              <p><strong>Category:</strong> <?= htmlspecialchars($product['category']) ?></p>
-              <p><strong>Category Description:</strong> <?= htmlspecialchars($product['categoryDescription']) ?></p>
-              <h4>$<?= number_format($product['price'], 2) ?></h4><br>
+              <p><strong>Categoría:</strong> <?= htmlspecialchars($product['category']) ?></p>
+              <h4>$<?= number_format($product['price'], 2) ?></h4>
 
-              <div class="d-flex mt-3 gap-2">
+              <div class="d-flex gap-2 mt-3">
                 <form method="POST" action="">
                   <input type="hidden" name="productId" value="<?= $product['productId'] ?>">
-                  <button type="button" class="btn btn-accent" onclick="confirmAddToCart(this, '<?= htmlspecialchars($productName) ?>')">Add to Cart</button>
+                  <button type="submit" class="btn btn-accent">Add to cart</button>
                 </form>
-                <button class="btn btn-outline-warning" onclick="toggleFavorite('<?= htmlspecialchars($productName) ?>')">⭐ Favorite</button>
+                <button class="btn btn-sm text-accent" onclick="toggleFavorite(<?= $productId ?>)">⭐</button>
               </div>
             </div>
           </div>
@@ -131,8 +137,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['productId'])) {
     </main>
   </div>
 
-  <script src="../scripts/scriptUser.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    function toggleFavorite(id) {
+      alert(`Producto ${id} agregado a favoritos (mock)`);
+    }
+  </script>
 </body>
 </html>

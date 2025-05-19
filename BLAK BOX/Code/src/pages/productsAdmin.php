@@ -1,10 +1,18 @@
 <?php
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+require_once '../../backend/models/auth.php';
+requireAdmin();
+checkUserType('admin');
+
 require_once '../../backend/models/ConnectionDB.php';
 
 $db = new connectionDB();
 $conn = $db->connection();
 
-// Obtener las categorías
 $categories = [];
 $result = $conn->query("SELECT categoryId, name FROM Category");
 while ($row = $result->fetch_assoc()) {
@@ -44,9 +52,9 @@ while ($row = $result->fetch_assoc()) {
     <div class="offcanvas-body">
       <ul class="nav flex-column">
         <li class="nav-item"><a class="nav-link text-white" href="./admin.php">Dashboard</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="./productsAdmin.php">Products</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="./ordersAdmin.php">Orders</a></li>
-        <li class="nav-item"><a class="nav-link text-danger" href="#">Logout</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="../../src/pages/productsAdmin.php">Products</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="../../src/pages/ordersAdmin.php">Orders</a></li>
+        <li class="nav-item"><a class="nav-link text-danger" href="../../backend/models/logOut.php">Logout</a></li>
       </ul>
     </div>
   </div>
@@ -60,9 +68,9 @@ while ($row = $result->fetch_assoc()) {
       </div>
       <ul class="nav flex-column">
         <li class="nav-item"><a class="nav-link text-white" href="./admin.php">Dashboard</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="./productsAdmin.php">Products</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="./ordersAdmin.php">Orders</a></li>
-        <li class="nav-item"><a class="nav-link text-danger" href="#">Logout</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="../../src/pages/productsAdmin.php">Products</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="../../src/pages/ordersAdmin.php">Orders</a></li>
+        <li class="nav-item"><a class="nav-link text-danger" href="../../backend/models/logOut.php">Logout</a></li>
       </ul>
     </aside>
 
@@ -115,7 +123,7 @@ while ($row = $result->fetch_assoc()) {
             <th>Price</th>
             <th>Stock</th>
             <th>Category</th>
-            <th>Accions</th>
+            <th>Actions</th>
           </tr>
         </thead>
         

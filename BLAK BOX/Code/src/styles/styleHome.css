@@ -1,0 +1,378 @@
+html{
+    height: 100%;
+}
+
+body{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-family: 'Quantico', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+nav{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #000000;
+    padding: 15px 30px;
+    color: #fff;
+}
+
+.nav_left {
+    display: flex;
+    align-items: center;
+}
+
+.nav_right {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 40px;
+}
+
+.logo {
+    margin-right: 15px;
+    height: 70px; 
+    filter: brightness(2);
+}
+
+.nav_right .nav_link {
+    margin-left: 20px;
+    text-decoration: none;
+    font-size: 18px;
+    color: #ffffff;
+}
+  
+.nav_right .nav_link:hover {
+    color: #c77aff;
+    transform: translateY(-2px);
+}
+
+.nav_right .nav_buttons{
+    display: flex;
+    gap: 20px;
+}
+
+.btn {
+    display: inline-block;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    background: linear-gradient(to right, #5A189A, #7B2CBF, #9D4EDD, #C77DFF);
+    color: white;
+    font-family: 'Quantico', sans-serif;
+    font-size: 17px;
+    height: 45px;
+    width: 150px;
+    text-align: center;
+    line-height: 45px;
+    transition: transform 0.1s ease, box-shadow 0.2s ease, background 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.btn:hover {
+    background: linear-gradient(to right, #782dc2, #915cc0, #a575cc, #C77DFF);
+    cursor: pointer;
+}
+
+.btn:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.hero{
+    background: linear-gradient(to bottom, #000000, #3a1e52, #64328f, #6c1eba);
+    background-image: image-set(url('../../Images/gaming_background.jpg') 1x, url('../../Images/gaming_background.jpg') 2x);
+    height: 700px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+}
+
+.hero_text h1{
+    color: #ffffff;
+    font-size: 50px;
+    font-family: 'Quantico', sans-serif;
+    margin: 0;
+}
+
+.hero_text p{
+    color: #ffffff;
+    font-size: 20px;
+    font-family: 'Quantico', sans-serif;
+    margin: 10px 0 20px 0;
+}
+
+.store {
+    background: black;
+    padding: 40px 20px;
+    text-align: center;
+    height: 700px;
+}
+
+.store h2 {
+    font-size: 32px;
+    color: #ffffff;
+    margin-bottom: 30px;
+}
+
+.service_cards {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #1a1a1a;
+    border-radius: 10px;
+    padding: 20px;
+    color: white;
+    max-width: 300px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.card h3 {
+    font-family: 'Quantico', sans-serif;
+    margin-bottom: 10px;
+}
+
+.card p {
+    font-size: 15px;
+    line-height: 1.5;
+    color: #ccc;
+}
+
+.explore_button{
+    background: linear-gradient(to right, #5A189A, #7B2CBF, #9D4EDD, #C77DFF);
+    color: white;
+    padding: 10px 20px;
+    font-family: 'Quantico', sans-serif;
+    font-size: 17px;
+    height: 45px;
+    width: fit-content;
+    transition: transform 0.1s ease, box-shadow 0.2s ease;
+    text-decoration: none;
+}
+
+.explore_button a:visited{
+    color: white;
+}
+
+.explore_button a:active{
+    color: white;
+    transform: scale(0.96); 
+}
+
+.brands_section {
+    padding: 40px 20px;
+    background-image: image-set(url('../../Images/carrousel_background.jpg') 1x, url('../../Images/carrousel_background.jpg') 2x);
+    color: white;
+    text-align: center;
+    height: 500px;
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.carousel_container {
+    position: relative;
+    max-width: 900px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.carousel_track_container {
+    overflow: hidden;
+}
+
+.carousel_track {
+    display: flex;
+    transition: transform 0.4s ease-in-out;
+    list-style: none;
+    padding: 0;
+    margin: 20px 0 0 0;
+    padding: 0 20px;
+}
+
+.carousel_card {
+    min-width: 250px;
+    min-height: 240px;
+    margin: 0 10px;
+    background: #000000;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    user-select: none;
+}
+
+.carousel_card img {
+    height: auto;
+    object-fit: contain;
+    border-radius: 8px;
+    width: 240px;
+    height: 160px; 
+    padding: 10px; 
+}
+
+.carousel_btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%); 
+    background: #5a189a;
+    border: none;
+    color: white;
+    font-size: 2rem;
+    padding: 5px 12px;
+    cursor: pointer;
+    border-radius: 50%;
+    user-select: none;
+    z-index: 10;
+    transition: background-color 0.3s;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+}
+
+.carousel_btn:hover {
+    background: #7b2cbf;
+}
+
+.prev_btn {
+    left: 3px;
+}
+
+.next_btn {
+    right: 3px;
+}
+
+.carousel_btn i {
+  font-size: 1.5rem;
+}
+
+
+.contact{
+    background: #000000;
+    text-align: center;
+    padding: 10px 20px;
+    color: #ffffff;
+    height: 400px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.contact_info{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 20px 0;
+}
+
+.whatsapp-button {
+  display: inline-block;
+  background-color: #25D366;
+  color: white;
+  font-family: 'Quantico', sans-serif;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 16px;
+  transition: background 0.3s ease;
+}
+
+.whatsapp-button i {
+  margin-right: 8px;
+}
+
+.whatsapp-button:hover {
+  background-color: #1ebe5d;
+}
+
+.contact_button {
+  display: inline-block;
+  background-color: #2585d3;
+  color: white;
+  font-family: 'Quantico', sans-serif;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 16px;
+  transition: background 0.3s ease;
+}
+
+.contact_button i {
+  margin-right: 8px;
+}
+
+.contact_button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+  background: linear-gradient(to right, #C77DFF, #9D4EDD, #7B2CBF, #5A189A);
+}
+
+.contact_button:active {
+  transform: scale(0.96);
+}
+
+footer{
+    background: linear-gradient(to bottom, #000000, #1a0d25, #431a67, #6c1eba);
+    text-align: center;
+    padding: 10px 20px;
+    color: #ffffff;
+    gap: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.logo_footer{
+    height: 70px;
+    filter: brightness(2);
+    align-items: right;
+}
+
+.footer_content{
+    position: relative;
+    margin: 0 auto;
+    overflow: hidden;
+    gap: 20px;
+    padding: 20px 0;
+}
+
+.social_media a{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    color: #ffffff;
+}

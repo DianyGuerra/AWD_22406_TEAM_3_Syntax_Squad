@@ -1,4 +1,13 @@
 <?php
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+require_once '../../backend/models/auth.php';
+requireAdmin();
+checkUserType('admin');
+
 include('../../backend/models/OrderTable.php');
 $orders = OrderTable::getAllOrders(); 
 ?>
@@ -35,9 +44,9 @@ $orders = OrderTable::getAllOrders();
     <div class="offcanvas-body">
       <ul class="nav flex-column">
         <li class="nav-item"><a class="nav-link text-white" href="./admin.php">Dashboard</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="./productsAdmin.php">Products</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="./ordersAdmin.php">Orders</a></li>
-        <li class="nav-item"><a class="nav-link text-danger" href="#">Logout</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="../../src/pages/productsAdmin.php">Products</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="../../src/pages/ordersAdmin.php">Orders</a></li>
+        <li class="nav-item"><a class="nav-link text-danger" href="../../backend/models/logOut.php">Logout</a></li>
       </ul>
     </div>
   </div>
@@ -51,16 +60,16 @@ $orders = OrderTable::getAllOrders();
       </div>
       <ul class="nav flex-column">
         <li class="nav-item"><a class="nav-link text-white" href="./admin.php">Dashboard</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="./productsAdmin.php">Products</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="./ordersAdmin.php">Orders</a></li>
-        <li class="nav-item"><a class="nav-link text-danger" href="#">Logout</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="../../src/pages/productsAdmin.php">Products</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="../../src/pages/ordersAdmin.php">Orders</a></li>
+        <li class="nav-item"><a class="nav-link text-danger" href="../../backend/models/logOut.php">Logout</a></li>
       </ul>
     </aside>
 
     
     <main class="flex-fill bg-purple-darker p-4">
       
-        <h2>Orders</h2>
+        <h2>Registered orders</h2>
         <table class="table-products">
           <thead>
             <tr>
@@ -69,7 +78,7 @@ $orders = OrderTable::getAllOrders();
               <th>Date</th>
               <th>Total</th>
               <th>Status</th>
-              <th>Accions</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -81,9 +90,8 @@ $orders = OrderTable::getAllOrders();
                 <td><?= $order->total ?></td>
                 <td><?= $order->status ?></td>
                 <td>
-                  <a href="seeOrderAdmin.php?orderId=<?= $order->orderId ?>" class="btn btn-sm btn-primary">See</a>
+                  <button class="btn btn-sm btn-primary">Ver</button>
                 </td>
-
               </tr>
             <?php endforeach; ?>
           </tbody>

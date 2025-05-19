@@ -2,15 +2,15 @@
 require_once('ConnectionDB.php');
 class Product {
 
-    public $productId;
+    public $id;
     public $name;
     public $description;
     public $price;
     public $stock;
     public $category_id;
 
-    public function __construct($productId, $name, $description, $price, $stock, $category_id) {
-        $this->id = $productId;
+    public function __construct($id, $name, $description, $price, $stock, $category_id) {
+        $this->id = $id;
         $this->name = $name;
         $this->description = $description;
         $this->price = $price;
@@ -42,24 +42,21 @@ class Product {
     }
 
     public static function getProductById($id) {
-    $database = new ConnectionDB();
-    $conn = $database->connection();
+        $database = new ConnectionDB();
+        $conn = $database->connection();
 
-    $stmt = $conn->prepare("SELECT p.*, c.name AS category, c.description AS categoryDescription 
-                            FROM Product p 
-                            JOIN Category c ON p.categoryId = c.categoryId 
-                            WHERE p.productId = ?");
-    $stmt->bind_param("i", $id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $product = $result->fetch_assoc();
+        $stmt = $conn->prepare("SELECT p.*, c.name AS category 
+                                      FROM product p 
+                                      JOIN category c ON p.categoryId = c.categoryId 
+                                      WHERE p.productId = ?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
 
+        $result = $stmt->get_result();
+        return $result->fetch_assoc();
+    }
 
-    return $product;
-}
-
-
-    public static function updateProduct($productId, $name, $description, $price, $stock, $categoryId) {
+    public static function updateProduct($id, $name, $description, $price, $stock, $categoryId) {
     $database = new ConnectionDB();
     $conn = $database->connection();
 
@@ -67,7 +64,7 @@ class Product {
     $stmt = mysqli_prepare($conn, $query);
 
     
-    mysqli_stmt_bind_param($stmt, "ssdiii", $name, $description, $price, $stock, $categoryId, $productId);
+    mysqli_stmt_bind_param($stmt, "ssdiii", $name, $description, $price, $stock, $categoryId, $id);
 
     if (!mysqli_stmt_execute($stmt)) {
         
@@ -78,13 +75,13 @@ class Product {
 }
 
 
-    public static function deleteProduct($productId) {
+    public static function deleteProduct($id) {
         $database = new ConnectionDB();
         $conn = $database->connection();
 
         $query = "DELETE FROM Product WHERE productId = ?";
         $stmt = mysqli_prepare($conn, $query);
-        mysqli_stmt_bind_param($stmt, "i", $productId);
+        mysqli_stmt_bind_param($stmt, "i", $id);
 
         return mysqli_stmt_execute($stmt); 
     }

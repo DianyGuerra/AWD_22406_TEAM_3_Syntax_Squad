@@ -15,7 +15,7 @@ nav{
     justify-content: space-between;
     align-items: center;
     background-color: #000000;
-    padding: 15px 30px;
+    padding: 15px 10px;
     color: #fff;
 }
 
@@ -69,6 +69,16 @@ nav{
     line-height: 45px;
     transition: transform 0.1s ease, box-shadow 0.2s ease, background 0.3s ease;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.btn:hover {
+    background: linear-gradient(to right, #782dc2, #915cc0, #a575cc, #C77DFF);
+    cursor: pointer;
+}
+
+.btn:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .content-wrapper {
@@ -166,25 +176,12 @@ nav{
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-.error-message {
-    color: red;
-    font-size: 0.85rem;
-    margin-top: 4px;
-    display: block;
+.msg {
+    font-size: 12px;
+    margin-top: 5px;
 }
 
-
-.btn:hover {
-    background: linear-gradient(to right, #782dc2, #915cc0, #a575cc, #C77DFF);
-    cursor: pointer;
-}
-
-.btn:active {
-    transform: scale(0.95);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-.not-registered {
+.already-registered {
     margin-top: 20px;
     text-align: center;
     font-size: 0.95rem;
@@ -192,17 +189,19 @@ nav{
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.not-registered .register-link {
+.already-registered .login-link {
     color: #87c1ff;
     text-decoration: none;
     font-weight: bold;
     transition: color 0.3s ease, text-decoration 0.3s ease;
 }
 
-.not-registered .register-link:hover {
+.already-registered .login-link:hover {
     color: #0056b3;
     text-decoration: underline;
 }
+
+
 
 footer{
     background: linear-gradient(to bottom, #000000, #1a0d25, #431a67, #6c1eba);
@@ -234,3 +233,48 @@ footer{
     gap: 20px;
     color: #ffffff;
 }
+
+.message {
+    padding: 15px;
+    font-size: 1rem;
+    margin-bottom: 20px;
+    text-align: center;
+    font-family: 'Segoe UI', sans-serif;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto 20px auto;
+}
+
+.message.success {
+    color: #109d31;
+}
+
+.message.error {
+    color: #ee1b30;
+}
+
+.message i {
+    margin-right: 8px;
+    font-size: 1.2rem;
+    vertical-align: middle;
+}
+
+.success-button {
+    margin-top: 15px;
+}
+
+.btn-success {
+    display: inline-block;
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+}
+
