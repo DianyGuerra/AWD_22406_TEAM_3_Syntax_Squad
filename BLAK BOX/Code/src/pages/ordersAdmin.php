@@ -37,7 +37,6 @@ $orders = OrderTable::getAllOrders();
         <li class="nav-item"><a class="nav-link text-white" href="./admin.php">Dashboard</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="./productsAdmin.php">Products</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="./ordersAdmin.php">Orders</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="#">Users</a></li>
         <li class="nav-item"><a class="nav-link text-danger" href="#">Logout</a></li>
       </ul>
     </div>
@@ -54,7 +53,6 @@ $orders = OrderTable::getAllOrders();
         <li class="nav-item"><a class="nav-link text-white" href="./admin.php">Dashboard</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="./productsAdmin.php">Products</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="./ordersAdmin.php">Orders</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="#">Users</a></li>
         <li class="nav-item"><a class="nav-link text-danger" href="#">Logout</a></li>
       </ul>
     </aside>
@@ -62,7 +60,7 @@ $orders = OrderTable::getAllOrders();
     
     <main class="flex-fill bg-purple-darker p-4">
       
-        <h2>Órdenes Registradas</h2>
+        <h2>Orders</h2>
         <table class="table-products">
           <thead>
             <tr>
@@ -83,8 +81,9 @@ $orders = OrderTable::getAllOrders();
                 <td><?= $order->total ?></td>
                 <td><?= $order->status ?></td>
                 <td>
-                  <button class="btn btn-sm btn-primary">Ver</button>
+                  <a href="seeOrderAdmin.php?orderId=<?= $order->orderId ?>" class="btn btn-sm btn-primary">See</a>
                 </td>
+
               </tr>
             <?php endforeach; ?>
           </tbody>

@@ -6,7 +6,12 @@ class OrderService {
         $db = new ConnectionDB();
         $conn = $db->connection();
 
-        $queryOrder = "SELECT * FROM OrderTable WHERE orderId = ?";
+        $queryOrder = "
+            SELECT o.*, u.firstName, u.lastName
+            FROM OrderTable o
+            INNER JOIN User u ON o.userId = u.userId
+            WHERE o.orderId = ?
+        ";
         $stmtOrder = mysqli_prepare($conn, $queryOrder);
         mysqli_stmt_bind_param($stmtOrder, "i", $orderId);
         mysqli_stmt_execute($stmtOrder);
@@ -21,7 +26,8 @@ class OrderService {
             SELECT op.productId, op.quantity, p.name, p.price, (op.quantity * p.price) AS subtotal
             FROM OrderProduct op
             INNER JOIN Product p ON op.productId = p.productId
-            WHERE op.orderId = ?";
+            WHERE op.orderId = ?
+        ";
         $stmtProducts = mysqli_prepare($conn, $queryProducts);
         mysqli_stmt_bind_param($stmtProducts, "i", $orderId);
         mysqli_stmt_execute($stmtProducts);
