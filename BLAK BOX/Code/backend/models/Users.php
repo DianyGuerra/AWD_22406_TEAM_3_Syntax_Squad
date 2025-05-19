@@ -2,9 +2,9 @@
 include('ConnectionDB.php');
 
 class User {
-    public $id, $firstName, $lastName, $email, $password, $userType, $address;
+    public $id, $firstName, $lastName, $email, $password, $userType, $address, $phone;
 
-    public function __construct($id, $firstName, $lastName, $email, $password, $userType, $address) {
+    public function __construct($id, $firstName, $lastName, $email, $password, $userType, $address, $phone) {
         $this->id = $id;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
@@ -12,14 +12,15 @@ class User {
         $this->password = $password;
         $this->userType = $userType;
         $this->address = $address;
+        $this->phone = $phone;
     }
 
-    public static function createUser($firstName, $lastName, $email, $password, $userType, $address) {
+    public static function createUser($firstName, $lastName, $email, $password, $userType, $address, $phone) {
         $db = new ConnectionDB();
         $conn = $db->connection();
-        $query = "INSERT INTO User(firstName, lastName, email, password, userType, address) VALUES (?, ?, ?, ?, ?, ?)";
+        $query = "INSERT INTO User(firstName, lastName, email, password, userType, address, phoneNumber) VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt = mysqli_prepare($conn, $query);
-        mysqli_stmt_bind_param($stmt, "ssssss", $firstName, $lastName, $email, $password, $userType, $address);
+        mysqli_stmt_bind_param($stmt, "sssssss", $firstName, $lastName, $email, $password, $userType, $address, $phone);
         mysqli_stmt_execute($stmt);
     }
 
@@ -34,12 +35,12 @@ class User {
         return mysqli_fetch_assoc($result);
     }
 
-    public static function updateUser($id, $firstName, $lastName, $email, $password, $userType, $address) {
+    public static function updateUser($id, $firstName, $lastName, $email, $password, $userType, $address, $phone) {
         $db = new ConnectionDB();
         $conn = $db->connection();
-        $query = "UPDATE User SET firstName=?, lastName=?, email=?, password=?, userType=?, address=? WHERE userId=?";
+        $query = "UPDATE User SET firstName=?, lastName=?, email=?, password=?, userType=?, address=?, phoneNumber=? WHERE userId=?";
         $stmt = mysqli_prepare($conn, $query);
-        mysqli_stmt_bind_param($stmt, "ssssssi", $firstName, $lastName, $email, $password, $userType, $address, $id);
+        mysqli_stmt_bind_param($stmt, "sssssssi", $firstName, $lastName, $email, $password, $userType, $address, $phone, $id);
         mysqli_stmt_execute($stmt);
     }
 
