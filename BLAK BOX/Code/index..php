@@ -18,14 +18,14 @@
             </section>
             <section class="nav_right">
                 <div>
-                    <a href="./index.html" class="nav_link">Home</a>
+                    <a href="./index.php" class="nav_link">Home</a>
                     <a href="#hero" class="nav_link">About</a>
                     <a href="#store" class="nav_link">Store</a>
                     <a href="#contact" class="nav_link">Contact</a>
                 </div>
                 <div class="nav_buttons">
-                    <a href="./src/pages/Login.html" class="btn">Log in</a>
-                    <a href="./src/pages/Signup.html" class="btn">Sign Up</a>
+                    <a href="./src/pages/Login.php" class="btn">Log in</a>
+                    <a href="./src/pages/Signup.php" class="btn">Sign Up</a>
                 </div>
             </section>
         </nav>

@@ -62,10 +62,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </section>
             <section class="nav_right">
                 <div>
-                    <a href="../../index.html" class="nav_link">Home</a>
+                    <a href="../../index.php" class="nav_link">Home</a>
                 </div>
                 <div class="nav_buttons">
-                    <a href="../pages/Login.html" class="btn">Log in</a>
+                    <a href="../pages/Login.php" class="btn">Log in</a>
                 </div>
             </section>
         </nav>

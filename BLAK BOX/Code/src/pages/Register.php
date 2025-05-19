@@ -50,7 +50,7 @@
                 <input type="submit" name="register" id="register" value="REGISTER">
             </section>
             <br>
-            <p>Already have an account? <a class="register_link" href="Login.html">Login</a></p>
+            <p>Already have an account? <a class="register_link" href="Login.php">Login</a></p>
         </form>
     </section>
 
@@ -63,4 +63,4 @@
     </footer>
     <script src="../../JS/Validate.js"></script>
 </body>
-</html> <!-- Close html OK -->
+</html>

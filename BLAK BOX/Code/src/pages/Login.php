@@ -1,14 +1,17 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <title>BLAK BOX | Sign up</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BLAK BOX | Log in</title>
+    <link rel="stylesheet" href="../styles/styleLogin.css">
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Quantico:ital,wght@0,400;0,700;1,400;1,700&family=Winky+Rough:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="../styles/styleSignup.css">    
+    
 
 </head>
 
@@ -20,10 +23,10 @@
             </section>
             <section class="nav_right">
                 <div>
-                    <a href="../../index.html" class="nav_link">Home</a>
+                    <a href="./../../index.php" class="nav_link">Home</a>
                 </div>
                 <div class="nav_buttons">
-                    <a href="../pages/Login.html" class="btn">Log in</a>
+                    <a href="../pages/Signup.php" class="btn">Sign Up</a>
                 </div>
             </section>
         </nav>
@@ -33,41 +36,29 @@
         <section class="background"></section>
         <div class="content">
             <div class="highlight-box">
-                <h2 class="title">Sign in</h2>
+                <h2 class="title">Log in</h2>
                 <br>
-                <form class="registerform" method="POST" id="registerform" name="registerform" action="../../backend/models/signupform.php">
-                        <section class="element">
-                            <label for="firstName">Name:</label>
-                            <input type="text" id="firstName" name="firstName"/>    
-                        </section>
-                        
-                        <section class="element">
-                            <label for="lastName">Lastname:</label>
-                            <input type="text" id="lastName" name="lastName"/>
-                        </section>
+                <form class="registerform" method="POST" id="registerform" name="registerform" action="../../backend/models/LoginForm.php">
 
                         <section class="element">
                             <label for="email">Email:</label>
                             <input type="email" id="email" name="email"/>
-                        </section>
-
-                        <section class="element">
-                            <label for="phoneNumber">Phone:</label>
-                            <input type="tel" id="phoneNumber" name="phoneNumber"/>
+                            <span class="error-message" id="email-error"></span>
                         </section>
                         
                         <section class="element">
                             <label for="password">Password</label>
                             <input type="password" id="password" name="password"/>
+                            <span class="error-message" id="password-error"></span>
                         </section>
 
                         <br>
 
                         <section class="element">
-                            <input type="submit" value="Register" name="Register"/>
+                            <input type="submit" value="Log in" name="Log in"/>
                         </section>
 
-                        <p class="already-registered">You're already registered? <a class="login-link" href="../pages/Login.html">Log In</a></p>
+                        <p class="not-registered">Don't have an account yet? <a class="register-link" href="../pages/Signup.php">Register here</a></p>
     
                     </form>
                 </div>
@@ -91,8 +82,7 @@
         </div>
     </footer>
 
-    <script src="../scripts/formvalidations.js" defer></script>
+    <script src="../scripts/loginvalidations.js"></script>
 </body>
 
 </html>
-
