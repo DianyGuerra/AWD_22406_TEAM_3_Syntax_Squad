@@ -43,9 +43,9 @@ while ($row = $result->fetch_assoc()) {
     </div>
     <div class="offcanvas-body">
       <ul class="nav flex-column">
-        <li class="nav-item"><a class="nav-link text-white" href="#">Dashboard</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="./productsAdmin.html">Products</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="./ordersAdmin.html">Orders</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="./admin.php">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="./productsAdmin.php">Products</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="./ordersAdmin.php">Orders</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="#">Users</a></li>
         <li class="nav-item"><a class="nav-link text-danger" href="#">Logout</a></li>
       </ul>
@@ -60,9 +60,9 @@ while ($row = $result->fetch_assoc()) {
         <img src="../../Images/Logoblanco-removebg-preview.png" alt="Blak Box Logo" class="img-fluid" style="max-height: 150px; filter: invert(1) brightness(2);">
       </div>
       <ul class="nav flex-column">
-        <li class="nav-item"><a class="nav-link text-white" href="#">Dashboard</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="./productsAdmin.html">Products</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="./ordersAdmin.html">Orders</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="./admin.php">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="./productsAdmin.php">Products</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="./ordersAdmin.php">Orders</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="#">Users</a></li>
         <li class="nav-item"><a class="nav-link text-danger" href="#">Logout</a></li>
       </ul>
@@ -109,38 +109,38 @@ while ($row = $result->fetch_assoc()) {
           </form>
         </div>
       </div>
-  <table id="productTable" class="table-products">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Descripción</th>
-      <th>Price</th>
-      <th>Stock</th>
-      <th>Category</th>
-      <th>Accions</th>
-    </tr>
-  </thead>
-  
-  <tbody>
-    <?php
-    include('../../backend/models/Products.php');
-    $productos = Product::listAllProducts();
-    foreach ($productos as $p) {
-      echo "<tr data-id='{$p['productId']}'>
-        <td contenteditable='true' class='editable' data-field='name'>{$p['name']}</td>
-        <td contenteditable='true' class='editable' data-field='description'>{$p['description']}</td>
-        <td contenteditable='true' class='editable' data-field='price'>{$p['price']}</td>
-        <td contenteditable='true' class='editable' data-field='stock'>{$p['stock']}</td>
-        <td contenteditable='true' class='editable' data-field='categoryId'>{$p['categoryId']}</td>
-        <td>
-          <button class='btn-edit'>Update</button>
-          <button class='btn-delete'>Delete</button>
-        </td>
-      </tr>";
-    }
-    ?>
-  </tbody>
-</table>
+        <table id="productTable" class="table-products">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Descripción</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Category</th>
+            <th>Accions</th>
+          </tr>
+        </thead>
+        
+        <tbody>
+          <?php
+          include('../../backend/models/Products.php');
+          $productos = Product::listAllProducts();
+          foreach ($productos as $p) {
+            echo "<tr data-id='{$p['productId']}'>
+              <td contenteditable='true' class='editable' data-field='name'>{$p['name']}</td>
+              <td contenteditable='true' class='editable' data-field='description'>{$p['description']}</td>
+              <td contenteditable='true' class='editable' data-field='price'>{$p['price']}</td>
+              <td contenteditable='true' class='editable' data-field='stock'>{$p['stock']}</td>
+              <td contenteditable='true' class='editable' data-field='categoryId'>{$p['categoryId']}</td>
+              <td>
+                <button class='btn-edit'>Update</button>
+                <button class='btn-delete'>Delete</button>
+              </td>
+            </tr>";
+          }
+          ?>
+        </tbody>
+      </table>
 
 
 

@@ -41,5 +41,29 @@ class OrderTable {
         mysqli_stmt_bind_param($stmt, "si", $status, $orderId);
         mysqli_stmt_execute($stmt);
     }
+    public static function getAllOrders() {
+        $db = new ConnectionDB();
+        $conn = $db->connection();
+        $sql = "SELECT o.orderId, o.userId, o.orderDate, o.total, o.status,
+                   u.firstName, u.lastName
+            FROM OrderTable o
+            JOIN User u ON o.userId = u.userId";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $orders = [];
+        while ($row = $result->fetch_object()) {
+            $orders[] = $row;
+        }
+
+        $stmt->close();
+        $conn->close();
+
+        return $orders;
+    }
+
+
 }
 ?>
