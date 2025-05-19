@@ -29,7 +29,7 @@ $cart = $_SESSION['cart'] ?? [];
   <nav class="navbar navbar-dark bg-dark d-lg-none">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">
-        <img src="../../Images/Logoblanco-removebg-preview.png" alt="Blak Box Logo" style="height: 40px; filter: invert(1) brightness(2);" />
+        <img src="../../Images/Logoblanco-removebg-preview.png" alt="Blak Box Logo" style="height: 50px; filter: invert(1) brightness(2);" />
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu">
         <span class="navbar-toggler-icon"></span>
@@ -54,7 +54,7 @@ $cart = $_SESSION['cart'] ?? [];
 
   <div class="d-flex flex-column flex-lg-row min-vh-100">
 
-    <aside class="bg-dark text-white p-3 d-none d-lg-block" style="min-width: 220px;">
+    <aside class="bg-dark text-white p-3 sidebar d-none d-lg-block">
       <div class="text-center mb-4">
         <img src="../../Images/Logoblanco-removebg-preview.png" alt="Blak Box Logo" class="img-fluid" style="max-height: 150px; filter: invert(1) brightness(2);" />
       </div>

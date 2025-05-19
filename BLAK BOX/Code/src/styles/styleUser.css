@@ -1,4 +1,12 @@
 :root {
+  --black: #000000;
+  --purple-deep: #10002B;
+  --purple-darker: #1F023B;
+  --purple: #3C096C;
+  --purple-mid: #5A189A;
+  --purple-light: #7B2CBF;
+  --purple-lighter: #9D4EDD;
+  --accent: #C77DFF;
   --color-dark: #18002c;
   --color-purple: #3f006e;
   --color-accent: #bb86fc;
@@ -11,49 +19,11 @@ body {
   font-family: 'Segoe UI', sans-serif;
 }
 
-.text-accent {
-  color: var(--color-accent);
-}
-
-.bg-purple {
-  background-color: var(--color-purple);
-}
-
-.bg-purple-darker {
-  background-color: var(--color-dark);
-}
-
-.btn-accent {
-  background-color: var(--color-accent);
-  color: var(--color-dark);
-  border: none;
-}
-
-.btn-accent:hover {
-  background-color: #a85ffb;
-}
-
-.card {
-  border-radius: 12px;
-  transition: transform 0.2s ease;
-}
-
-.card:hover {
-  transform: scale(1.02);
-}
-
-a {
-  text-decoration: none;
-}
-
-.btn-outline-light {
-  border-color: var(--color-accent);
-  color: var(--color-accent);
-}
-
-.btn-outline-light:hover {
-  background-color: var(--color-accent);
-  color: var(--color-dark);
+html {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--purple-deep);
+  color: white;
+  height: 100%;
 }
 
 /* Sidebar */
@@ -96,4 +66,51 @@ a {
 
 .sidebar a:hover {
   background-color: var(--purple);
+}
+
+.sidebar a.active {
+  background-color: var(--purple);
+  color: var(--accent);
+}
+
+.text-accent {
+  color: var(--color-accent);
+}
+
+.bg-purple {
+  background-color: var(--color-purple);
+}
+
+.bg-purple-darker {
+  background-color: var(--color-dark);
+}
+
+.btn-accent {
+  background-color: var(--color-accent);
+  color: var(--color-dark);
+  border: none;
+}
+
+.btn-accent:hover {
+  background-color: #a85ffb;
+}
+
+.card {
+  border-radius: 12px;
+  transition: transform 0.2s ease;
+  margin: 1rem;
+}
+
+.card:hover {
+  transform: scale(1.02);
+}
+
+.btn-outline-light {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.btn-outline-light:hover {
+  background-color: var(--color-accent);
+  color: var(--color-dark);
 }
