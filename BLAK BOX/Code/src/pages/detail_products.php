@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['productId'])) {
 ?>
 
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -74,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['productId'])) {
         <li class="nav-item"><a class="nav-link text-white" href="user.php">Home</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="productsUser.php">Products</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="cartUser.php">Cart</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="#">Perfil</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="profileUser.php">Profile</a></li>
         <li class="nav-item"><a class="nav-link text-danger" href="#">Log out</a></li>
       </ul>
     </div>
@@ -89,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['productId'])) {
         <li class="nav-item"><a class="nav-link text-white" href="user.php">Home</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="productsUser.php">Products</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="cartUser.php">Cart</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="#">Perfil</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="profileUser.php">Profile</a></li>
         <li class="nav-item"><a class="nav-link text-danger" href="#">Log out</a></li>
       </ul>
     </aside>
