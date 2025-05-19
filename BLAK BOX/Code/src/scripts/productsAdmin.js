@@ -3,14 +3,16 @@ document.querySelectorAll('.btn-edit').forEach(btn => {
     const row = this.closest('tr');
     const id = row.dataset.id;
     const data = {
-      action: 'update',
-      id: id,
-      name: row.querySelector("[data-field='name']").textContent,
-      description: row.querySelector("[data-field='description']").textContent,
-      price: row.querySelector("[data-field='price']").textContent,
-      stock: row.querySelector("[data-field='stock']").textContent,
-      category: row.querySelector("[data-field='categoryId']").textContent
+        action: 'update',
+        id: id,
+        name: row.querySelector("[data-field='name']").textContent,
+        description: row.querySelector("[data-field='description']").textContent,
+        price: row.querySelector("[data-field='price']").textContent,
+        stock: row.querySelector("[data-field='stock']").textContent,
+        categoryId: row.querySelector("[data-field='categoryId']").textContent  // Debe llamarse categoryId
     };
+    console.log(row.querySelector("[data-field='categoryId']").textContent );
+
 
     const result = await Swal.fire({
       title: '¿Actualizar producto?',
@@ -22,7 +24,7 @@ document.querySelectorAll('.btn-edit').forEach(btn => {
     });
 
     if (result.isConfirmed) {
-      fetch('../controllers/ProductController.php', {
+      fetch('../../backend/models/ProductController.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams(data)
@@ -49,7 +51,7 @@ document.querySelectorAll('.btn-delete').forEach(btn => {
     });
 
     if (result.isConfirmed) {
-      fetch('../controllers/ProductController.php', {
+      fetch('../../backend/models/ProductController.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams({ action: 'delete', id: id })

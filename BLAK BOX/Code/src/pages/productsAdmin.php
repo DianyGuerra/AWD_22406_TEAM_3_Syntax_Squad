@@ -114,7 +114,7 @@ while ($row = $result->fetch_assoc()) {
     <tr>
       <th>Name</th>
       <th>Descripción</th>
-      <th>Description</th>
+      <th>Price</th>
       <th>Stock</th>
       <th>Category</th>
       <th>Accions</th>

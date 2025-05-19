@@ -56,28 +56,24 @@ class Product {
         return $result->fetch_assoc();
     }
 
-    public static function updateProduct($id, $name, $description, $price, $stock, $categoryName) {
-        $database = new ConnectionDB();
-        $conn = $database->connection();
+    public static function updateProduct($id, $name, $description, $price, $stock, $categoryId) {
+    $database = new ConnectionDB();
+    $conn = $database->connection();
 
-        $queryCategory = "SELECT categoryId FROM Category WHERE name = ?";
-        $stmtCat = mysqli_prepare($conn, $queryCategory);
-        mysqli_stmt_bind_param($stmtCat, "s", $categoryName);
-        mysqli_stmt_execute($stmtCat);
-        mysqli_stmt_bind_result($stmtCat, $category_id);
-        mysqli_stmt_fetch($stmtCat);
-        mysqli_stmt_close($stmtCat);
+    $query = "UPDATE Product SET name = ?, description = ?, price = ?, stock = ?, categoryId = ? WHERE productId = ?";
+    $stmt = mysqli_prepare($conn, $query);
 
-        $query = "UPDATE Product SET name = ?, description = ?, price = ?, stock = ?, categoryId = ? WHERE productId = ?";
-        $stmt = mysqli_prepare($conn, $query);
-        mysqli_stmt_bind_param($stmt, "ssdiis", $name, $description, $price, $stock, $category_id, $id);
+    
+    mysqli_stmt_bind_param($stmt, "ssdiii", $name, $description, $price, $stock, $categoryId, $id);
 
-        if (!mysqli_stmt_execute($stmt)) {
-            header('Location: Error.php');
-            exit();
-        }
-        header('Location: ../../../frontend/ProductHome.php');
+    if (!mysqli_stmt_execute($stmt)) {
+        
+        return false;
     }
+
+    return true;
+}
+
 
     public static function deleteProduct($id) {
         $database = new ConnectionDB();
@@ -87,12 +83,9 @@ class Product {
         $stmt = mysqli_prepare($conn, $query);
         mysqli_stmt_bind_param($stmt, "i", $id);
 
-        if (!mysqli_stmt_execute($stmt)) {
-            header('Location: Error.php');
-            exit();
-        }
-        header('Location: ../../../frontend/ProductHome.php');
+        return mysqli_stmt_execute($stmt); 
     }
+
 
     public static function listAllProducts() {
         $database = new ConnectionDB();
