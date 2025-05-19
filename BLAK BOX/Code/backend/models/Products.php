@@ -45,15 +45,17 @@ class Product {
         $database = new ConnectionDB();
         $conn = $database->connection();
 
-        $stmt = $conn->prepare("SELECT p.*, c.name AS category 
-                                      FROM product p 
-                                      JOIN category c ON p.categoryId = c.categoryId 
-                                      WHERE p.productId = ?");
+        $stmt = $conn->prepare("SELECT p.*, c.name AS category, c.description AS categoryDescription 
+                                FROM Product p 
+                                JOIN Category c ON p.categoryId = c.categoryId 
+                                WHERE p.productId = ?");
         $stmt->bind_param("i", $id);
         $stmt->execute();
-
         $result = $stmt->get_result();
-        return $result->fetch_assoc();
+        $product = $result->fetch_assoc();
+
+
+        return $product;
     }
 
     public static function updateProduct($id, $name, $description, $price, $stock, $categoryId) {
