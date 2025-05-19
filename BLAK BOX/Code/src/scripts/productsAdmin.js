@@ -9,18 +9,18 @@ document.querySelectorAll('.btn-edit').forEach(btn => {
         description: row.querySelector("[data-field='description']").textContent,
         price: row.querySelector("[data-field='price']").textContent,
         stock: row.querySelector("[data-field='stock']").textContent,
-        categoryId: row.querySelector("[data-field='categoryId']").textContent  // Debe llamarse categoryId
+        categoryId: row.querySelector("[data-field='categoryId']").textContent  
     };
     console.log(row.querySelector("[data-field='categoryId']").textContent );
 
 
     const result = await Swal.fire({
-      title: '¿Actualizar producto?',
-      text: "¿Estás seguro de modificar este producto?",
+      title: '¿Update Product?',
+      text: "¿Are you sure to update this product?",
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Sí, modificar',
-      cancelButtonText: 'Cancelar'
+      confirmButtonText: 'Yes, update',
+      cancelButtonText: 'Cancel'
     });
 
     if (result.isConfirmed) {
@@ -30,7 +30,7 @@ document.querySelectorAll('.btn-edit').forEach(btn => {
         body: new URLSearchParams(data)
       }).then(res => res.json())
         .then(res => {
-          if (res.success) Swal.fire('¡Actualizado!', '', 'success');
+          if (res.success) Swal.fire('¡Updated!', '', 'success');
         });
     }
   });
@@ -42,12 +42,12 @@ document.querySelectorAll('.btn-delete').forEach(btn => {
     const id = row.dataset.id;
 
     const result = await Swal.fire({
-      title: '¿Eliminar producto?',
-      text: "Esta acción no se puede deshacer",
+      title: '¿Delete this product?',
+      text: "This action cannot be undone",
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar'
+      confirmButtonText: 'Yes, delete',
+      cancelButtonText: 'Cancel'
     });
 
     if (result.isConfirmed) {
@@ -59,7 +59,7 @@ document.querySelectorAll('.btn-delete').forEach(btn => {
         .then(res => {
           if (res.success) {
             row.remove();
-            Swal.fire('¡Eliminado!', '', 'success');
+            Swal.fire('Eliminated!', '', 'success');
           }
         });
     }
@@ -73,8 +73,8 @@ document.querySelectorAll('.btn-delete').forEach(btn => {
     if (status === 'success') {
       Swal.fire({
         icon: 'success',
-        title: '¡Éxito!',
-        text: 'Producto registrado correctamente.',
+        title: 'Success!',
+        text: 'Product registered successfully.',
         confirmButtonColor: '#7B2CBF',
       });
     } else if (status === 'error') {
