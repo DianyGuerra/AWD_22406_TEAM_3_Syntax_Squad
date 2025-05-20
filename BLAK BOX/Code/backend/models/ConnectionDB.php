@@ -8,11 +8,11 @@ class connectionDB {
     public $conn;
 
     public function __construct() {
-        $this->servername = getenv('DB_HOST');
-        $this->username   = getenv('DB_USER');
-        $this->password   = getenv('DB_PASS');
-        $this->database   = getenv('DB_NAME');
-        $this->port       = getenv('DB_PORT') ?: 3306;
+        $this->servername = getenv('MYSQL_ADDON_HOST');
+        $this->username   = getenv('MYSQL_ADDON_USER');
+        $this->password   = getenv('MYSQL_ADDON_PASSWORD');
+        $this->database   = getenv('MYSQL_ADDON_DB');
+        $this->port       = getenv('MYSQL_ADDON_PORT') ?: 3306;
 
         $this->conn = new mysqli($this->servername, $this->username, $this->password, $this->database, $this->port);
 
