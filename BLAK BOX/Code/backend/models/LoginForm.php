@@ -44,5 +44,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         echo "Error in the database: " . $e->getMessage();
     }
 } else {
-    echo "Access denied.";
+    // Redirige al login si alguien intenta acceder con GET
+    header("Location: ../../src/pages/Login.php");
+    exit;
 }
+
