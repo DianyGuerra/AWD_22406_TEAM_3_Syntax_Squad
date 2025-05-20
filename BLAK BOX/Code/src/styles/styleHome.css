@@ -371,12 +371,18 @@ footer{
     padding: 20px 0;
 }
 
-.social_media a{
+.social_media {
     display: flex;
     justify-content: center;
     gap: 20px;
-    color: #ffffff;
 }
+
+.social_media a {
+    color: #ffffff;
+    font-size: 24px;
+}
+
+
 @media screen and (max-width: 768px) {
   nav {
     flex-direction: column;
@@ -416,4 +422,90 @@ footer{
   .logo {
     height: 60px;
   }
+}
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.hamburger span {
+  width: 25px;
+  height: 3px;
+  background-color: white;
+  transition: 0.3s;
+}
+
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex;
+    margin-right: 15px;
+  }
+
+  .nav_right {
+    position: absolute;
+    top: 70px;
+    left: 0;
+    right: 0;
+    background-color: #000;
+    flex-direction: column;
+    align-items: center;
+    display: none;
+    padding: 20px 0;
+    gap: 20px;
+  }
+
+  .nav_right.show {
+    display: flex;
+  }
+
+  .nav_right div {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .nav_buttons {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .nav_right a {
+    margin: 10px 0;
+  }
+}
+
+.hamburger.active span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(6px, -6px);
+}
+
+@media screen and (max-width: 480px) {
+  .hero_text h1 {
+    font-size: 30px;
+  }
+  .hero_text p {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .contact_button:focus, .whatsapp-button:focus {
+  outline: 2px solid #9D4EDD;
+  outline-offset: 2px;
+}
+
+.nav_right .nav_link {
+  transition: color 0.3s ease, transform 0.2s ease;
 }

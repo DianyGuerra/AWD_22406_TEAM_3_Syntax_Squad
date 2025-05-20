@@ -14,11 +14,19 @@
 </head>
 <body>
     <header>
-        <nav class="nav">
-            <section class="nav_left">
-                <img class="logo" src="./Images/logo.png" alt="Blak Box Logo">
-            </section>
-            <section class="nav_right">
+  <nav class="nav">
+        <section class="nav_left">
+            <img class="logo" src="./Images/logo.png" alt="Blak Box Logo">
+        </section>
+
+    
+            <button class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+            </button>
+
+            <section class="nav_right" id="navMenu">
                 <div>
                     <a href="./index.php" class="nav_link">Home</a>
                     <a href="#hero" class="nav_link">About</a>
@@ -26,12 +34,13 @@
                     <a href="#contact" class="nav_link">Contact</a>
                 </div>
                 <div class="nav_buttons">
-                    <a href="./src/pages/Login.php" class="btn"><i class="bi bi-box-arrow-in-right"></i>Log in</a>
-                    <a href="./src/pages/Signup.php" class="btn"><i class="bi bi-person-plus-fill"></i>Sign Up</a>
+                    <a href="./src/pages/Login.php" class="btn"><i class="bi bi-box-arrow-in-right"></i> Log in</a>
+                    <a href="./src/pages/Signup.php" class="btn"><i class="bi bi-person-plus-fill"></i> Sign Up</a>
                 </div>
             </section>
         </nav>
-    </header>
+        </header>
+
 
         <section id="hero" class="hero">
             <div class="hero_text">
