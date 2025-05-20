@@ -4,15 +4,17 @@ class connectionDB {
     public $username;
     public $password;
     public $database;
+    public $port;
     public $conn;
 
     public function __construct() {
-        $this->servername = "b1fuvnecmmc28bqzjpgn-mysql.services.clever-cloud.com";
-        $this->username = "ug6b6t7x9suqwcjk";
-        $this->password = "fiuWwgYy7rAlu0PPPMOM";
-        $this->database = "b1fuvnecmmc28bqzjpgn";
+        $this->servername = getenv('DB_HOST');
+        $this->username   = getenv('DB_USER');
+        $this->password   = getenv('DB_PASS');
+        $this->database   = getenv('DB_NAME');
+        $this->port       = getenv('DB_PORT') ?: 3306;
 
-        $this->conn = new mysqli($this->servername, $this->username, $this->password, $this->database, 3306);
+        $this->conn = new mysqli($this->servername, $this->username, $this->password, $this->database, $this->port);
 
         if ($this->conn->connect_error) {
             die("Connection error: " . $this->conn->connect_error);
