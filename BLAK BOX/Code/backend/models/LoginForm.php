@@ -28,10 +28,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $_SESSION['user_type'] = $user['userType'];
 
                 if ($user['userType'] === 'user') {
-                    header("Location: ../../src/pages/productsUser.php");
+                    header("Location: ../../src/pages/user.php");
                     exit;
                 } else {
-                    header("Location: ../../src/pages/productsAdmin.php");
+                    header("Location: ../../src/pages/admin.php");
                     exit;
                 }
             } else {

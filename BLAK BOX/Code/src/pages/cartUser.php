@@ -1,20 +1,12 @@
 <?php
-
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-require_once '../../backend/models/auth.php';
-requireLogin();
-checkUserType('user');
-
+session_start();
 
 if (isset($_GET['remove'])) {
     $removeId = $_GET['remove'];
     if (isset($_SESSION['cart'])) {
-      $_SESSION['cart'] = array_filter($_SESSION['cart'], function($item) use ($removeId) {
-          return $item['productId'] != $removeId;
-      });
+        $_SESSION['cart'] = array_filter($_SESSION['cart'], function($item) use ($removeId) {
+            return $item['productId'] != $removeId;
+        });
     }
     header("Location: cartUser.php");
     exit();
@@ -37,7 +29,7 @@ $cart = $_SESSION['cart'] ?? [];
   <nav class="navbar navbar-dark bg-dark d-lg-none">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">
-        <img src="../../Images/Logoblanco-removebg-preview.png" alt="Blak Box Logo" style="height: 40px; filter: invert(1) brightness(2);" />
+        <img src="../../Images/Logoblanco-removebg-preview.png" alt="Blak Box Logo" style="height: 50px; filter: invert(1) brightness(2);" />
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu">
         <span class="navbar-toggler-icon"></span>
@@ -52,22 +44,25 @@ $cart = $_SESSION['cart'] ?? [];
     </div>
     <div class="offcanvas-body">
       <ul class="nav flex-column">
+        <li class="nav-item"><a class="nav-link text-white" href="user.php">Home</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="productsUser.php">Products</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="cartUser.php">Cart</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="profileUser.php">Profile</a></li>
         <li class="nav-item"><a class="nav-link text-danger" href="../../backend/models/logOut.php">Log out</a></li>
       </ul>
     </div>
   </div>
-
   <div class="d-flex flex-column flex-lg-row min-vh-100">
 
-    <aside class="bg-dark text-white p-3 d-none d-lg-block" style="min-width: 220px;">
+  <aside class="bg-dark text-white p-3 sidebar d-none d-lg-block">
       <div class="text-center mb-4">
         <img src="../../Images/Logoblanco-removebg-preview.png" alt="Blak Box Logo" class="img-fluid" style="max-height: 150px; filter: invert(1) brightness(2);" />
       </div>
       <ul class="nav flex-column">
+        <li class="nav-item"><a class="nav-link text-white" href="user.php">Home</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="productsUser.php">Products</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="cartUser.php">Cart</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="profileUser.php">Profile</a></li>
         <li class="nav-item"><a class="nav-link text-danger" href="../../backend/models/logOut.php">Log out</a></li>
       </ul>
     </aside>
@@ -94,16 +89,26 @@ $cart = $_SESSION['cart'] ?? [];
           </div>
         <?php endforeach; ?>
 
-        <div class="d-flex justify-content-between align-items-center">
-          <h4>Total: $<?= number_format($total, 2) ?></h4>
-          <a href="checkout.php?id=<?= $p['orderId'] ?>" class="btn btn-accent">Proceed to Payment</a>
-        </div>
+        <div class="d-flex justify-content-between align-items-center flex-column flex-md-row gap-3 mt-4">
+        <h4>Total: $<?= number_format($total, 2) ?></h4>
+        
+        <form action="checkout.php" method="post" class="d-flex flex-column flex-md-row align-items-center gap-2">
+          <select name="paymentMethod" class="form-select bg-dark text-white border-secondary" required>
+            <option value="" disabled selected>Select Payment Method</option>
+            <option value="Credit Card">Credit Card</option>
+            <option value="Debit Card">Debit Card</option>
+            <option value="PayPal">PayPal</option>
+            <option value="Bank Transfer">Bank Transfer</option>
+          </select>
+          <button type="submit" class="btn btn-accent">Proceed to Payment</button>
+        </form>
+      </div>
+
       <?php endif; ?>
     </div>
 
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
 </html>

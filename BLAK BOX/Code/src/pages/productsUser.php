@@ -8,7 +8,6 @@ require_once '../../backend/models/auth.php';
 requireLogin();
 checkUserType('user');
 
-
 include('../../backend/models/Products.php');
 $products = Product::listAllProducts();
 
@@ -48,20 +47,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['productId'])) {
 ?>
 
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>BLAK BOX | Products</title>
+  <title>Products - Blak Box</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <link rel="stylesheet" href="../styles/styleUser.css"/>
+  
 </head>
-<body class="bg-purple-darker text-white">
+<body>
 
   <nav class="navbar navbar-dark bg-dark d-lg-none">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">
-        <img src="../../Images/Logoblanco-removebg-preview.png" alt="Blak Box Logo" style="height: 40px; filter: invert(1) brightness(2);">
+        <img src="../../Images/Logoblanco-removebg-preview.png" alt="Blak Box Logo" style="height: 50px; filter: invert(1) brightness(2);">
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu">
         <span class="navbar-toggler-icon"></span>
@@ -76,8 +76,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['productId'])) {
     </div>
     <div class="offcanvas-body">
       <ul class="nav flex-column">
+        <li class="nav-item"><a class="nav-link text-white" href="user.php">Home</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="productsUser.php">Products</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="cartUser.php">Cart</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="profileUser.php">Profile</a></li>
         <li class="nav-item"><a class="nav-link text-danger" href="../../backend/models/logOut.php">Log out</a></li>
       </ul>
     </div>
@@ -85,13 +87,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['productId'])) {
 
   <div class="d-flex flex-column flex-lg-row min-vh-100">
     
-    <aside class="bg-dark text-white p-3 d-none d-lg-block" style="min-width: 220px;">
+    <aside class="bg-dark text-white p-3 sidebar d-none d-lg-block">
       <div class="text-center mb-4">
         <img src="../../Images/Logoblanco-removebg-preview.png" alt="Blak Box Logo" class="img-fluid" style="max-height: 150px; filter: invert(1) brightness(2);">
       </div>
       <ul class="nav flex-column">
+        <li class="nav-item"><a class="nav-link text-white" href="user.php">Home</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="productsUser.php">Products</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="cartUser.php">Cart</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="profileUser.php">Profile</a></li>
         <li class="nav-item"><a class="nav-link text-danger" href="../../backend/models/logOut.php">Log out</a></li>
       </ul>
     </aside>
@@ -111,11 +115,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['productId'])) {
                 </div>
                 <div class="mt-3 d-flex justify-content-between align-items-center">
                   <a href="detail_products.php?id=<?= $p['productId'] ?>" class="btn btn-outline-light btn-sm">View</a>
-                  <form method="POST" action="productsUser.php" style="display: inline;">
+                  <form method="POST" action="productsUser.php" class="add-to-cart-form">
                     <input type="hidden" name="productId" value="<?= $p['productId'] ?>">
-                    <button type="submit" class="btn btn-accent btn-sm">Add</button>
+                    <button type="button" class="btn btn-accent btn-sm" onclick="confirmAddToCart(this, '<?= htmlspecialchars($p['name']) ?>')">Add Cart</button>
                   </form>
-                  <button class="btn btn-sm text-accent" onclick="toggleFavorite(<?= $p['productId'] ?>)">⭐</button>
+                  <button class="btn btn-outline-warning" onclick="toggleFavorite('<?= htmlspecialchars($p['name']) ?>')">Favorite</button>
                 </div>
               </div>
             </div>
@@ -126,11 +130,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['productId'])) {
     </div>
   </div>
 
-  <script>
-    function toggleFavorite(id) {
-      alert(`Product ${id} added to favorites (mock)`);
-    }
-  </script>
+  <script src="../scripts/scriptUser.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </body>
 </html>

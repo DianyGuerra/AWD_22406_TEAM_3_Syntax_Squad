@@ -48,7 +48,7 @@ $wishlist = Wishlist::getUserWishlists($userId);
       <li class="nav-item"><a class="nav-link text-white" href="productsUser.php">Products</a></li>
       <li class="nav-item"><a class="nav-link text-white" href="cartUser.php">Cart</a></li>
       <li class="nav-item"><a class="nav-link text-white" href="profileUser.php">Profile</a></li>
-      <li class="nav-item"><a class="nav-link text-danger" href="#">Log out</a></li>
+      <li class="nav-item"><a class="nav-link text-danger" href="../../backend/models/logOut.php">Log out</a></li>
     </ul>
   </div>
 </div>
@@ -63,7 +63,7 @@ $wishlist = Wishlist::getUserWishlists($userId);
       <li class="nav-item"><a class="nav-link text-white" href="productsUser.php">Products</a></li>
       <li class="nav-item"><a class="nav-link text-white" href="cartUser.php">Cart</a></li>
       <li class="nav-item"><a class="nav-link text-white" href="profileUser.php">Profile</a></li>
-      <li class="nav-item"><a class="nav-link text-danger" href="#">Log out</a></li>
+      <li class="nav-item"><a class="nav-link text-danger" href="../../backend/models/logOut.php">Log out</a></li>
     </ul>
   </aside>
 
