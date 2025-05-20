@@ -16,6 +16,7 @@
 
 <body>
     <header>
+        <nav class="nav">
             <section class="nav_left">
                 <img class="logo" src="../../Images/logo.png" alt="Blak Box Logo">
             </section>
@@ -36,7 +37,7 @@
                         <a href="./src/pages/Login.php" class="btn"><i class="bi bi-box-arrow-in-right"></i> Log in</a>
                     </div>
                 </section>
-            </nav>
+        </nav>
     </header>
 
     <div class="content-wrapper">
@@ -83,7 +84,7 @@
                 </div>
         </div>
     </div>
-    
+
     <footer>
         <div class="footer_logo">
             <img class="logo_footer" src="../../Images/logo.png" alt="Blak Box Logo">

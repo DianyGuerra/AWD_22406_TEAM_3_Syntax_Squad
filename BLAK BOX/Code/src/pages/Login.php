@@ -22,6 +22,7 @@ session_start();
 
 <body>
     <header>
+        <nav class="nav">
             <section class="nav_left">
                 <img class="logo" src="../../Images/logo.png" alt="Blak Box Logo">
             </section>
@@ -42,7 +43,7 @@ session_start();
                         <a href="./src/pages/Signup.php" class="btn"><i class="bi bi-person-plus-fill"></i> Sign Up</a>
                     </div>
                 </section>
-            </nav>
+        </nav>
     </header>
 
     <div class="content-wrapper">

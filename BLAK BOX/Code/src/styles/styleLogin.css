@@ -254,21 +254,12 @@ footer{
 }
 
 
-
 @media screen and (max-width: 768px) {
   nav {
     flex-direction: row;
     align-items: center;
     gap: 15px;
     padding: 10px 20px;
-    background-color: black;
-  }
-
-  .hamburger_menu{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
   }
 
   .hamburger_menu{
