@@ -23,7 +23,7 @@
                     <a href="../../index.php" class="nav_link">Home</a>
                 </div>
                 <div class="nav_buttons">
-                    <a href="../pages/Login.php" class="btn">Log in</a>
+                    <a href="../pages/Login.php" class="btn"><i class="bi bi-box-arrow-in-right"></i>Log in</a>
                 </div>
             </section>
         </nav>

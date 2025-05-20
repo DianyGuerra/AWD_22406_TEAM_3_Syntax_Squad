@@ -29,7 +29,7 @@ session_start();
                     <a href="./../../index.php" class="nav_link">Home</a>
                 </div>
                 <div class="nav_buttons">
-                    <a href="../pages/Signup.php" class="btn">Sign Up</a>
+                    <a href="../pages/Signup.php" class="btn"><i class="bi bi-person-plus-fill"></i></i>Sign Up</a>
                 </div>
             </section>
         </nav>
