@@ -10,7 +10,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $password = trim($_POST['password']);
 
     if (empty($email) || empty($password)) {
-        echo "Please fill in all fields.";
+        $_SESSION['login_error'] = "Please fill in all fields.";
+        header("Location: ../../src/pages/Login.php");
         exit;
     }
 
@@ -35,17 +36,23 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     exit;
                 }
             } else {
-                echo "Incorrect password.";
+                $_SESSION['login_error'] = "Incorrect password.";
+                header("Location: ../../src/pages/Login.php");
+                exit;
             }
         } else {
-            echo "User not found.";
+            $_SESSION['login_error'] = "User not found.";
+            header("Location: ../../src/pages/Login.php");
+            exit;
         }
     } catch (Exception $e) {
-        echo "Error in the database: " . $e->getMessage();
+        $_SESSION['login_error'] = "Error in the database.";
+        header("Location: ../../src/pages/Login.php");
+        exit;
     }
 } else {
-    // Redirige al login si alguien intenta acceder con GET
     header("Location: ../../src/pages/Login.php");
     exit;
 }
+
 

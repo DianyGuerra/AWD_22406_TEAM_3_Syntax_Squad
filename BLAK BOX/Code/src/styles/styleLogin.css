@@ -117,6 +117,17 @@ nav{
     margin: 0 0 30px;
 }
 
+.login-message {
+    background-color: #eed7f8;
+    color: #842029;
+    border: 1px solid #f5c2c7;
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+}
+
 .highlight-box .element label{
     display: block;               
     text-align: left;            
@@ -172,7 +183,6 @@ nav{
     margin-top: 4px;
     display: block;
 }
-
 
 .btn:hover {
     background: linear-gradient(to right, #782dc2, #915cc0, #a575cc, #C77DFF);

@@ -27,3 +27,10 @@ document.getElementById("registerform").addEventListener("input", function (e) {
         e.preventDefault();
     }
     });
+
+    setTimeout(function () {
+        const errorBox = document.getElementById('errorBox');
+        if (errorBox) {
+            errorBox.style.display = 'none';
+        }
+    }, 4000);

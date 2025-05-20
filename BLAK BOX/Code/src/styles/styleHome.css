@@ -118,7 +118,7 @@ nav{
     background: black;
     padding: 40px 20px;
     text-align: center;
-    height: 700px;
+    height: fit-content;
 }
 
 .store h2 {
