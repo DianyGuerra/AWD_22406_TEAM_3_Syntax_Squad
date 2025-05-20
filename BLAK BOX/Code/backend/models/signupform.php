@@ -60,14 +60,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <section class="nav_left">
                 <img class="logo" src="../../Images/logo.png" alt="Blak Box Logo">
             </section>
-            <section class="nav_right">
-                <div>
-                    <a href="../../index.php" class="nav_link">Home</a>
-                </div>
-                <div class="nav_buttons">
-                    <a href="../pages/Login.php" class="btn">Log in</a>
-                </div>
+        
+            <section class="hamburger_menu">
+                <button class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+                </button>
             </section>
+
+                <section class="nav_right" id="navMenu">
+                    <div>
+                        <a href="../../index.php" class="nav_link">Home</a>
+                    </div>
+                    <div class="nav_buttons">
+                        <a href="../../src/pages/Signup.php" class="btn"><i class="bi bi-person-plus-fill"></i> Sign Up</a>
+                    </div>
+                </section>
         </nav>
     </header>
 
