@@ -8,6 +8,7 @@ require_once '../../backend/models/auth.php';
 requireLogin();
 checkUserType('user');
 
+
 include('../../backend/models/Products.php');
 $products = Product::listAllProducts();
 

@@ -96,7 +96,7 @@ $cart = $_SESSION['cart'] ?? [];
 
         <div class="d-flex justify-content-between align-items-center">
           <h4>Total: $<?= number_format($total, 2) ?></h4>
-          <button class="btn btn-accent">Proceed to Payment</button>
+          <a href="checkout.php?id=<?= $p['orderId'] ?>" class="btn btn-accent">Proceed to Payment</a>
         </div>
       <?php endif; ?>
     </div>

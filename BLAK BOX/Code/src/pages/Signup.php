@@ -33,7 +33,7 @@
         <section class="background"></section>
         <div class="content">
             <div class="highlight-box">
-                <h2 class="title">Sign in</h2>
+                <h2 class="title">Sign up</h2>
                 <br>
                 <form class="registerform" method="POST" id="registerform" name="registerform" action="../../backend/models/signupform.php">
                         <section class="element">

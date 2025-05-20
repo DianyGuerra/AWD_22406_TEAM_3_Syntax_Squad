@@ -1,5 +1,13 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+require_once '../../backend/models/auth.php';
+requireLogin();
+checkUserType('user');
+
+
 require_once '../../backend/models/ConnectionDB.php';
 
 if (!isset($_SESSION['userId']) || empty($_SESSION['cart']) || empty($_POST['paymentMethod'])) {

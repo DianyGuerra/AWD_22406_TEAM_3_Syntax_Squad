@@ -88,6 +88,7 @@ nav{
     display: flex;
     align-items: center;
     justify-content: center;
+    height: 700px;
 }
   
 .background {
@@ -114,11 +115,11 @@ nav{
     padding: 40px;
     border-radius: 20px;
     display: inline-block;
+    justify-content: center;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
     margin: 50px auto;
     padding: 30px;
     width: 600px;
-    height: fit-content;
 }
 
 .highlight-box h2 {
@@ -235,14 +236,12 @@ footer{
 }
 
 .message {
-    padding: 15px;
     font-size: 1rem;
     margin-bottom: 20px;
     text-align: center;
     font-family: 'Segoe UI', sans-serif;
     width: 100%;
     max-width: 600px;
-    margin: 0 auto 20px auto;
 }
 
 .message.success {
@@ -263,6 +262,10 @@ footer{
     margin-top: 15px;
 }
 
+.error-button {
+    margin-top: 15px;
+}
+
 .btn-success {
     display: inline-block;
     background-color: #28a745;
@@ -275,6 +278,21 @@ footer{
 }
 
 .btn-success:hover {
-    background-color: #218838;
+    background-color: #2d2188;
+}
+
+.btn-error {
+    display: inline-block;
+    background-color: #a73128;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+}
+
+.btn-error:hover {
+    background-color: #882121;
 }
 

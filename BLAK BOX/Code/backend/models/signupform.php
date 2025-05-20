@@ -80,13 +80,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <i class="fas fa-check-circle"></i>
                         <?= $successMessage ?>
                         <div class="success-button">
-                            <a href="../../src/pages/productsUser.php" class="btn-success">View Products</a>
+                            <br>
+                            <a href="../../src/pages/Login.php" class="btn-success">Log in with your New Account!</a>
                         </div>
                     </div>
                 <?php elseif (!empty($errorMessage)): ?>
                     <div class="message error">
                         <i class="fas fa-exclamation-triangle"></i>
                         <?= $errorMessage ?>
+                        <div class="error-button">
+                            <br>
+                            <a href="../../src/pages/Signup.php" class="btn-error">Go back</a>
+                        </div>
                     </div>
                 <?php endif; ?>
             </div>
