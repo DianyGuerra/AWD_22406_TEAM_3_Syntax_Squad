@@ -87,7 +87,7 @@
             </div>
         </div>
         <div class="footer_text">
-            <p>© 2023 BLAK BOX. All rights reserved.</p>
+            <p>© 2025 BLAK BOX. All rights reserved.</p>
         </div>
     </footer>
 

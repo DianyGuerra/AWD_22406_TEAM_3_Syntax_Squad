@@ -259,8 +259,9 @@ nav{
     z-index: 10;
     transition: background-color 0.3s;
     border-radius: 50%;
-    width: 45px;
-    height: 45px;
+    height: fit-content;
+    padding: 2px 10px;
+    width: 50%;
 }
 
 .carousel_btn:hover {
@@ -375,4 +376,44 @@ footer{
     justify-content: center;
     gap: 20px;
     color: #ffffff;
+}
+@media screen and (max-width: 768px) {
+  nav {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding: 10px 20px;
+  }
+
+  .nav_left {
+    justify-content: center;
+  }
+
+  .nav_right {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .nav_right .nav_link {
+    margin-left: 0;
+    font-size: 16px;
+  }
+
+  .nav_buttons {
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+  }
+
+  .nav_buttons .btn {
+    width: 80%;
+    max-width: 250px;
+    padding: 10px 0;
+    font-size: 16px;
+  }
+
+  .logo {
+    height: 60px;
+  }
 }

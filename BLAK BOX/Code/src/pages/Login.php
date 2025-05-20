@@ -40,7 +40,7 @@ session_start();
         <div class="content">
             <div class="highlight-box">
                 <h2 class="title">Log in</h2>
-                <br>
+
                 <?php
                     if (isset($_SESSION['login_error'])) {
                         echo "<div class='alert alert-danger'>{$_SESSION['login_error']}</div>";
@@ -88,7 +88,7 @@ session_start();
             </div>
         </div>
         <div class="footer_text">
-            <p>© 2023 BLAK BOX. All rights reserved.</p>
+            <p>© 2025 BLAK BOX. All rights reserved.</p>
         </div>
     </footer>
 
