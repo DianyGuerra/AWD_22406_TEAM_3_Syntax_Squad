@@ -23,7 +23,7 @@ session_start();
 <body>
     <header>
             <section class="nav_left">
-                <img class="logo" src="./Images/logo.png" alt="Blak Box Logo">
+                <img class="logo" src="../../Images/logo.png" alt="Blak Box Logo">
             </section>
         
             <section class="hamburger_menu">
