@@ -19,12 +19,13 @@
                 <img class="logo" src="./Images/logo.png" alt="Blak Box Logo">
             </section>
 
-        
+            <section class="hamburger_menu">
                 <button class="hamburger" id="hamburger">
                 <span></span>
                 <span></span>
                 <span></span>
                 </button>
+            </section>
 
                 <section class="nav_right" id="navMenu">
                     <div>

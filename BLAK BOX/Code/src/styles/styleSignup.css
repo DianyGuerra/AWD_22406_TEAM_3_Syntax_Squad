@@ -301,10 +301,17 @@ footer{
 
 @media screen and (max-width: 768px) {
   nav {
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     gap: 15px;
     padding: 10px 20px;
+  }
+
+  .hamburger_menu{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
   }
 
   .nav_left {
@@ -343,7 +350,7 @@ footer{
 .hamburger {
   display: none;
   flex-direction: column;
-  gap: 4.px;
+  gap: 4.4px;
   background: none;
   border: none;
   cursor: pointer;
