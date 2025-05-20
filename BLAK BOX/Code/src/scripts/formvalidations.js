@@ -26,12 +26,12 @@ function validateInput(input) {
     const id = input.id;
     const validation = validations[id];
 
-    console.log("Validando", id); // <- Agrega esto temporalmente
+    console.log("Validando", id);
 
     let message = "";
     let isValid = false;
 
-    if (!validation) return false; // <- Corrige esto: antes retornaba nada, ahora retorna false
+    if (!validation) return false;
 
     if (value === "") {
         message = "This field is required.";
@@ -81,3 +81,11 @@ window.onload = function () {
         }
     };
 };
+
+const hamburger = document.getElementById('hamburger');
+const navMenu = document.getElementById('navMenu');
+
+hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    navMenu.classList.toggle('show');
+});

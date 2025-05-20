@@ -34,3 +34,11 @@ document.getElementById("registerform").addEventListener("input", function (e) {
             errorBox.style.display = 'none';
         }
     }, 4000);
+
+const hamburger = document.getElementById('hamburger');
+const navMenu = document.getElementById('navMenu');
+
+hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    navMenu.classList.toggle('show');
+});
