@@ -74,5 +74,5 @@ jobs:
         with:
           app-name: 'BLAKBOXtechstore'
           slot-name: 'Production'
-          package: .
+          package: 'BLAK BOX/Code'
           
