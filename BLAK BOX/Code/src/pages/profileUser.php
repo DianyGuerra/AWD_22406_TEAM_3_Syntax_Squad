@@ -1,18 +1,15 @@
 <?php
 session_start();
-include('../../backend/models/User.php');
+include('../../backend/models/Users.php');
 include('../../backend/models/Wishlist.php');
 
-$userId = $_SESSION['userId'] ?? null;
-
-if (!$userId) {
-    header("Location: login.php");
-    exit();
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');
+    exit;
 }
-
+$userId = $_SESSION['user_id'];
 $user = User::getUserById($userId);
-$wishlist = Wishlist::getUserWishlists($userId);
-
+$wishlistProducts = Wishlist::getUserWishlistProducts($userId);
 ?>
 
 <!DOCTYPE html>
@@ -91,13 +88,14 @@ $wishlist = Wishlist::getUserWishlists($userId);
           </tr>
         </thead>
         <tbody>
-          <?php if (!empty($wishlist)): ?>
-            <?php foreach ($wishlist as $item): ?>
+          <?php if (!empty($wishlistProducts)): ?>
+            <?php foreach ($wishlistProducts as $item): ?>
               <tr>
                 <td><?= htmlspecialchars($item['name']) ?></td>
                 <td>$<?= number_format($item['price'], 2) ?></td>
                 <td>
-                  <form method="POST" action="removeWishlist.php">
+                  <form method="POST" action="../../backend/models/removeWishlist.php">
+                    <input type="hidden" name="wishlistId" value="<?= $item['wishlistId'] ?>">
                     <input type="hidden" name="productId" value="<?= $item['productId'] ?>">
                     <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                   </form>
@@ -105,12 +103,19 @@ $wishlist = Wishlist::getUserWishlists($userId);
               </tr>
             <?php endforeach; ?>
           <?php else: ?>
-            <tr>
-              <td colspan="3" class="text-center">Your wish list is empty.</td>
-            </tr>
+              <tr>
+                  <td colspan="3" class="text-center">Your wish list is empty.</td>
+              </tr>
           <?php endif; ?>
         </tbody>
       </table>
+
+      <?php if (isset($_SESSION['profile_msg'])): ?>
+        <div class="alert alert-info text-center">
+          <?= htmlspecialchars($_SESSION['profile_msg']) ?>
+        </div>
+        <?php unset($_SESSION['profile_msg']); ?>
+      <?php endif; ?>
     </div>
   </div>
 </div>

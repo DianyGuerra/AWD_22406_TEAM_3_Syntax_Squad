@@ -1,14 +1,18 @@
-function toggleFavorite(id) {
-Swal.fire({
-    icon: 'info',
-    title: 'Added to favorites',
-    text: `Product ${id} was added to your favorites!`,
-    toast: true,
-    position: 'top-end',
-    showConfirmButton: false,
-    timer: 2000,
-    timerProgressBar: true
-});
+
+function confirmDelete(button, productName) {
+  Swal.fire({
+    title: 'Delete Product',
+    text: `Are you sure you want to delete "${productName}"?`,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, delete it!',
+    cancelButtonText: 'No, cancel'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      const form = button.closest('form');
+      if (form) form.submit();
+    }
+  });
 }
 
 function confirmAddToCart(button, productName) {
@@ -26,6 +30,7 @@ function confirmAddToCart(button, productName) {
     }
   });
 }
+
 
 
 

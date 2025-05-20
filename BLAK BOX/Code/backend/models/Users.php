@@ -20,7 +20,7 @@ class User {
         $conn = $db->connection();
         $query = "INSERT INTO User(firstName, lastName, email, password, userType, address, phoneNumber) VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt = mysqli_prepare($conn, $query);
-        mysqli_stmt_bind_param($stmt, "ssssss", $firstName, $lastName, $email, $password, $userType, $address, $phoneNumber);
+        mysqli_stmt_bind_param($stmt, "sssssss", $firstName, $lastName, $email, $password, $userType, $address, $phoneNumber);
         mysqli_stmt_execute($stmt);
     }
 
@@ -38,7 +38,7 @@ class User {
     public static function updateUser($id, $firstName, $lastName, $email, $password, $userType, $address, $phoneNumber) {
         $db = new ConnectionDB();
         $conn = $db->connection();
-        $query = "UPDATE User SET firstName=?, lastName=?, email=?, password=?, userType=?, address=? , phoneNumber=?, WHERE userId=?";
+        $query = "UPDATE User SET firstName=?, lastName=?, email=?, password=?, userType=?, address=? , phoneNumber=? WHERE userId=?";
         $stmt = mysqli_prepare($conn, $query);
         mysqli_stmt_bind_param($stmt, "ssssssi", $firstName, $lastName, $email, $password, $userType, $address, $phoneNumber, $id);
         mysqli_stmt_execute($stmt);

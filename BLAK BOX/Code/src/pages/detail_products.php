@@ -1,45 +1,71 @@
 <?php
 session_start();
 
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');
+    exit;
+}
+
+require_once '../../backend/models/auth.php';
+requireLogin();
+checkUserType('user');
+
 include('../../backend/models/Products.php');
-
 $productId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
-
 $product = Product::getProductById($productId);
-$productName = $product['name'];
+
 if (!$product) {
   $notFound = true;
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['productId'])) {
-  $id = (int)$_POST['productId'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  if (isset($_POST['productId'])) {
+    $id = (int)$_POST['productId'];
 
-  if (!isset($_SESSION['cart'])) {
-    $_SESSION['cart'] = [];
-  }
-
-  $found = false;
-  foreach ($_SESSION['cart'] as &$item) {
-    if ($item['productId'] == $id) {
-      $item['quantity'] += 1;
-      $found = true;
-      break;
+    if (!isset($_SESSION['cart'])) {
+      $_SESSION['cart'] = [];
     }
+
+    $found = false;
+    foreach ($_SESSION['cart'] as &$item) {
+      if ($item['productId'] == $id) {
+        $item['quantity'] += 1;
+        $found = true;
+        break;
+      }
+    }
+
+    if (!$found) {
+      $_SESSION['cart'][] = [
+        'productId' => $product['productId'],
+        'name' => $product['name'],
+        'price' => $product['price'],
+        'quantity' => 1
+      ];
+    }
+
+    header("Location: detail_products.php?id=" . $id);
+    exit();
   }
 
-  if (!$found) {
-    $_SESSION['cart'][] = [
-      'productId' => $product['productId'],
-      'name' => $product['name'],
-      'price' => $product['price'],
-      'quantity' => 1
-    ];
-  }
+  if (isset($_POST['addWishlistProductId'])) {
+    include('../../backend/models/Wishlist.php');
+    $productIdWishlist = (int)$_POST['addWishlistProductId'];
+    $userId = $_SESSION['user_id'];
 
-  header("Location: detail_products.php?id=" . $id);
-  exit();
+    $added = Wishlist::addProductToWishlist($userId, $productIdWishlist);
+    if ($added) {
+      $_SESSION['msg'] = "Product added to wishlist.";
+    } else {
+      $_SESSION['msg'] = "The product is already in your wish list.";
+    }
+
+    header("Location: detail_products.php?id=" . $productIdWishlist);
+    exit();
+  }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -101,6 +127,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['productId'])) {
           ← Back to Products
         </a>
 
+        <?php if (isset($_SESSION['msg'])): ?>
+          <div class="alert alert-info text-center">
+            <?= htmlspecialchars($_SESSION['msg']) ?>
+          </div>
+          <?php unset($_SESSION['msg']); ?>
+        <?php endif; ?>
+
+
         <?php if (!isset($notFound)): ?>
           <div class="row">
             <div class="text-center d-flex flex-column align-items-center">
@@ -114,9 +148,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['productId'])) {
               <div class="d-flex mt-3 gap-2">
                 <form method="POST" action="">
                   <input type="hidden" name="productId" value="<?= $product['productId'] ?>">
-                  <button type="button" class="btn btn-accent" onclick="confirmAddToCart(this, '<?= htmlspecialchars($productName) ?>')">Add to Cart</button>
+                  <button type="button" class="btn btn-accent" onclick="confirmAddToCart(this, '<?= htmlspecialchars($product['name']) ?>')">Add to Cart</button>
                 </form>
-                <button class="btn btn-outline-warning" onclick="toggleFavorite('<?= htmlspecialchars($productName) ?>')">⭐ Favorite</button>
+
+                <form method="POST" action="" class="d-inline">
+                  <input type="hidden" name="addWishlistProductId" value="<?= $product['productId'] ?>">
+                  <button type="submit" class="btn btn-outline-warning">⭐ Favorite</button>
+                </form>
               </div>
             </div>
           </div>

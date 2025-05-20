@@ -11,38 +11,57 @@ checkUserType('user');
 include('../../backend/models/Products.php');
 $products = Product::listAllProducts();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['productId'])) {
-    $productId = $_POST['productId'];
-    $found = false;
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    if (!isset($_SESSION['cart'])) {
-        $_SESSION['cart'] = [];
-    }
+    if (isset($_POST['productId'])) {
+        $productId = $_POST['productId'];
+        $found = false;
 
-    foreach ($_SESSION['cart'] as &$item) {
-        if ($item['productId'] == $productId) {
-            $item['quantity'] += 1;
-            $found = true;
-            break;
+        if (!isset($_SESSION['cart'])) {
+            $_SESSION['cart'] = [];
         }
-    }
 
-    if (!$found) {
-        foreach ($products as $p) {
-            if ($p['productId'] == $productId) {
-                $_SESSION['cart'][] = [
-                    'productId' => $p['productId'],
-                    'name' => $p['name'],
-                    'price' => $p['price'],
-                    'quantity' => 1
-                ];
+        foreach ($_SESSION['cart'] as &$item) {
+            if ($item['productId'] == $productId) {
+                $item['quantity'] += 1;
+                $found = true;
                 break;
             }
         }
+
+        if (!$found) {
+            foreach ($products as $p) {
+                if ($p['productId'] == $productId) {
+                    $_SESSION['cart'][] = [
+                        'productId' => $p['productId'],
+                        'name' => $p['name'],
+                        'price' => $p['price'],
+                        'quantity' => 1
+                    ];
+                    break;
+                }
+            }
+        }
+
+        header("Location: productsUser.php");
+        exit();
     }
 
-    header("Location: productsUser.php");
-    exit();
+    if (isset($_POST['addWishlistProductId'])) {
+        include('../../backend/models/Wishlist.php');
+        $productId = (int)$_POST['addWishlistProductId'];
+        $userId = $_SESSION['user_id'];
+
+        $added = Wishlist::addProductToWishlist($userId, $productId);
+        if ($added) {
+            $_SESSION['products_msg'] = "Product added to wishlist.";
+        } else {
+            $_SESSION['products_msg'] = "The product is already in your wish list.";
+        }
+
+        header("Location: productsUser.php");
+        exit();
+    }
 }
 ?>
 
@@ -99,11 +118,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['productId'])) {
         <li class="nav-item"><a class="nav-link text-danger" href="../../backend/models/logOut.php">Log out</a></li>
       </ul>
     </aside>
-
     <div class="container py-5">
       <h1 class="text-center text-accent mb-4">Our Products</h1>
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+      <?php if (isset($_SESSION['products_msg'])): ?>
+        <div class="alert alert-info text-center">
+          <?= htmlspecialchars($_SESSION['products_msg']) ?>
+        </div>
+        <?php unset($_SESSION['products_msg']); ?>
+      <?php endif; ?>
 
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
         <?php foreach ($products as $p): ?>
           <div class="col">
             <div class="card bg-purple text-white h-100">
@@ -119,7 +143,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['productId'])) {
                     <input type="hidden" name="productId" value="<?= $p['productId'] ?>">
                     <button type="button" class="btn btn-accent btn-sm" onclick="confirmAddToCart(this, '<?= htmlspecialchars($p['name']) ?>')">Add Cart</button>
                   </form>
-                  <button class="btn btn-outline-warning" onclick="toggleFavorite('<?= htmlspecialchars($p['name']) ?>')">Favorite</button>
+                  <form method="POST" action="productsUser.php" class="d-inline">
+                    <input type="hidden" name="addWishlistProductId" value="<?= $p['productId'] ?>">
+                    <button type="submit" class="btn btn-outline-warning btn-sm">Favorite</button>
+                  </form>
                 </div>
               </div>
             </div>
