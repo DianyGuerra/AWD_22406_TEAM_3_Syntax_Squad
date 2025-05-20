@@ -117,16 +117,21 @@ nav{
     margin: 0 0 30px;
 }
 
-.login-message {
-    background-color: #eed7f8;
-    color: #842029;
-    border: 1px solid #f5c2c7;
-    padding: 12px;
-    margin-bottom: 15px;
-    border-radius: 5px;
-    text-align: center;
-    font-weight: bold;
+.alert {
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  text-align: center;
 }
+
+.alert-danger {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  box-shadow: 0px 0px 10px rgba(255, 0, 0, 0.3);
+}
+
 
 .highlight-box .element label{
     display: block;               

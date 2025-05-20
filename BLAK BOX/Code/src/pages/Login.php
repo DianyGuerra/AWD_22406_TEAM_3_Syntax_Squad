@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -39,17 +42,11 @@
                 <h2 class="title">Log in</h2>
                 <br>
                 <?php
-                    session_start();
                     if (isset($_SESSION['login_error'])) {
                         echo "<div class='alert alert-danger'>{$_SESSION['login_error']}</div>";
                         unset($_SESSION['login_error']);
                     }
                 ?>
-                <?php if (isset($errorMessage)): ?>
-                    <div id="errorBox" class="login-message">
-                        <?php echo htmlspecialchars($errorMessage); ?>
-                    </div>
-                <?php endif; ?>
 
                 <form class="registerform" method="POST" id="registerform" name="registerform" action="../../backend/models/LoginForm.php">
 
