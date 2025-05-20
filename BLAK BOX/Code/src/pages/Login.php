@@ -37,10 +37,10 @@ session_start();
 
                 <section class="nav_right" id="navMenu">
                     <div>
-                        <a href="./index.php" class="nav_link">Home</a>
+                        <a href="../../index.php" class="nav_link">Home</a>
                     </div>
                     <div class="nav_buttons">
-                        <a href="./src/pages/Signup.php" class="btn"><i class="bi bi-person-plus-fill"></i> Sign Up</a>
+                        <a href="../pages/Signup.php" class="btn"><i class="bi bi-person-plus-fill"></i> Sign Up</a>
                     </div>
                 </section>
         </nav>

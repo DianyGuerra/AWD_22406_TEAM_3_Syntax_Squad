@@ -31,10 +31,10 @@
 
                 <section class="nav_right" id="navMenu">
                     <div>
-                        <a href="./index.php" class="nav_link">Home</a>
+                        <a href="../../index.php" class="nav_link">Home</a>
                     </div>
                     <div class="nav_buttons">
-                        <a href="./src/pages/Login.php" class="btn"><i class="bi bi-box-arrow-in-right"></i> Log in</a>
+                        <a href="../pages/Login.php" class="btn"><i class="bi bi-box-arrow-in-right"></i> Log in</a>
                     </div>
                 </section>
         </nav>
