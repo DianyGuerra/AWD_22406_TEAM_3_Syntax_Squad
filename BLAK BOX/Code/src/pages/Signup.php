@@ -73,7 +73,7 @@
                 </div>
         </div>
     </div>
-
+    <!--Hola-->
     <footer>
         <div class="footer_logo">
             <img class="logo_footer" src="../../Images/logo.png" alt="Blak Box Logo">
