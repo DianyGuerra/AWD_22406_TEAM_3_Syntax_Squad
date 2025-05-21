@@ -60,18 +60,52 @@ if (!$order) {
     </table>
     
     <a href="ordersAdmin.php" class="btn btn-secondary mt-3">Go Back</a>
-    <form action="../../backend/models/UpdateOrderStatus.php" method="post" class="d-inline-block ms-3">
+    <form id="statusForm" action="../../backend/models/UpdateOrderStatus.php" method="post" class="d-inline-block ms-3">
       <input type="hidden" name="orderId" value="<?= $order['orderId'] ?>">
-      <select name="status" class="form-select d-inline-block w-auto" required>
+      <select name="status" id="statusSelect" class="form-select d-inline-block w-auto" required>
         <option value="">-- Change Status --</option>
         <option value="Pending" <?= $order['status'] === 'Pending' ? 'selected' : '' ?>>Pending</option>
         <option value="Finalized" <?= $order['status'] === 'Finalized' ? 'selected' : '' ?>>Finalized</option>
         <option value="Cancel" <?= $order['status'] === 'Cancel' ? 'selected' : '' ?>>Cancel</option>
       </select>
-      <button type="submit" class="btn btn-primary ms-2">Update</button>
+      <button type="submit" id="submitBtn" class="btn btn-primary ms-2">Update</button>
     </form>
+
 
   </div>
 </main>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    document.getElementById('statusForm').addEventListener('submit', function (e) {
+      e.preventDefault(); 
+
+      const select = document.getElementById('statusSelect');
+      const selectedStatus = select.value;
+
+      if (!selectedStatus) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Please select a status',
+          confirmButtonText: 'OK'
+        });
+        return;
+      }
+
+      Swal.fire({
+        title: 'Are you sure?',
+        text: `You are about to change the order status to "${selectedStatus}"`,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, change it',
+        cancelButtonText: 'Cancel'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          e.target.submit(); 
+        }
+      });
+    });
+</script>
+
 </body>
 </html>
