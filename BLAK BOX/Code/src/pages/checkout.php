@@ -10,12 +10,12 @@ checkUserType('user');
 
 require_once '../../backend/models/ConnectionDB.php';
 
-if (!isset($_SESSION['userId']) || empty($_SESSION['cart']) || empty($_POST['paymentMethod'])) {
+if (!isset($_SESSION['user_id']) || empty($_SESSION['cart']) || empty($_POST['paymentMethod'])) {
     header("Location: cartUser.php");
     exit();
 }
 
-$userId = $_SESSION['userId'];
+$userId = $_SESSION['user_id'];
 $cart = $_SESSION['cart'];
 $paymentMethod = $_POST['paymentMethod'];
 $total = 0;
@@ -51,6 +51,9 @@ try {
 
     echo "<h2 style='text-align:center; margin-top:50px;'> Thank you! Your order has been placed.</h2>";
     echo "<p style='text-align:center;'><a href='user.php' class='btn btn-primary mt-3'>Back to Home</a></p>";
+
+    header("Location: cartUser.php");
+    exit;
 } catch (Exception $e) {
     $conn->rollback();
     echo "<h2>Error placing order: " . htmlspecialchars($e->getMessage()) . "</h2>";
