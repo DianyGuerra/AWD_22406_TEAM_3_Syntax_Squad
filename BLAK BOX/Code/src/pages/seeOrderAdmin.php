@@ -59,7 +59,7 @@ if (!$order) {
       </tbody>
     </table>
 
-    <a href="ordersAdmin.php" class="btn btn-secondary mt-3">Volver</a>
+    <a href="ordersAdmin.php" class="btn btn-secondary mt-3">Go Back</a>
   </div>
 </main>
 </body>
