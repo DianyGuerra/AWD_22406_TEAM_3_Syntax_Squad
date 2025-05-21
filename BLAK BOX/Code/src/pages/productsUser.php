@@ -12,15 +12,12 @@ include('../../backend/models/Products.php');
 $products = Product::listAllProducts();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
     if (isset($_POST['productId'])) {
         $productId = $_POST['productId'];
         $found = false;
-
         if (!isset($_SESSION['cart'])) {
             $_SESSION['cart'] = [];
         }
-
         foreach ($_SESSION['cart'] as &$item) {
             if ($item['productId'] == $productId) {
                 $item['quantity'] += 1;
@@ -28,7 +25,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 break;
             }
         }
-
         if (!$found) {
             foreach ($products as $p) {
                 if ($p['productId'] == $productId) {
@@ -42,23 +38,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
         }
-
         header("Location: productsUser.php");
         exit();
     }
-
     if (isset($_POST['addWishlistProductId'])) {
         include('../../backend/models/Wishlist.php');
         $productId = (int)$_POST['addWishlistProductId'];
         $userId = $_SESSION['user_id'];
-
         $added = Wishlist::addProductToWishlist($userId, $productId);
         if ($added) {
             $_SESSION['products_msg'] = "Product added to wishlist.";
         } else {
             $_SESSION['products_msg'] = "The product is already in your wish list.";
         }
-
         header("Location: productsUser.php");
         exit();
     }
