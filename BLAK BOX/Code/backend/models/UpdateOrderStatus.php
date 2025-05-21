@@ -10,8 +10,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header("Location: ../../src/pages/seeOrderAdmin.php?orderId=$orderId");
         exit();
     } else {
-        echo "Faltan datos para actualizar.";
+        echo "Missing data to update.";
     }
 } else {
-    echo "Acceso no permitido.";
+    echo "Access not permitted.";
 }
