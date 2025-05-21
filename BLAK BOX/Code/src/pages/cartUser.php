@@ -108,10 +108,15 @@ $cart = $_SESSION['cart'] ?? [];
           <button type="submit" class="btn btn-accent">Proceed to Payment</button>
         </form>
       </div>
+      <?php endif; ?>
 
+      <?php if (isset($_SESSION['order_msg'])): ?>
+        <div class="alert alert-info text-center">
+          <?= htmlspecialchars($_SESSION['order_msg']) ?>
+        </div>
+        <?php unset($_SESSION['order_msg']); ?>
       <?php endif; ?>
     </div>
-
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

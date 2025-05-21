@@ -93,15 +93,14 @@ $products = Product::listAllProducts();
             </div>
           </div>
         <?php endforeach; ?>
-
       </div>
       <h1>&nbsp;</h1>
       <?php if (isset($_SESSION['products_msg'])): ?>
-          <div class="alert alert-info text-center">
-            <?= htmlspecialchars($_SESSION['products_msg']) ?>
-          </div>
-          <?php unset($_SESSION['products_msg']); ?>
-        <?php endif; ?>
+        <div class="alert alert-info text-center">
+          <?= htmlspecialchars($_SESSION['products_msg']) ?>
+        </div>
+        <?php unset($_SESSION['products_msg']); ?>
+      <?php endif; ?>
     </div>
   </div>
 

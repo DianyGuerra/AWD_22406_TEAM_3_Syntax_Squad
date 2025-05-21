@@ -50,8 +50,9 @@ try {
 
     $conn->commit();
     $_SESSION['cart'] = [];
-    echo "<h2 style='text-align:center; margin-top:50px;'> Thank you! Your order has been placed.</h2>";
-    echo "<p style='text-align:center;'><a href='user.php' class='btn btn-primary mt-3'>Back to Home</a></p>";
+
+    $_SESSION['order_msg'] = "Thank you! Your order has been placed.";
+    header("Location: cartUser.php");
     exit();
 } catch (Exception $e) {
     $conn->rollback();
