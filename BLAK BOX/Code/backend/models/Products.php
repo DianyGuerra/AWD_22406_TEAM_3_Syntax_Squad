@@ -78,5 +78,19 @@ class Product {
         return $products;
     }
 
+    public static function listAllProductsCategories() {
+        $database = new ConnectionDB();
+        $conn = $database->connection();
+
+        $query = "SELECT p.*, c.name AS category, c.description AS categoryDescription FROM Product p
+                  JOIN Category c ON p.categoryId = c.categoryId";
+        $result = mysqli_query($conn, $query);
+
+        $products = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $products[] = $row;
+        }
+        return $products;
+    }
 }
 ?>

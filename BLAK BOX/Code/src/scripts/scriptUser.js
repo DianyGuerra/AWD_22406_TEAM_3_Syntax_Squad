@@ -13,3 +13,27 @@ function confirmAddToCart(button, productName) {
     }
   });
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+  const searchInput = document.getElementById('searchInput');
+  const categorySelect = document.getElementById('categorySelect');
+  const products = document.querySelectorAll('.product-card');
+
+  function filterProducts() {
+    const search = searchInput.value.toLowerCase();
+    const category = categorySelect.value;
+
+    products.forEach(card => {
+      const name = card.getAttribute('data-name');
+      const prodCategory = card.getAttribute('data-category');
+
+      const matchesName = name.includes(search);
+      const matchesCategory = (category === 'all' || prodCategory === category);
+
+      card.style.display = (matchesName && matchesCategory) ? '' : 'none';
+    });
+  }
+
+  searchInput.addEventListener('input', filterProducts);
+  categorySelect.addEventListener('change', filterProducts);
+});
