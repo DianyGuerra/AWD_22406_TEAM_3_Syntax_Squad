@@ -17,6 +17,8 @@ nav{
     background-color: #000000;
     padding: 15px 30px;
     color: #fff;
+    z-index: 10;
+    position: relative;
 }
 
 .nav_left {
@@ -324,6 +326,7 @@ footer{
   .hamburger {
     display: flex;
     margin-right: 15px;
+    z-index: 10;
   }
 
   .nav_right {
@@ -337,6 +340,7 @@ footer{
     display: none;
     padding: 20px 0;
     gap: 20px;
+    z-index: 20;
   }
 
   .nav_right.show {

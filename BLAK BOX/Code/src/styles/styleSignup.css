@@ -17,6 +17,8 @@ nav{
     background-color: #000000;
     padding: 15px 10px;
     color: #fff;
+    z-index: 10;
+    position: relative;
 }
 
 .nav_left {
@@ -300,6 +302,7 @@ footer{
 
 @media screen and (max-width: 768px) {
   nav {
+    z-index: 10;
     flex-direction: row;
     align-items: center;
     gap: 15px;
@@ -318,6 +321,7 @@ footer{
   }
 
   .nav_right {
+    z-index: 20;
     flex-direction: column;
     align-items: center;
     gap: 10px;
