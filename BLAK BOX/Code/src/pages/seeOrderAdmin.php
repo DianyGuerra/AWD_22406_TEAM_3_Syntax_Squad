@@ -58,8 +58,8 @@ if (!$order) {
         <?php endforeach; ?>
       </tbody>
     </table>
-    
-    <a href="ordersAdmin.php" class="btn btn-secondary mt-3">Go Back</a>
+    <br>
+    <a href="ordersAdmin.php" class="btn btn-primary ms-2">Go Back</a>
     <form id="statusForm" action="../../backend/models/UpdateOrderStatus.php" method="post" class="d-inline-block ms-3">
       <input type="hidden" name="orderId" value="<?= $order['orderId'] ?>">
       <select name="status" id="statusSelect" class="form-select d-inline-block w-auto" required>
