@@ -4,7 +4,9 @@ if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit;
 }
-$name = $_SESSION['user_firstName'];
+include('../../backend/models/Users.php');
+$userId = $_SESSION['user_id'];
+$user = User::getUserById($userId);
 ?>
 
 
@@ -63,7 +65,7 @@ $name = $_SESSION['user_firstName'];
     <main class="flex-fill bg-purple-darker p-4">
       <div class="container">
         <div class="mb-4 bg-purple-mid text-white p-3 rounded shadow-sm">
-          <h2 class="m-0">Hola, <?php echo $name; ?></h2>
+          <h2 class="m-0">Hola, <?= htmlspecialchars($user['firstName']) ?></h2>
           <h2 class="m-0">Welcome to Blak Box</h2>
         </div>
 
