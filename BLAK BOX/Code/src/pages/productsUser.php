@@ -10,8 +10,7 @@ checkUserType('user');
 include('../../backend/models/Products.php');
 include('../../backend/models/Category.php');
 $categories = Category::getCategories();
-$porductsCategories = Product::listAllProductsCategories();
-
+$productsCategories = Product::listAllProductsCategories();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -82,7 +81,7 @@ $porductsCategories = Product::listAllProductsCategories();
       </div>
 
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-        <?php foreach ($porductsCategories as $p): ?>
+        <?php foreach ($productsCategories as $p): ?>
           <div class="col product-card" data-name="<?= strtolower(htmlspecialchars($p['name'])) ?>" data-category="<?= htmlspecialchars($p['category']) ?>">
             <div class="card bg-purple text-white h-100">
               <div class="card-body d-flex flex-column justify-content-between">
@@ -93,11 +92,11 @@ $porductsCategories = Product::listAllProductsCategories();
                 </div>
                 <div class="mt-3 d-flex justify-content-between align-items-center">
                   <a href="detail_products.php?id=<?= $p['productId'] ?>" class="btn btn-outline-light btn-sm">View</a>
-                  <form method="POST" action="productsUser.php" class="add-to-cart-form">
+                  <form method="POST" action="../../backend/models/addCart.php" class="add-to-cart-form">
                     <input type="hidden" name="productId" value="<?= $p['productId'] ?>">
                     <button type="button" class="btn btn-accent btn-sm" onclick="confirmAddToCart(this, '<?= htmlspecialchars($p['name']) ?>')">Add Cart</button>
                   </form>
-                  <form method="POST" action="productsUser.php" class="d-inline">
+                  <form method="POST" action="../../backend/models/addWishlist.php" class="d-inline">
                     <input type="hidden" name="addWishlistProductId" value="<?= $p['productId'] ?>">
                     <button type="submit" class="btn btn-outline-warning btn-sm">Favorite</button>
                   </form>
