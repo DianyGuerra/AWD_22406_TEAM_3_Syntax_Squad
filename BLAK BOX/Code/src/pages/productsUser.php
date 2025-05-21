@@ -1,5 +1,4 @@
 <?php
-
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -10,52 +9,8 @@ checkUserType('user');
 
 include('../../backend/models/Products.php');
 $products = Product::listAllProducts();
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['productId'])) {
-        $productId = $_POST['productId'];
-        $found = false;
-        if (!isset($_SESSION['cart'])) {
-            $_SESSION['cart'] = [];
-        }
-        foreach ($_SESSION['cart'] as &$item) {
-            if ($item['productId'] == $productId) {
-                $item['quantity'] += 1;
-                $found = true;
-                break;
-            }
-        }
-        if (!$found) {
-            foreach ($products as $p) {
-                if ($p['productId'] == $productId) {
-                    $_SESSION['cart'][] = [
-                        'productId' => $p['productId'],
-                        'name' => $p['name'],
-                        'price' => $p['price'],
-                        'quantity' => 1
-                    ];
-                    break;
-                }
-            }
-        }
-        header("Location: productsUser.php");
-        exit();
-    }
-    if (isset($_POST['addWishlistProductId'])) {
-        include('../../backend/models/Wishlist.php');
-        $productId = (int)$_POST['addWishlistProductId'];
-        $userId = $_SESSION['user_id'];
-        $added = Wishlist::addProductToWishlist($userId, $productId);
-        if ($added) {
-            $_SESSION['products_msg'] = "Product added to wishlist.";
-        } else {
-            $_SESSION['products_msg'] = "The product is already in your wish list.";
-        }
-        header("Location: productsUser.php");
-        exit();
-    }
-}
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -111,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </ul>
     </aside>
     <div class="container py-5">
-      <h1 class="text-center text-accent mb-4">Our Products</h1>
+      <h1 class="text-center text-accent">Our Products</h1>
 
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
         <?php foreach ($products as $p): ?>
@@ -125,11 +80,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 <div class="mt-3 d-flex justify-content-between align-items-center">
                   <a href="detail_products.php?id=<?= $p['productId'] ?>" class="btn btn-outline-light btn-sm">View</a>
-                  <form method="POST" action="productsUser.php" class="add-to-cart-form">
+                  <form method="POST" action="../../backend/models/addCart.php" class="add-to-cart-form">
                     <input type="hidden" name="productId" value="<?= $p['productId'] ?>">
                     <button type="button" class="btn btn-accent btn-sm" onclick="confirmAddToCart(this, '<?= htmlspecialchars($p['name']) ?>')">Add Cart</button>
                   </form>
-                  <form method="POST" action="productsUser.php" class="d-inline">
+                  <form method="POST" action="../../backend/models/addWishlist.php" class="d-inline">
                     <input type="hidden" name="addWishlistProductId" value="<?= $p['productId'] ?>">
                     <button type="submit" class="btn btn-outline-warning btn-sm">Favorite</button>
                   </form>

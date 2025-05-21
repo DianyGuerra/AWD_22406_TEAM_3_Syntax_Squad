@@ -138,12 +138,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <h4>$<?= number_format($product['price'], 2) ?></h4><br>
 
               <div class="d-flex mt-3 gap-2">
-                <form method="POST" action="">
+                <form method="POST" action="../../backend/models/addCart.php">
                   <input type="hidden" name="productId" value="<?= $product['productId'] ?>">
                   <button type="button" class="btn btn-accent" onclick="confirmAddToCart(this, '<?= htmlspecialchars($product['name']) ?>')">Add to Cart</button>
                 </form>
 
-                <form method="POST" action="" class="d-inline">
+                <form method="POST" action="../../backend/models/addWishlist.php" class="d-inline">
                   <input type="hidden" name="addWishlistProductId" value="<?= $product['productId'] ?>">
                   <button type="submit" class="btn btn-outline-warning">⭐ Favorite</button>
                 </form>
