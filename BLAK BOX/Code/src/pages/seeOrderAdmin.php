@@ -22,11 +22,12 @@ if (!$order) {
   <title>Detalle de Orden</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="../styles/styleUser.css"/>
+  <link rel="stylesheet" href="../styles/styleAdmin.css"/>
 
 </head>
 <main class="flex-fill bg-purple-darker p-4">
 
-  <div class="container mt-5">
+  <div>
     <h2 class="mb-4">Detalle de Orden #<?= $order['orderId'] ?></h2>
 
     <div class="mb-4">
@@ -37,7 +38,7 @@ if (!$order) {
     </div>
 
     <h4>Productos en la orden</h4>
-    <table class="table table-bordered table-dark table-hover">
+    <table class="table-products">
       <thead>
         <tr>
           <th>Product</th>
