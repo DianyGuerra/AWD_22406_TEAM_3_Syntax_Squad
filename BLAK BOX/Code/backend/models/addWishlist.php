@@ -9,7 +9,7 @@ if (!isset($_SESSION['user_id'])) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addWishlistProductId'])) {
     $productId = (int)$_POST['addWishlistProductId'];
-    $userId = $_SESSION['user_id'];
+    $userId = (int)$_SESSION['user_id'];
 
     $added = Wishlist::addProductToWishlist($userId, $productId);
     if ($added) {
@@ -17,11 +17,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addWishlistProductId'
     } else {
         $_SESSION['products_msg'] = "The product is already in your wishlist.";
     }
-
-} else {
-    $_SESSION['products_msg'] = "Invalid request.";
-    
 }
+
 header("Location: ../../src/pages/productsUser.php");
 exit;
 ?>
