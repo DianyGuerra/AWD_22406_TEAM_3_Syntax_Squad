@@ -90,7 +90,7 @@ $orders = OrderTable::getAllOrders();
                 <td><?= $order->total ?></td>
                 <td><?= $order->status ?></td>
                 <td>
-                  <button class="btn btn-sm btn-primary">Ver</button>
+                  <a href="seeOrderAdmin.php?orderId=<?= $order->orderId ?>" class="btn btn-sm btn-primary">See</a>
                 </td>
               </tr>
             <?php endforeach; ?>
