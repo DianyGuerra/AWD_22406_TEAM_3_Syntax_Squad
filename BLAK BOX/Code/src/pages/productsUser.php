@@ -120,12 +120,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </aside>
     <div class="container py-5">
       <h1 class="text-center text-accent mb-4">Our Products</h1>
-      <?php if (isset($_SESSION['products_msg'])): ?>
-        <div class="alert alert-info text-center">
-          <?= htmlspecialchars($_SESSION['products_msg']) ?>
-        </div>
-        <?php unset($_SESSION['products_msg']); ?>
-      <?php endif; ?>
 
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
         <?php foreach ($products as $p): ?>
@@ -154,6 +148,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php endforeach; ?>
 
       </div>
+      <h1>&nbsp;</h1>
+      <?php if (isset($_SESSION['products_msg'])): ?>
+          <div class="alert alert-info text-center">
+            <?= htmlspecialchars($_SESSION['products_msg']) ?>
+          </div>
+          <?php unset($_SESSION['products_msg']); ?>
+        <?php endif; ?>
     </div>
   </div>
 

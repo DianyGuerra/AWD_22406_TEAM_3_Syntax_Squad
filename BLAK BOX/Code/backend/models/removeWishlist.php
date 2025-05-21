@@ -7,11 +7,11 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['wishlistId'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['wishlistId']) && isset($_POST['productId'])) {
     $wishlistId = (int)$_POST['wishlistId'];
-    $userId = $_SESSION['user_id'];
+    $productId = (int)$_POST['productId'];
 
-    $deleted = Wishlist::removeProductFromWishlist($userId, $wishlistId);
+    $deleted = Wishlist::removeProductFromWishlist($wishlistId, $productId);
 
     if ($deleted) {
         $_SESSION['profile_msg'] = "Product removed from wishlist.";
