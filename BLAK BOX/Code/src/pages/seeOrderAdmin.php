@@ -58,8 +58,19 @@ if (!$order) {
         <?php endforeach; ?>
       </tbody>
     </table>
-
+    
     <a href="ordersAdmin.php" class="btn btn-secondary mt-3">Go Back</a>
+    <form action="../../backend/models/UpdateOrderStatus.php" method="post" class="d-inline-block ms-3">
+      <input type="hidden" name="orderId" value="<?= $order['orderId'] ?>">
+      <select name="status" class="form-select d-inline-block w-auto" required>
+        <option value="">-- Change Status --</option>
+        <option value="Pending" <?= $order['status'] === 'Pending' ? 'selected' : '' ?>>Pending</option>
+        <option value="Finalized" <?= $order['status'] === 'Finalized' ? 'selected' : '' ?>>Finalized</option>
+        <option value="Cancel" <?= $order['status'] === 'Cancel' ? 'selected' : '' ?>>Cancel</option>
+      </select>
+      <button type="submit" class="btn btn-primary ms-2">Update</button>
+    </form>
+
   </div>
 </main>
 </body>
