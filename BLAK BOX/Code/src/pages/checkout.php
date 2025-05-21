@@ -24,8 +24,8 @@ foreach ($cart as $item) {
     $total += $item['price'] * $item['quantity'];
 }
 
-$conn = connectionDB();
-$conn->begin_transaction();
+$conn = new ConnectionDB();
+$conn = $conn->connection();
 
 try {
     
@@ -37,7 +37,9 @@ try {
     
     $stmtProduct = $conn->prepare("INSERT INTO OrderProduct (orderId, productId, quantity) VALUES (?, ?, ?)");
     foreach ($cart as $item) {
-        $stmtProduct->bind_param("iii", $orderId, $item['productId'], $item['quantity']);
+        $productId = $item['productId'];
+        $quantity = $item['quantity'];
+        $stmtProduct->bind_param("iii", $orderId, $productId, $quantity);
         $stmtProduct->execute();
     }
 
@@ -48,12 +50,9 @@ try {
 
     $conn->commit();
     $_SESSION['cart'] = [];
-
     echo "<h2 style='text-align:center; margin-top:50px;'> Thank you! Your order has been placed.</h2>";
     echo "<p style='text-align:center;'><a href='user.php' class='btn btn-primary mt-3'>Back to Home</a></p>";
-
-    header("Location: cartUser.php");
-    exit;
+    exit();
 } catch (Exception $e) {
     $conn->rollback();
     echo "<h2>Error placing order: " . htmlspecialchars($e->getMessage()) . "</h2>";
