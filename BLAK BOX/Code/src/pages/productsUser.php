@@ -2,16 +2,12 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-
 require_once '../../backend/models/auth.php';
 requireLogin();
 checkUserType('user');
-
 include('../../backend/models/Products.php');
 $products = Product::listAllProducts();
 ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,10 +16,8 @@ $products = Product::listAllProducts();
   <title>Products - Blak Box</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <link rel="stylesheet" href="../styles/styleUser.css"/>
-  
 </head>
 <body>
-
   <nav class="navbar navbar-dark bg-dark d-lg-none">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">
@@ -103,10 +97,8 @@ $products = Product::listAllProducts();
       <?php endif; ?>
     </div>
   </div>
-
   <script src="../scripts/scriptUser.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 </body>
 </html>

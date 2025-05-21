@@ -52,10 +52,11 @@ try {
     $_SESSION['cart'] = [];
 
     $_SESSION['order_msg'] = "Thank you! Your order has been placed.";
-    header("Location: cartUser.php");
-    exit();
+    
 } catch (Exception $e) {
     $conn->rollback();
     echo "<h2>Error placing order: " . htmlspecialchars($e->getMessage()) . "</h2>";
 }
+header("Location: cartUser.php");
+exit();
 ?>
