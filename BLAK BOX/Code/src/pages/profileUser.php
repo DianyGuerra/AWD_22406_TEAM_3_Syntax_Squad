@@ -66,21 +66,19 @@ $wishlistProducts = Wishlist::getUserWishlistProducts($userId);
   </aside>
 
   <div class="container py-5">
-    <h1 class="text-center text-accent mb-4">User Profile</h1>
+    <h1 class="text-center text-accent">User Profile</h1>
 
-    <div class="card mb-4 bg-purple text-white">
-      <div class="card-body">
-        <h5 class="card-title">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Personal Information</h5>
-        <p><strong>Name:</strong> <?= htmlspecialchars($user['firstName']) . ' ' . htmlspecialchars($user['lastName']) ?></p>
-        <p><strong>Email:</strong> <?= htmlspecialchars($user['email']) ?></p>
-        <p><strong>Phone number:</strong> <?= htmlspecialchars($user['phoneNumber']) ?></p>
-      </div>
+    <div class="text-box bg-purple">
+      <h5 class="card-title text-accent">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Personal Information</h5>
+      <p><strong class="text-accent">Name:</strong> <?= htmlspecialchars($user['firstName']) . ' ' . htmlspecialchars($user['lastName']) ?></p>
+      <p><strong class="text-accent">Email:</strong> <?= htmlspecialchars($user['email']) ?></p>
+      <p><strong class="text-accent">Phone number:</strong> <?= htmlspecialchars($user['phoneNumber']) ?></p>
     </div>
 
-    <h2 class="text-center text-accent mb-3">Wish List</h2>
+    <h2 class="text-center text-accent">Wish List</h2>
     <div class="table-responsive">
-      <table class="table table-bordered table-hover bg-white">
-        <thead class="table-dark">
+      <table class="wishlist-table">
+        <thead>
           <tr>
             <th>Product</th>
             <th>Price</th>
@@ -97,7 +95,7 @@ $wishlistProducts = Wishlist::getUserWishlistProducts($userId);
                   <form method="POST" action="../../backend/models/removeWishlist.php">
                     <input type="hidden" name="wishlistId" value="<?= $item['wishlistId'] ?>">
                     <input type="hidden" name="productId" value="<?= $item['productId'] ?>">
-                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    <button type="submit" class="btn-delete">Delete</button>
                   </form>
                 </td>
               </tr>
@@ -109,7 +107,8 @@ $wishlistProducts = Wishlist::getUserWishlistProducts($userId);
           <?php endif; ?>
         </tbody>
       </table>
-
+      
+      <h1>&nbsp;</h1>
       <?php if (isset($_SESSION['profile_msg'])): ?>
         <div class="alert alert-info text-center">
           <?= htmlspecialchars($_SESSION['profile_msg']) ?>
