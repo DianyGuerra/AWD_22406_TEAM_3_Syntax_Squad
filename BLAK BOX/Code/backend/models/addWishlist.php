@@ -1,7 +1,4 @@
 <?php
-ob_start();
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
 session_start();
 include('Wishlist.php');
 
@@ -15,7 +12,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addWishlistProductId'
     $userId = (int)$_SESSION['user_id'];
 
     $added = Wishlist::addProductToWishlist($userId, $productId);
-    var_dump($added);
     if ($added) {
         $_SESSION['products_msg'] = "Product added to wishlist.";
         error_log("Product $productId add");
