@@ -10,6 +10,11 @@ body{
     font-family: 'Quantico', sans-serif;
 }
 
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+
 nav{
     display: flex;
     justify-content: space-between;
@@ -369,6 +374,10 @@ footer{
 }
 
 @media (max-width: 768px) {
+  .highlight-box {
+    width: 90%;
+    padding: 20px;
+  }
   .hamburger {
     display: flex;
     margin-right: 15px;
