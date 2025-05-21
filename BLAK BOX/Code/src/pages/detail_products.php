@@ -127,14 +127,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           ← Back to Products
         </a>
 
-        <?php if (isset($_SESSION['msg'])): ?>
-          <div class="alert alert-info text-center">
-            <?= htmlspecialchars($_SESSION['msg']) ?>
-          </div>
-          <?php unset($_SESSION['msg']); ?>
-        <?php endif; ?>
-
-
         <?php if (!isset($notFound)): ?>
           <div class="row">
             <div class="text-center d-flex flex-column align-items-center">
@@ -165,6 +157,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           </div>
         <?php endif; ?>
 
+        <h1>&nbsp;</h1>
+        <?php if (isset($_SESSION['msg'])): ?>
+          <div class="alert alert-info text-center">
+            <?= htmlspecialchars($_SESSION['msg']) ?>
+          </div>
+          <?php unset($_SESSION['msg']); ?>
+        <?php endif; ?>
       </div>
     </main>
   </div>

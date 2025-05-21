@@ -10,6 +10,7 @@ if (!isset($_SESSION['user_id'])) {
 $userId = $_SESSION['user_id'];
 $user = User::getUserById($userId);
 $wishlistProducts = Wishlist::getUserWishlistProducts($userId);
+
 ?>
 
 <!DOCTYPE html>
@@ -67,12 +68,11 @@ $wishlistProducts = Wishlist::getUserWishlistProducts($userId);
   <div class="container py-5">
     <h1 class="text-center text-accent mb-4">User Profile</h1>
 
-    <div class="card mb-4 bg-light">
+    <div class="card mb-4 bg-purple text-white">
       <div class="card-body">
-        <h5 class="card-title">Personal Information</h5>
+        <h5 class="card-title">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Personal Information</h5>
         <p><strong>Name:</strong> <?= htmlspecialchars($user['firstName']) . ' ' . htmlspecialchars($user['lastName']) ?></p>
         <p><strong>Email:</strong> <?= htmlspecialchars($user['email']) ?></p>
-        <p><strong>Address:</strong> <?= htmlspecialchars($user['address']) ?></p>
         <p><strong>Phone number:</strong> <?= htmlspecialchars($user['phoneNumber']) ?></p>
       </div>
     </div>

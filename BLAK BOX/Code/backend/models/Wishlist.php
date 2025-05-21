@@ -73,8 +73,9 @@ class Wishlist {
     public static function removeProductFromWishlist($wishlistId, $productId) {
         $database = new ConnectionDB();
         $conn = $database->connection();
-
+        
         $query = "DELETE FROM WishlistProduct WHERE wishlistId = ? AND productId = ?";
+        
         $stmt = mysqli_prepare($conn, $query);
         mysqli_stmt_bind_param($stmt, "ii", $wishlistId, $productId);
 
@@ -140,7 +141,7 @@ class Wishlist {
     $database = new ConnectionDB();
     $conn = $database->connection();
 
-    $query = "SELECT p.*
+    $query = "SELECT p.*, w.wishlistId
               FROM Wishlist w
               JOIN WishlistProduct wp ON w.wishlistId = wp.wishlistId
               JOIN Product p ON wp.productId = p.productId
