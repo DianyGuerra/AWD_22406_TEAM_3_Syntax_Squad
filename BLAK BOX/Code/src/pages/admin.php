@@ -48,7 +48,6 @@ $conn = $db->connection();
         <li class="nav-item"><a class="nav-link text-white" href="#">Dashboard</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="../../src/pages/productsAdmin.php">Products</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="../../src/pages/ordersAdmin.php">Orders</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="#">Users</a></li>
         <li class="nav-item"><a class="nav-link text-danger" href="../../backend/models/logOut.php">Logout</a></li>
       </ul>
     </div>
@@ -65,7 +64,6 @@ $conn = $db->connection();
         <li class="nav-item"><a class="nav-link text-white" href="#">Dashboard</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="../../src/pages/productsAdmin.php">Products</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="../../src/pages/ordersAdmin.php">Orders</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="#">Users</a></li>
         <li class="nav-item"><a class="nav-link text-danger" href="../../backend/models/logOut.php">Logout</a></li>
       </ul>
     </aside>
