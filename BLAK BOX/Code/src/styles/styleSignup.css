@@ -6,14 +6,13 @@ body{
     margin: 0;
     padding: 0;
     width: 100%;
-    height: 100%;
+    height: auto;
     font-family: 'Quantico', sans-serif;
 }
 
 *, *::before, *::after {
     box-sizing: border-box;
 }
-
 
 nav{
     display: flex;
