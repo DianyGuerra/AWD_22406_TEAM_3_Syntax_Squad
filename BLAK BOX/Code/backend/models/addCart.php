@@ -1,9 +1,12 @@
 <?php
 session_start();
-include('auth.php');
-requireLogin();
-checkUserType('user');
 include('Products.php');
+
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ../../src/pages/Login.php');
+    exit;
+}
+
 if (isset($_POST['productId'])) {
     $productId = $_POST['productId'];
     $found = false;
@@ -34,5 +37,5 @@ if (isset($_POST['productId'])) {
     $_SESSION['products_msg'] = "Product added to cart.";
 }
 header("Location: ../../src/pages/productsUser.php");
-exit();
+exit;
 ?>

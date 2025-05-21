@@ -1,8 +1,6 @@
 <?php
 session_start();
-include('auth.php');
-requireLogin();
-checkUserType('user');
+include('Wishlist.php');
 
 if (!isset($_SESSION['user_id'])) {
     header('Location: ../../src/pages/Login.php');
@@ -10,7 +8,6 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addWishlistProductId'])) {
-    include('Wishlist.php');
     $productId = (int)$_POST['addWishlistProductId'];
     $userId = $_SESSION['user_id'];
 
@@ -26,5 +23,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addWishlistProductId'
     
 }
 header("Location: ../../src/pages/productsUser.php");
-exit();
+exit;
 ?>
