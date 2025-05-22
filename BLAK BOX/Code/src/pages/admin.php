@@ -1,5 +1,4 @@
 <?php
-
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -7,11 +6,6 @@ if (session_status() === PHP_SESSION_NONE) {
 require_once '../../backend/models/auth.php';
 requireAdmin();
 checkUserType('admin');
-
-require_once '../../backend/models/ConnectionDB.php';
-
-$db = new connectionDB();
-$conn = $db->connection();
 
 ?>
 
