@@ -19,7 +19,7 @@ if (!$order) {
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Detalle de Orden</title>
+  <title>Order Detail - Blak Blox</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="../styles/styleUser.css"/>
   <link rel="stylesheet" href="../styles/styleAdmin.css"/>
@@ -28,7 +28,7 @@ if (!$order) {
 <main class="flex-fill bg-purple-darker p-4">
 
   <div>
-    <h2 class="mb-4">Detalle de Orden #<?= $order['orderId'] ?></h2>
+    <h2 class="mb-4">Order Detail #<?= $order['orderId'] ?></h2>
 
     <div class="mb-4">
       <p><strong>User:</strong> <?= $order['firstName'] . ' ' . $order['lastName'] ?></p>
@@ -37,7 +37,7 @@ if (!$order) {
       <p><strong>Total:</strong> $<?= number_format($order['total'], 2) ?></p>
     </div>
 
-    <h4>Productos en la orden</h4>
+    <h4>Products in the order</h4>
     <table class="table-products">
       <thead>
         <tr>
@@ -60,7 +60,7 @@ if (!$order) {
     </table>
     <br>
     <a href="ordersAdmin.php" class="btn btn-primary ms-2">Go Back</a>
-    <form id="statusForm" action="../../backend/models/UpdateOrderStatus.php" method="post" class="d-inline-block ms-3">
+    <form id="statusForm" action="../../backend/controller/UpdateOrderStatus.php" method="post" class="d-inline-block ms-3">
       <input type="hidden" name="orderId" value="<?= $order['orderId'] ?>">
       <select name="status" id="statusSelect" class="form-select d-inline-block w-auto" required>
         <option value="">-- Change Status --</option>

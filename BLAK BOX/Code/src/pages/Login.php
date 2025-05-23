@@ -57,7 +57,7 @@ session_start();
                     }
                 ?>
 
-                <form class="registerform" method="POST" id="registerform" name="registerform" action="../../backend/models/LoginForm.php">
+                <form class="registerform" method="POST" id="registerform" name="registerform" action="../../backend/controller/LoginForm.php">
 
                         <section class="element">
                             <label for="email">Email:</label>

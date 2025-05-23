@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'connectionDB.php';
+require_once '..//models/ConnectionDB.php';
 
 $successMessage = "";
 $errorMessage = "";

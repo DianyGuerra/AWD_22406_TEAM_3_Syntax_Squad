@@ -4,7 +4,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-require_once '../../backend/models/auth.php';
+require_once '../../backend/controller/auth.php';
 requireAdmin();
 checkUserType('admin');
 
@@ -46,7 +46,7 @@ $orders = OrderTable::getAllOrders();
         <li class="nav-item"><a class="nav-link text-white" href="./admin.php">Dashboard</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="../../src/pages/productsAdmin.php">Products</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="../../src/pages/ordersAdmin.php">Orders</a></li>
-        <li class="nav-item"><a class="nav-link text-danger" href="../../backend/models/logOut.php">Logout</a></li>
+        <li class="nav-item"><a class="nav-link text-danger" href="../../backend/controller/logOut.php">Logout</a></li>
       </ul>
     </div>
   </div>
@@ -62,7 +62,7 @@ $orders = OrderTable::getAllOrders();
         <li class="nav-item"><a class="nav-link text-white" href="./admin.php">Dashboard</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="../../src/pages/productsAdmin.php">Products</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="../../src/pages/ordersAdmin.php">Orders</a></li>
-        <li class="nav-item"><a class="nav-link text-danger" href="../../backend/models/logOut.php">Logout</a></li>
+        <li class="nav-item"><a class="nav-link text-danger" href="../../backend/controller/logOut.php">Logout</a></li>
       </ul>
     </aside>
 

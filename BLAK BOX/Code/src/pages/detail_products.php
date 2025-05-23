@@ -6,7 +6,7 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-require_once '../../backend/models/auth.php';
+require_once '../../backend/controller/auth.php';
 requireLogin();
 checkUserType('user');
 
@@ -26,6 +26,7 @@ if (!$product) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Detail Products - Blak Box</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
   <link rel="stylesheet" href="../styles/styleUser.css"/>
 
 </head>
@@ -55,12 +56,12 @@ if (!$product) {
               <h4>$<?= number_format($product['price'], 2) ?></h4><br>
 
               <div class="d-flex mt-3 gap-2">
-                <form method="POST" action="../../backend/models/addCart.php">
+                <form method="POST" action="../../backend/controller/addCart.php">
                   <input type="hidden" name="productId" value="<?= $product['productId'] ?>">
                   <button type="button" class="btn btn-accent" onclick="confirmAddToCart(this, '<?= htmlspecialchars($product['name']) ?>')">Add to Cart</button>
                 </form>
 
-                <form method="POST" action="../../backend/models/addWishlist.php" class="d-inline">
+                <form method="POST" action="../../backend/controller/addWishlist.php" class="d-inline">
                   <input type="hidden" name="addWishlistProductId" value="<?= $product['productId'] ?>">
                   <button type="submit" class="btn btn-outline-warning">⭐ Favorite</button>
                 </form>
