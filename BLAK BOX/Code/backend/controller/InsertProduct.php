@@ -1,5 +1,5 @@
 <?php
-require_once 'connectionDB.php';
+require_once '../models/ConnectionDB.php';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $name = $_POST["name"];

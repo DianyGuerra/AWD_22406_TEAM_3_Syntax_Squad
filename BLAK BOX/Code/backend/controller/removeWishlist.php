@@ -1,6 +1,6 @@
 <?php
 session_start();
-include('Wishlist.php');
+include('../models/Wishlist.php');
 
 if (!isset($_SESSION['user_id'])) {
     header('Location: ../../src/pages/Login.php');

@@ -2,7 +2,7 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-require_once '../../backend/models/auth.php';
+require_once '../../backend/controller/auth.php';
 requireAdmin();
 checkUserType('admin');
 require_once '../../backend/models/ConnectionDB.php';
@@ -49,7 +49,7 @@ while ($row = $result->fetch_assoc()) {
         <li class="nav-item"><a class="nav-link text-white" href="./admin.php">Dashboard</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="../../src/pages/productsAdmin.php">Products</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="../../src/pages/ordersAdmin.php">Orders</a></li>
-        <li class="nav-item"><a class="nav-link text-danger" href="../../backend/models/logOut.php">Logout</a></li>
+        <li class="nav-item"><a class="nav-link text-danger" href="../../backend/controller/logOut.php">Logout</a></li>
       </ul>
     </div>
   </div>
@@ -65,7 +65,7 @@ while ($row = $result->fetch_assoc()) {
         <li class="nav-item"><a class="nav-link text-white" href="./admin.php">Dashboard</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="../../src/pages/productsAdmin.php">Products</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="../../src/pages/ordersAdmin.php">Orders</a></li>
-        <li class="nav-item"><a class="nav-link text-danger" href="../../backend/models/logOut.php">Logout</a></li>
+        <li class="nav-item"><a class="nav-link text-danger" href="../../backend/controller/logOut.php">Logout</a></li>
       </ul>
     </aside>
 
@@ -75,7 +75,7 @@ while ($row = $result->fetch_assoc()) {
       <div class="parent-container">
         <div class="product-form-container">
           <h2 class="form-title">Add New Product</h2>
-          <form action="../../backend/models/InsertProduct.php" method="POST" class="product-form">
+          <form action="../../backend/controller/InsertProduct.php" method="POST" class="product-form">
             <div class="form-group">
               <label for="name">Product Name</label>
               <input type="text" id="name" name="name" required>

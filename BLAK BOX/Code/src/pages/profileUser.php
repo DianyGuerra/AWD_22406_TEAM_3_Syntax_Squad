@@ -20,6 +20,7 @@ $wishlistProducts = Wishlist::getUserWishlistProducts($userId);
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Profile - Blak Box</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
   <link rel="stylesheet" href="../styles/styleUser.css"/>
 </head>
 <body class="bg-purple-darker text-white">
@@ -57,7 +58,7 @@ $wishlistProducts = Wishlist::getUserWishlistProducts($userId);
                   <td><?= htmlspecialchars($item['name']) ?></td>
                   <td>$<?= number_format($item['price'], 2) ?></td>
                   <td>
-                    <form method="POST" action="../../backend/models/removeWishlist.php">
+                    <form method="POST" action="../../backend/controller/removeWishlist.php">
                       <input type="hidden" name="wishlistId" value="<?= $item['wishlistId'] ?>">
                       <input type="hidden" name="productId" value="<?= $item['productId'] ?>">
                       <button type="submit" class="btn-delete">Delete</button>
@@ -75,7 +76,7 @@ $wishlistProducts = Wishlist::getUserWishlistProducts($userId);
         
         <h1>&nbsp;</h1>
         <?php if (isset($_SESSION['profile_msg'])): ?>
-          <div class="alert alert-info text-center">
+          <div class="alert alert-info text-center ">
             <?= htmlspecialchars($_SESSION['profile_msg']) ?>
           </div>
           <?php unset($_SESSION['profile_msg']); ?>

@@ -1,10 +1,8 @@
 <?php
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-require_once '../../backend/models/auth.php';
+require_once '../../backend/controller/auth.php';
 requireLogin();
 checkUserType('user');
 include('../../backend/models/Products.php');
@@ -19,6 +17,7 @@ $productsCategories = Product::listAllProductsCategories();
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Products - Blak Box</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
   <link rel="stylesheet" href="../styles/styleUser.css"/>
 </head>
 <body>
@@ -62,11 +61,11 @@ $productsCategories = Product::listAllProductsCategories();
                 </div>
                 <div class="mt-3 d-flex justify-content-between align-items-center">
                   <a href="detail_products.php?id=<?= $p['productId'] ?>" class="btn btn-outline-light btn-sm">View</a>
-                  <form method="POST" action="../../backend/models/addCart.php" class="add-to-cart-form">
+                  <form method="POST" action="../../backend/controller/addCart.php" class="add-to-cart-form">
                     <input type="hidden" name="productId" value="<?= $p['productId'] ?>">
                     <button type="button" class="btn btn-accent btn-sm" onclick="confirmAddToCart(this, '<?= htmlspecialchars($p['name']) ?>')">Add Cart</button>
                   </form>
-                  <form method="POST" action="../../backend/models/addWishlist.php" class="d-inline">
+                  <form method="POST" action="../../backend/controller/addWishlist.php" class="d-inline">
                     <input type="hidden" name="addWishlistProductId" value="<?= $p['productId'] ?>">
                     <button type="submit" class="btn btn-outline-warning btn-sm">Favorite</button>
                   </form>

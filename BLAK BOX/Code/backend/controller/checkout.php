@@ -3,10 +3,10 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-require_once '../../backend/models/ConnectionDB.php';
+require_once '../models/ConnectionDB.php';
 
 if (!isset($_SESSION['user_id']) || empty($_SESSION['cart']) || empty($_POST['paymentMethod'])) {
-    header("Location: cartUser.php");
+    header("Location: ../../src/pages/cartUser.php");
     exit();
 }
 
@@ -52,6 +52,6 @@ try {
     $conn->rollback();
     echo "<h2>Error placing order: " . htmlspecialchars($e->getMessage()) . "</h2>";
 }
-header("Location: cartUser.php");
+header("Location: ../../src/pages/cartUser.php");
 exit();
 ?>

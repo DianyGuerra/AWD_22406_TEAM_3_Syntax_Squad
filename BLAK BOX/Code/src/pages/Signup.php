@@ -47,7 +47,7 @@
             <div class="highlight-box">
                 <h2 class="title">Sign up</h2>
                 <br>
-                <form class="registerform" method="POST" id="registerform" name="registerform" action="../../backend/models/signupform.php">
+                <form class="registerform" method="POST" id="registerform" name="registerform" action="../../backend/controller/signupform.php">
                         <section class="element">
                             <label for="firstName">Name:</label>
                             <input type="text" id="firstName" name="firstName"/>    
