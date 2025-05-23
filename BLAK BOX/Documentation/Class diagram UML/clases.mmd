@@ -1,0 +1,121 @@
+classDiagram
+    class User {
+        int userId
+        string firstName
+        string lastName
+        string email
+        string password
+        string userType
+        string phoneNumber
+        + registerUser()
+        + login()
+    }
+
+    class Product {
+        int productId
+        string name
+        string description
+        decimal price
+        int stock
+        int categoryId
+        + updateStock()
+        + getDetails()
+    }
+
+    class Cart {
+        int cartId
+        int userId
+        date createdDate
+        + addProduct()
+        + removeProduct()
+        + calculateTotal()
+    }
+
+    class CartProduct {
+        int cartProductId
+        int cartId
+        int productId
+        int quantity
+    }
+
+    class Order {
+        int orderId
+        int userId
+        date orderDate
+        decimal total
+        string status
+        + processOrder()
+        + cancelOrder()
+    }
+
+    class OrderProduct {
+        int orderProductId
+        int orderId
+        int productId
+        int quantity
+    }
+
+    class Inventory {
+        int inventoryId
+        int productId
+        int availableQuantity
+        int minimumQuantity
+        date lastRestockDate
+        + updateInventory()
+    }
+
+    class Payment {
+        int paymentId
+        int userId
+        int orderId
+        decimal amount
+        string paymentMethod
+        date paymentDate
+        + processPayment()
+    }
+
+    class Category {
+        int categoryId
+        string categoryName
+        string description
+        + getCategoryDetails()
+    }
+
+    class Wishlist {
+        int wishlistId
+        int userId
+        date createdDate
+        + addProduct()
+        + removeProduct()
+    }
+
+    class WishlistProduct {
+        int wishlistProductId
+        int wishlistId
+        int productId
+    }
+
+    class Shipping {
+        int shippingId
+        int orderId
+        string trackingNumber
+        string carrier
+        date estimatedDelivery
+        + trackShipping()
+    }
+
+
+    User --|> Cart : "Owns"
+    Cart --> Order : "Generates"
+    Order --> Payment : "Paid with"
+    Order --> Shipping : "Has"
+    Product --> Inventory : "Managed in"
+    Product --> Cart : "Added to"
+    Cart --> CartProduct : "Contains"
+    Order --> OrderProduct : "Has products"
+    Product --> Category : "Belongs to"
+    User --|> Wishlist : "Creates"
+    Wishlist --> WishlistProduct : "Has products"
+
+    classDef entity fill:#cce7ff,stroke:#004080,stroke-width:2px;
+    classDef relationship fill:#e6ffe6,stroke:#004080,stroke-width:2px;
