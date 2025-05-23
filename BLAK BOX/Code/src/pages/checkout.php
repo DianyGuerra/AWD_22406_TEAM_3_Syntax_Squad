@@ -3,11 +3,6 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-require_once '../../backend/models/auth.php';
-requireLogin();
-checkUserType('user');
-
-
 require_once '../../backend/models/ConnectionDB.php';
 
 if (!isset($_SESSION['user_id']) || empty($_SESSION['cart']) || empty($_POST['paymentMethod'])) {
@@ -50,11 +45,13 @@ try {
 
     $conn->commit();
     $_SESSION['cart'] = [];
-    echo "<h2 style='text-align:center; margin-top:50px;'> Thank you! Your order has been placed.</h2>";
-    echo "<p style='text-align:center;'><a href='user.php' class='btn btn-primary mt-3'>Back to Home</a></p>";
-    exit();
+
+    $_SESSION['order_msg'] = "Thank you! Your order has been placed.";
+    
 } catch (Exception $e) {
     $conn->rollback();
     echo "<h2>Error placing order: " . htmlspecialchars($e->getMessage()) . "</h2>";
 }
+header("Location: cartUser.php");
+exit();
 ?>

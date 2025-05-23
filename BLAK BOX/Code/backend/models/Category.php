@@ -1,5 +1,5 @@
 <?php
-include('ConnectionDB.php');
+require_once('ConnectionDB.php');
 
 class Category {
     public $id, $name, $description;
@@ -29,6 +29,22 @@ class Category {
         $result = mysqli_stmt_get_result($stmt);
         return mysqli_fetch_assoc($result);
     }
+
+    public static function getCategories() {
+        $db = new ConnectionDB();
+        $conn = $db->connection();
+        $query = "SELECT * FROM Category";
+        $stmt = mysqli_prepare($conn, $query);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+
+        $categories = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $categories[] = $row;
+        }
+        return $categories;
+    }
+
 
     public static function updateCategory($id, $name, $description) {
         $db = new ConnectionDB();

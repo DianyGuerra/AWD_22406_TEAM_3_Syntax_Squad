@@ -60,7 +60,7 @@ class Wishlist {
         }
         mysqli_stmt_close($stmt3);
 
-+        $insertProduct = "INSERT INTO WishlistProduct (wishlistId, productId) VALUES (?, ?)";
+        $insertProduct = "INSERT INTO WishlistProduct (wishlistId, productId) VALUES (?, ?)";
         $stmt4 = mysqli_prepare($conn, $insertProduct);
         mysqli_stmt_bind_param($stmt4, "ii", $wishlistId, $productId);
         $result = mysqli_stmt_execute($stmt4);

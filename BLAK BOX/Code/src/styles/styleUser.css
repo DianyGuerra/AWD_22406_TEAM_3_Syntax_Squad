@@ -95,6 +95,12 @@ html {
   background-color: #a85ffb;
 }
 
+.text-box{
+  border-radius: 12px;
+  margin: 1rem;
+  padding: 1rem;
+}
+
 .card {
   border-radius: 12px;
   transition: transform 0.2s ease;
@@ -113,4 +119,51 @@ html {
 .btn-outline-light:hover {
   background-color: var(--color-accent);
   color: var(--color-dark);
+}
+
+
+.wishlist-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 30px;
+  background-color: #2a2a40;
+  color: #f8f8f2;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  font-size: 0.95rem;
+}
+
+.wishlist-table thead {
+  background-color: #7b2cbf;
+  color: #ffffff;
+}
+
+.wishlist-table th, .wishlist-table td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid #444;
+}
+
+.wishlist-table tr:hover {
+  background-color: #3e3e5e;
+}
+
+.wishlist-table button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-right: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-delete {
+  background-color: #f72585;
+  color: #fff;
+}
+
+.btn-delete:hover {
+  background-color: #d61e6c;
 }

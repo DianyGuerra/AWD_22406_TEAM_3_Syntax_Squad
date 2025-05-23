@@ -22,11 +22,12 @@ if (!$order) {
   <title>Detalle de Orden</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="../styles/styleUser.css"/>
+  <link rel="stylesheet" href="../styles/styleAdmin.css"/>
 
 </head>
 <main class="flex-fill bg-purple-darker p-4">
 
-  <div class="container mt-5">
+  <div>
     <h2 class="mb-4">Detalle de Orden #<?= $order['orderId'] ?></h2>
 
     <div class="mb-4">
@@ -37,7 +38,7 @@ if (!$order) {
     </div>
 
     <h4>Productos en la orden</h4>
-    <table class="table table-bordered table-dark table-hover">
+    <table class="table-products">
       <thead>
         <tr>
           <th>Product</th>
@@ -57,9 +58,54 @@ if (!$order) {
         <?php endforeach; ?>
       </tbody>
     </table>
+    <br>
+    <a href="ordersAdmin.php" class="btn btn-primary ms-2">Go Back</a>
+    <form id="statusForm" action="../../backend/models/UpdateOrderStatus.php" method="post" class="d-inline-block ms-3">
+      <input type="hidden" name="orderId" value="<?= $order['orderId'] ?>">
+      <select name="status" id="statusSelect" class="form-select d-inline-block w-auto" required>
+        <option value="">-- Change Status --</option>
+        <option value="Pending" <?= $order['status'] === 'Pending' ? 'selected' : '' ?>>Pending</option>
+        <option value="Finalized" <?= $order['status'] === 'Finalized' ? 'selected' : '' ?>>Finalized</option>
+        <option value="Cancel" <?= $order['status'] === 'Cancel' ? 'selected' : '' ?>>Cancel</option>
+      </select>
+      <button type="submit" id="submitBtn" class="btn btn-primary ms-2">Update</button>
+    </form>
 
-    <a href="ordersAdmin.php" class="btn btn-secondary mt-3">Volver</a>
+
   </div>
 </main>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    document.getElementById('statusForm').addEventListener('submit', function (e) {
+      e.preventDefault(); 
+
+      const select = document.getElementById('statusSelect');
+      const selectedStatus = select.value;
+
+      if (!selectedStatus) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Please select a status',
+          confirmButtonText: 'OK'
+        });
+        return;
+      }
+
+      Swal.fire({
+        title: 'Are you sure?',
+        text: `You are about to change the order status to "${selectedStatus}"`,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, change it',
+        cancelButtonText: 'Cancel'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          e.target.submit(); 
+        }
+      });
+    });
+</script>
+
 </body>
 </html>
