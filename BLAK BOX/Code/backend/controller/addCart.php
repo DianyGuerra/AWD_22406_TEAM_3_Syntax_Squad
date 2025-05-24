@@ -9,10 +9,19 @@ if (!isset($_SESSION['user_id'])) {
 
 if (isset($_POST['productId'])) {
     $productId = $_POST['productId'];
+    $product = Product::getProductById($productId);
+
+    if (!$product || $product['stock'] <= 0) {
+        $_SESSION['products_msg'] = "This product is out of stock.";
+        header("Location: ../../src/pages/productsUser.php");
+        exit;
+    }
+
     $found = false;
     if (!isset($_SESSION['cart'])) {
         $_SESSION['cart'] = [];
     }
+
     foreach ($_SESSION['cart'] as &$item) {
         if ($item['productId'] == $productId) {
             $item['quantity'] += 1;
@@ -20,22 +29,21 @@ if (isset($_POST['productId'])) {
             break;
         }
     }
+
     if (!$found) {
-        $products = Product::listAllProducts();
-        foreach ($products as $p) {
-            if ($p['productId'] == $productId) {
-                $_SESSION['cart'][] = [
-                    'productId' => $p['productId'],
-                    'name' => $p['name'],
-                    'price' => $p['price'],
-                    'quantity' => 1
-                ];
-                break;
-            }
-        }
+        $_SESSION['cart'][] = [
+            'productId' => $product['productId'],
+            'name' => $product['name'],
+            'price' => $product['price'],
+            'quantity' => 1
+        ];
     }
+
+    $newStock = $product['stock'] - 1;
+    Product::updateStock($productId, $newStock);
+
     $_SESSION['products_msg'] = "Product added to cart.";
 }
+
 header("Location: ../../src/pages/productsUser.php");
 exit;
-?>

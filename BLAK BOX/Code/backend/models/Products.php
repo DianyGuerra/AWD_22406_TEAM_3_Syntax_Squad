@@ -92,5 +92,28 @@ class Product {
         }
         return $products;
     }
+
+    public static function updateStock($productId, $newStock) {
+        $database = new ConnectionDB();
+        $conn = $database->connection();
+
+        $query = "UPDATE Product SET stock = ? WHERE productId = ?";
+        $stmt = mysqli_prepare($conn, $query);
+        mysqli_stmt_bind_param($stmt, "ii", $newStock, $productId);
+
+        return mysqli_stmt_execute($stmt);
+    }
+
+    public static function increaseStock($productId, $quantity) {
+        $db = new ConnectionDB();
+        $conn = $db->connection();
+
+        $query = "UPDATE Product SET stock = stock + ? WHERE productId = ?";
+        $stmt = mysqli_prepare($conn, $query);
+        mysqli_stmt_bind_param($stmt, "ii", $quantity, $productId);
+
+        return mysqli_stmt_execute($stmt);
+    }
+
 }
 ?>

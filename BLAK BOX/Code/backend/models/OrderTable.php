@@ -1,5 +1,5 @@
 <?php
-include('ConnectionDB.php');
+require_once 'ConnectionDB.php';
 
 class OrderTable {
     public $id, $userId, $orderDate, $total, $status;
@@ -44,10 +44,9 @@ class OrderTable {
     public static function getAllOrders() {
         $db = new ConnectionDB();
         $conn = $db->connection();
-        $sql = "SELECT o.orderId, o.userId, o.orderDate, o.total, o.status,
-                   u.firstName, u.lastName
-            FROM OrderTable o
-            JOIN User u ON o.userId = u.userId";
+        $sql = "SELECT o.orderId, o.userId, o.orderDate, o.total, o.status, u.firstName, u.lastName
+                FROM OrderTable o
+                JOIN User u ON o.userId = u.userId";
 
         $stmt = $conn->prepare($sql);
         $stmt->execute();
@@ -64,6 +63,39 @@ class OrderTable {
         return $orders;
     }
 
+    public static function getUserOrdersWithProducts($userId) {
+        $db = new ConnectionDB();
+        $conn = $db->connection();
+
+        $queryOrders = "SELECT orderId, orderDate, total, status FROM OrderTable WHERE userId = ? ORDER BY orderDate ASC";
+        $stmtOrders = mysqli_prepare($conn, $queryOrders);
+        mysqli_stmt_bind_param($stmtOrders, "i", $userId);
+        mysqli_stmt_execute($stmtOrders);
+        $resultOrders = mysqli_stmt_get_result($stmtOrders);
+
+        $orders = [];
+
+        while ($order = mysqli_fetch_assoc($resultOrders)) {
+            $queryProducts = "
+                SELECT p.name AS productName, op.quantity, p.price
+                FROM OrderProduct op
+                JOIN Product p ON op.productId = p.productId
+                WHERE op.orderId = ?
+            ";
+            $stmtProducts = mysqli_prepare($conn, $queryProducts);
+            mysqli_stmt_bind_param($stmtProducts, "i", $order['orderId']);
+            mysqli_stmt_execute($stmtProducts);
+            $resultProducts = mysqli_stmt_get_result($stmtProducts);
+
+            $products = [];
+            while ($product = mysqli_fetch_assoc($resultProducts)) {
+                $products[] = $product;
+            }
+            $order['products'] = $products;
+            $orders[] = $order;
+        }
+        return $orders;
+    }
 
 }
 ?>

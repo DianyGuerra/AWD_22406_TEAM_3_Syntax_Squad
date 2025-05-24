@@ -57,13 +57,18 @@ $productsCategories = Product::listAllProductsCategories();
                 <div>
                   <h5 class="card-title text-accent"><?= htmlspecialchars($p['name']) ?></h5>
                   <p class="card-text"><?= htmlspecialchars($p['description']) ?></p>
+                  <p class="text-warning small">Stock: <?= htmlspecialchars($p['stock']) ?></p>
                   <p><strong>$<?= number_format($p['price'], 2) ?></strong></p>
                 </div>
                 <div class="mt-3 d-flex justify-content-between align-items-center">
                   <a href="detail_products.php?id=<?= $p['productId'] ?>" class="btn btn-outline-light btn-sm">View</a>
                   <form method="POST" action="../../backend/controller/addCart.php" class="add-to-cart-form">
                     <input type="hidden" name="productId" value="<?= $p['productId'] ?>">
-                    <button type="button" class="btn btn-accent btn-sm" onclick="confirmAddToCart(this, '<?= htmlspecialchars($p['name']) ?>')">Add Cart</button>
+                    <?php if ($p['stock'] <= 0): ?>
+                      <button type="button" class="btn btn-secondary btn-sm" disabled>Out of Stock</button>
+                    <?php else: ?>
+                      <button type="button" class="btn btn-accent btn-sm" onclick="confirmAddToCart(this, '<?= htmlspecialchars($p['name']) ?>')">Add Cart</button>
+                    <?php endif; ?>
                   </form>
                   <form method="POST" action="../../backend/controller/addWishlist.php" class="d-inline">
                     <input type="hidden" name="addWishlistProductId" value="<?= $p['productId'] ?>">

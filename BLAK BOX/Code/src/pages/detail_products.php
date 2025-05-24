@@ -58,7 +58,11 @@ if (!$product) {
               <div class="d-flex mt-3 gap-2">
                 <form method="POST" action="../../backend/controller/addCart.php">
                   <input type="hidden" name="productId" value="<?= $product['productId'] ?>">
-                  <button type="button" class="btn btn-accent" onclick="confirmAddToCart(this, '<?= htmlspecialchars($product['name']) ?>')">Add to Cart</button>
+                  <?php if ($p['stock'] <= 0): ?>
+                      <button type="button" class="btn btn-secondary btn-sm" disabled>Out of Stock</button>
+                    <?php else: ?>
+                      <button type="button" class="btn btn-accent btn-sm" onclick="confirmAddToCart(this, '<?= htmlspecialchars($p['name']) ?>')">Add Cart</button>
+                    <?php endif; ?>
                 </form>
 
                 <form method="POST" action="../../backend/controller/addWishlist.php" class="d-inline">

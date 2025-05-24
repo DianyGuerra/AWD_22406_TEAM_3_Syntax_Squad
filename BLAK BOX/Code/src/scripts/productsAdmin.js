@@ -24,7 +24,7 @@ document.querySelectorAll('.btn-edit').forEach(btn => {
     });
 
     if (result.isConfirmed) {
-      fetch('../../backend/models/ProductController.php', {
+      fetch('../../backend/controller/ProductController.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams(data)
@@ -51,7 +51,7 @@ document.querySelectorAll('.btn-delete').forEach(btn => {
     });
 
     if (result.isConfirmed) {
-      fetch('../../backend/models/ProductController.php', {
+      fetch('../../backend/controller/ProductController.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams({ action: 'delete', id: id })

@@ -1,21 +1,26 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
-    exit;
+if (isset($_GET['remove'])) {
+  $removeId = $_GET['remove'];
+
+  if (isset($_SESSION['cart'])) {
+    require_once '../../backend/models/Products.php';
+
+    foreach ($_SESSION['cart'] as $key => $item) {
+      if ($item['productId'] == $removeId) {
+        Product::increaseStock($item['productId'], $item['quantity']);
+
+        unset($_SESSION['cart'][$key]);
+        break;
+      }
+    }
+    $_SESSION['cart'] = array_values($_SESSION['cart']);
+  }
+  header("Location: cartUser.php");
+  exit();
 }
 
-if (isset($_GET['remove'])) {
-    $removeId = $_GET['remove'];
-    if (isset($_SESSION['cart'])) {
-        $_SESSION['cart'] = array_filter($_SESSION['cart'], function($item) use ($removeId) {
-            return $item['productId'] != $removeId;
-        });
-    }
-    header("Location: cartUser.php");
-    exit();
-}
 
 $cart = $_SESSION['cart'] ?? [];
 ?>
