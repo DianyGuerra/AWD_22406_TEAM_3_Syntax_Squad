@@ -1,9 +1,15 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-require_once '../models/ConnectionDB.php';
+require_once '../models/OrderTable.php';
+require_once '../models/OrderProduct.php';
+require_once '../models/Payment.php';
 
 if (!isset($_SESSION['userId']) || empty($_SESSION['cart']) || empty($_POST['paymentMethod'])) {
     header("Location: ../../src/pages/cartUser.php");
@@ -19,39 +25,23 @@ foreach ($cart as $item) {
     $total += $item['price'] * $item['quantity'];
 }
 
-$conn = new ConnectionDB();
-$conn = $conn->connection();
-
 try {
-    
-    $stmt = $conn->prepare("INSERT INTO OrderTable (userId, orderDate, total, status) VALUES (?, NOW(), ?, 'Pending')");
-    $stmt->bind_param("id", $userId, $total);
-    $stmt->execute();
-    $orderId = $stmt->insert_id;
+    $orderId = OrderTable::createOrder($userId, $total);
 
-    
-    $stmtProduct = $conn->prepare("INSERT INTO OrderProduct (orderId, productId, quantity) VALUES (?, ?, ?)");
     foreach ($cart as $item) {
-        $productId = $item['productId'];
-        $quantity = $item['quantity'];
-        $stmtProduct->bind_param("iii", $orderId, $productId, $quantity);
-        $stmtProduct->execute();
+        OrderProduct::addProductToOrder($orderId, $item['productId'], $item['quantity']);
     }
 
-    
-    $stmtPay = $conn->prepare("INSERT INTO Payment (userId, orderId, amount, paymentMethod, paymentDate) VALUES (?, ?, ?, ?, NOW())");
-    $stmtPay->bind_param("iids", $userId, $orderId, $total, $paymentMethod);
-    $stmtPay->execute();
+    Payment::createPayment($userId, $orderId, $total, $paymentMethod);
 
-    $conn->commit();
     $_SESSION['cart'] = [];
-
     $_SESSION['orderMsg'] = "Thank you! Your order has been placed.";
-    
+
 } catch (Exception $e) {
-    $conn->rollback();
     echo "<h2>Error placing order: " . htmlspecialchars($e->getMessage()) . "</h2>";
+    exit();
 }
+
 header("Location: ../../src/pages/cartUser.php");
 exit();
 ?>

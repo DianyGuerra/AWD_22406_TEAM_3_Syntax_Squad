@@ -3,16 +3,6 @@ require_once('ConnectionDB.php');
 
 class Wishlist {
 
-    public $wishlistId;
-    public $userId;
-    public $createdDate;
-
-    public function __construct($wishlistId, $userId, $createdDate) {
-        $this->wishlistId = $wishlistId;
-        $this->userId = $userId;
-        $this->createdDate = $createdDate;
-    }
-
     public static function createWishlist($userId) {
         $database = new ConnectionDB();
         $conn = $database->connection();

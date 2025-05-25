@@ -1,31 +1,15 @@
 <?php
-include('ConnectionDB.php');
+require_once 'ConnectionDB.php';
 
 class OrderProduct {
-
-    public $orderId;
-    public $productId;
-    public $quantity;
-
-    public function __construct($orderId, $productId, $quantity) {
-        $this->orderId = $orderId;
-        $this->productId = $productId;
-        $this->quantity = $quantity;
-    }
 
     public static function addProductToOrder($orderId, $productId, $quantity) {
         $database = new ConnectionDB();
         $conn = $database->connection();
-
         $query = "INSERT INTO OrderProduct(orderId, productId, quantity) VALUES (?, ?, ?)";
         $stmt = mysqli_prepare($conn, $query);
-        mysqli_stmt_bind_param($stmt, "iii", $orderId, $productId, $quantity);
-
-        if (!mysqli_stmt_execute($stmt)) {
-            header('Location: ../../../frontend/Error.php');
-            exit();
-        }
-        header('Location: ../../../frontend/OrderDetails.php?orderId=' . $orderId);
+        mysqli_stmt_bind_param($stmt,"iii", $orderId, $productId, $quantity);
+        mysqli_stmt_execute($stmt);
     }
 
     public static function updateOrderProduct($orderId, $productId, $quantity) {

@@ -2,13 +2,6 @@
 require_once('ConnectionDB.php');
 
 class Category {
-    public $id, $name, $description;
-
-    public function __construct($id, $name, $description) {
-        $this->id = $id;
-        $this->name = $name;
-        $this->description = $description;
-    }
 
     public static function createCategory($name, $description) {
         $db = new ConnectionDB();

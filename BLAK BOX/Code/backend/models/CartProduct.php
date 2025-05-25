@@ -2,15 +2,6 @@
 include('ConnectionDB.php');
 
 class CartProduct {
-    public $cartId;
-    public $productId;
-    public $quantity;
-
-    public function __construct($cartId, $productId, $quantity) {
-        $this->cartId = $cartId;
-        $this->productId = $productId;
-        $this->quantity = $quantity;
-    }
 
     public static function addProductToCart($cartId, $productId, $quantity) {
         $db = new ConnectionDB();

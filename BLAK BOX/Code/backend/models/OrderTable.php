@@ -2,25 +2,17 @@
 require_once 'ConnectionDB.php';
 
 class OrderTable {
-    public $id, $userId, $orderDate, $total, $status;
 
-    public function __construct($id, $userId, $orderDate, $total, $status) {
-        $this->id = $id;
-        $this->userId = $userId;
-        $this->orderDate = $orderDate;
-        $this->total = $total;
-        $this->status = $status;
-    }
-
-    public static function createOrder($userId, $orderDate, $total, $status) {
+    public static function createOrder($userId, $total) {
         $db = new ConnectionDB();
         $conn = $db->connection();
-        $query = "INSERT INTO OrderTable(userId, orderDate, total, status) VALUES (?, ?, ?, ?)";
+        $query = "INSERT INTO OrderTable(userId, orderDate, total, status) VALUES (?, NOW(), ?, 'Pending')";
         $stmt = mysqli_prepare($conn, $query);
-        mysqli_stmt_bind_param($stmt, "isds", $userId, $orderDate, $total, $status);
+        mysqli_stmt_bind_param($stmt,"id", $userId, $total);
         mysqli_stmt_execute($stmt);
-        return mysqli_insert_id($conn);
+        return $conn->insert_id;
     }
+
 
     public static function getOrderById($orderId) {
         $db = new ConnectionDB();

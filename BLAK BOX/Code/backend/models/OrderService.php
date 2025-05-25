@@ -1,5 +1,5 @@
 <?php
-include('ConnectionDB.php');
+require_once 'ConnectionDB.php';
 
 class OrderService {
     public static function getFullOrderById($orderId) {

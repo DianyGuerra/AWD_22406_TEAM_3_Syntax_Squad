@@ -2,18 +2,7 @@
 include('ConnectionDB.php');
 
 class User {
-    public $id, $firstName, $lastName, $email, $password, $userType, $phoneNumber;
-
-    public function __construct($id, $firstName, $lastName, $email, $password, $userType, $phoneNumber) {
-        $this->id = $id;
-        $this->firstName = $firstName;
-        $this->lastName = $lastName;
-        $this->email = $email;
-        $this->password = $password;
-        $this->userType = $userType;
-        $this->phoneNumber = $phoneNumber;
-    }
-
+    
     public static function getUserById($id) {
         $db = new ConnectionDB();
         $conn = $db->connection();

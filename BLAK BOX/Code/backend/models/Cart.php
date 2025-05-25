@@ -2,13 +2,6 @@
 include('ConnectionDB.php');
 
 class Cart {
-    public $id, $userId, $createdDate;
-
-    public function __construct($id, $userId, $createdDate) {
-        $this->id = $id;
-        $this->userId = $userId;
-        $this->createdDate = $createdDate;
-    }
 
     public static function createCart($userId, $createdDate) {
         $db = new ConnectionDB();
