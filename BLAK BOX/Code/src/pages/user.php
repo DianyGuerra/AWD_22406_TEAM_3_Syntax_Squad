@@ -1,13 +1,14 @@
 <?php
 session_start();
-if (!isset($_SESSION['user_id'])) {
+if (!isset($_SESSION['userId'])) {
     header('Location: login.php');
     exit;
 }
 include('../../backend/models/Users.php');
-$userId = $_SESSION['user_id'];
+$userId = $_SESSION['userId'];
 $user = User::getUserById($userId);
 ?>
+
 
 
 <!DOCTYPE html>

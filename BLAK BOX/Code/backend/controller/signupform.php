@@ -127,14 +127,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <p>© 2025 BLAK BOX. All rights reserved.</p>
         </div>
     </footer>
-    <script>
-        const hamburger = document.getElementById('hamburger');
-        const navMenu = document.getElementById('navMenu');
-
-        hamburger.addEventListener('click', () => {
-        hamburger.classList.toggle('active');
-        navMenu.classList.toggle('show');
-        });
-    </script>
+    <script src="../../src/scripts/loginvalidations.js"></script>
 </body>
 </html>

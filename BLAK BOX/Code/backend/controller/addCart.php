@@ -2,7 +2,7 @@
 session_start();
 include('../models/Products.php');
 
-if (!isset($_SESSION['user_id'])) {
+if (!isset($_SESSION['userId'])) {
     header('Location: ../../src/pages/Login.php');
     exit;
 }
@@ -12,7 +12,7 @@ if (isset($_POST['productId'])) {
     $product = Product::getProductById($productId);
 
     if (!$product || $product['stock'] <= 0) {
-        $_SESSION['products_msg'] = "This product is out of stock.";
+        $_SESSION['productsMsg'] = "This product is out of stock.";
         header("Location: ../../src/pages/productsUser.php");
         exit;
     }
@@ -42,7 +42,7 @@ if (isset($_POST['productId'])) {
     $newStock = $product['stock'] - 1;
     Product::updateStock($productId, $newStock);
 
-    $_SESSION['products_msg'] = "Product added to cart.";
+    $_SESSION['productsMsg'] = "Product added to cart.";
 }
 
 header("Location: ../../src/pages/productsUser.php");

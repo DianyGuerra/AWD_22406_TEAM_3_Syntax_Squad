@@ -22,53 +22,18 @@ while ($row = $result->fetch_assoc()) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Admin - Products</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
   <link rel="stylesheet" href="../../src/styles/styleAdmin.css" />
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>
 <body>
   
-  <nav class="navbar navbar-dark bg-dark d-lg-none">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">
-        <img src="../../Images/Logoblanco-removebg-preview.png" alt="Blak Box Logo" style="height: 40px; filter: invert(1) brightness(2);">
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-    </div>
-  </nav>
-  
-  <div class="offcanvas offcanvas-start bg-dark text-white" tabindex="-1" id="offcanvasMenu">
-    <div class="offcanvas-header">
-      <h5 class="offcanvas-title">Menú</h5>
-      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
-    </div>
-    <div class="offcanvas-body">
-      <ul class="nav flex-column">
-        <li class="nav-item"><a class="nav-link text-white" href="./admin.php">Dashboard</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="../../src/pages/productsAdmin.php">Products</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="../../src/pages/ordersAdmin.php">Orders</a></li>
-        <li class="nav-item"><a class="nav-link text-danger" href="../../backend/controller/logOut.php">Logout</a></li>
-      </ul>
-    </div>
-  </div>
+  <?php include('headerResponsiveAdmin.php'); ?>
 
   <div class="d-flex flex-column flex-lg-row min-vh-100">
     
-    
-    <aside class="bg-dark text-white p-3 sidebar d-none d-lg-block">
-      <div class="text-center mb-4">
-        <img src="../../Images/Logoblanco-removebg-preview.png" alt="Blak Box Logo" class="img-fluid" style="max-height: 150px; filter: invert(1) brightness(2);">
-      </div>
-      <ul class="nav flex-column">
-        <li class="nav-item"><a class="nav-link text-white" href="./admin.php">Dashboard</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="../../src/pages/productsAdmin.php">Products</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="../../src/pages/ordersAdmin.php">Orders</a></li>
-        <li class="nav-item"><a class="nav-link text-danger" href="../../backend/controller/logOut.php">Logout</a></li>
-      </ul>
-    </aside>
-
+    <?php include('headerAdmin.php'); ?>
     
     <main class="flex-fill bg-purple-darker p-4">
       <h1>Product Manager</h1>
@@ -110,39 +75,40 @@ while ($row = $result->fetch_assoc()) {
           </form>
         </div>
       </div>
+      <div class="table-responsive">
         <table id="productTable" class="table-products">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Descripción</th>
-            <th>Price</th>
-            <th>Stock</th>
-            <th>Category</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        
-        <tbody>
-          <?php
-          include('../../backend/models/Products.php');
-          $productos = Product::listAllProducts();
-          foreach ($productos as $p) {
-            echo "<tr data-id='{$p['productId']}'>
-              <td contenteditable='true' class='editable' data-field='name'>{$p['name']}</td>
-              <td contenteditable='true' class='editable' data-field='description'>{$p['description']}</td>
-              <td contenteditable='true' class='editable' data-field='price'>{$p['price']}</td>
-              <td contenteditable='true' class='editable' data-field='stock'>{$p['stock']}</td>
-              <td contenteditable='true' class='editable' data-field='categoryId'>{$p['categoryId']}</td>
-              <td>
-                <button class='btn-edit'>Update</button>
-                <button class='btn-delete'>Delete</button>
-              </td>
-            </tr>";
-          }
-          ?>
-        </tbody>
-      </table>
-
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Descripción</th>
+              <th>Price</th>
+              <th>Stock</th>
+              <th>Category</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          
+          <tbody>
+            <?php
+            include('../../backend/models/Products.php');
+            $productos = Product::listAllProducts();
+            foreach ($productos as $p) {
+              echo "<tr data-id='{$p['productId']}'>
+                <td contenteditable='true' class='editable' data-field='name'>{$p['name']}</td>
+                <td contenteditable='true' class='editable' data-field='description'>{$p['description']}</td>
+                <td contenteditable='true' class='editable' data-field='price'>{$p['price']}</td>
+                <td contenteditable='true' class='editable' data-field='stock'>{$p['stock']}</td>
+                <td contenteditable='true' class='editable' data-field='categoryId'>{$p['categoryId']}</td>
+                <td>
+                  <button class='btn-edit'>Update</button>
+                  <button class='btn-delete'>Delete</button>
+                </td>
+              </tr>";
+            }
+            ?>
+          </tbody>
+        </table>
+      </div>
 
 
 

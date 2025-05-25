@@ -8,11 +8,11 @@ include('../../backend/models/Users.php');
 include('../../backend/models/Wishlist.php');
 include('../../backend/models/OrderTable.php');
 
-if (!isset($_SESSION['user_id'])) {
+if (!isset($_SESSION['userId'])) {
     header('Location: login.php');
     exit;
 }
-$userId = $_SESSION['user_id'];
+$userId = $_SESSION['userId'];
 $user = User::getUserById($userId);
 $wishlistProducts = Wishlist::getUserWishlistProducts($userId);
 $orders = OrderTable::getUserOrdersWithProducts($userId);
@@ -81,11 +81,11 @@ $orders = OrderTable::getUserOrdersWithProducts($userId);
         </table>
         
         <h1>&nbsp;</h1>
-        <?php if (isset($_SESSION['profile_msg'])): ?>
+        <?php if (isset($_SESSION['profileMsg'])): ?>
           <div class="alert alert-info text-center ">
-            <?= htmlspecialchars($_SESSION['profile_msg']) ?>
+            <?= htmlspecialchars($_SESSION['profileMsg']) ?>
           </div>
-          <?php unset($_SESSION['profile_msg']); ?>
+          <?php unset($_SESSION['profileMsg']); ?>
         <?php endif; ?>
       </div>
 

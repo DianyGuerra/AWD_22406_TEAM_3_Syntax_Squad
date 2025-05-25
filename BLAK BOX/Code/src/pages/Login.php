@@ -51,9 +51,9 @@ session_start();
                 <h2 class="title">Log in</h2>
 
                 <?php
-                    if (isset($_SESSION['login_error'])) {
-                        echo "<div class='alert alert-danger'>{$_SESSION['login_error']}</div>";
-                        unset($_SESSION['login_error']);
+                    if (isset($_SESSION['loginError'])) {
+                        echo "<div class='alert alert-danger'>{$_SESSION['loginError']}</div>";
+                        unset($_SESSION['loginError']);
                     }
                 ?>
 

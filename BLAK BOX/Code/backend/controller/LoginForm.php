@@ -10,7 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $password = trim($_POST['password']);
 
     if (empty($email) || empty($password)) {
-        $_SESSION['login_error'] = "Please fill in all fields.";
+        $_SESSION['loginError'] = "Please fill in all fields.";
         header("Location: ../../src/pages/Login.php?error=Please+fill+in+all+fields");
         exit;
     }
@@ -24,9 +24,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         if ($user) {
             if (password_verify($password, $user['password'])) {
-                $_SESSION['user_id'] = $user['userId'];
-                $_SESSION['user_email'] = $user['email'];
-                $_SESSION['user_type'] = $user['userType'];
+                $_SESSION['userId'] = $user['userId'];
+                $_SESSION['userEmail'] = $user['email'];
+                $_SESSION['userType'] = $user['userType'];
 
                 if ($user['userType'] === 'user') {
                     header("Location: ../../src/pages/user.php");
@@ -36,17 +36,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     exit;
                 }
             } else {
-                $_SESSION['login_error'] = "Incorrect password.";
+                $_SESSION['loginError'] = "Incorrect password.";
                 header("Location: ../../src/pages/Login.php?error=Incorrect+password");
                 exit;
             }
         } else {
-            $_SESSION['login_error'] = "User not found.";
+            $_SESSION['loginError'] = "User not found.";
             header("Location: ../../src/pages/Login.php?error=User+not+found");
             exit;
         }
     } catch (Exception $e) {
-        $_SESSION['login_error'] = "Error in the database.";
+        $_SESSION['loginError'] = "Error in the database.";
         header("Location: ../../src/pages/Login.php?error=Error+in+the+database");
         exit;
     }

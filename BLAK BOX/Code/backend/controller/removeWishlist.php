@@ -2,7 +2,7 @@
 session_start();
 include('../models/Wishlist.php');
 
-if (!isset($_SESSION['user_id'])) {
+if (!isset($_SESSION['userId'])) {
     header('Location: ../../src/pages/Login.php');
     exit;
 }
@@ -14,9 +14,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['wishlistId']) && isse
     $deleted = Wishlist::removeProductFromWishlist($wishlistId, $productId);
 
     if ($deleted) {
-        $_SESSION['profile_msg'] = "Product removed from wishlist.";
+        $_SESSION['profileMsg'] = "Product removed from wishlist.";
     } else {
-        $_SESSION['profile_msg'] = "Error removing product from wishlist.";
+        $_SESSION['profileMsg'] = "Error removing product from wishlist.";
     }
 }
 

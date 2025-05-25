@@ -81,11 +81,11 @@ $cart = $_SESSION['cart'] ?? [];
       </div>
       <?php endif; ?>
 
-      <?php if (isset($_SESSION['order_msg'])): ?>
+      <?php if (isset($_SESSION['orderMsg'])): ?>
         <div class="alert alert-info text-center">
-          <?= htmlspecialchars($_SESSION['order_msg']) ?>
+          <?= htmlspecialchars($_SESSION['orderMsg']) ?>
         </div>
-        <?php unset($_SESSION['order_msg']); ?>
+        <?php unset($_SESSION['orderMsg']); ?>
       <?php endif; ?>
     </div>
   </div>

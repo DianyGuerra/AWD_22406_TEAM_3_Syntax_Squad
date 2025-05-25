@@ -61,7 +61,7 @@ $productsCategories = Product::listAllProductsCategories();
                   <p><strong>$<?= number_format($p['price'], 2) ?></strong></p>
                 </div>
                 <div class="mt-3 d-flex justify-content-between align-items-center">
-                  <a href="detail_products.php?id=<?= $p['productId'] ?>" class="btn btn-outline-light btn-sm">View</a>
+                  <a href="detailProducts.php?id=<?= $p['productId'] ?>" class="btn btn-outline-light btn-sm">View</a>
                   <form method="POST" action="../../backend/controller/addCart.php" class="add-to-cart-form">
                     <input type="hidden" name="productId" value="<?= $p['productId'] ?>">
                     <?php if ($p['stock'] <= 0): ?>
@@ -82,11 +82,11 @@ $productsCategories = Product::listAllProductsCategories();
       </div>
 
       <h1>&nbsp;</h1>
-      <?php if (isset($_SESSION['products_msg'])): ?>
+      <?php if (isset($_SESSION['productsMsg'])): ?>
           <div class="alert alert-info text-center">
-            <?= htmlspecialchars($_SESSION['products_msg']) ?>
+            <?= htmlspecialchars($_SESSION['productsMsg']) ?>
           </div>
-          <?php unset($_SESSION['products_msg']); ?>
+          <?php unset($_SESSION['productsMsg']); ?>
       <?php endif; ?>
     </div>
   </div>

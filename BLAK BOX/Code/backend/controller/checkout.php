@@ -5,12 +5,12 @@ if (session_status() === PHP_SESSION_NONE) {
 
 require_once '../models/ConnectionDB.php';
 
-if (!isset($_SESSION['user_id']) || empty($_SESSION['cart']) || empty($_POST['paymentMethod'])) {
+if (!isset($_SESSION['userId']) || empty($_SESSION['cart']) || empty($_POST['paymentMethod'])) {
     header("Location: ../../src/pages/cartUser.php");
     exit();
 }
 
-$userId = $_SESSION['user_id'];
+$userId = $_SESSION['userId'];
 $cart = $_SESSION['cart'];
 $paymentMethod = $_POST['paymentMethod'];
 $total = 0;
@@ -46,7 +46,7 @@ try {
     $conn->commit();
     $_SESSION['cart'] = [];
 
-    $_SESSION['order_msg'] = "Thank you! Your order has been placed.";
+    $_SESSION['orderMsg'] = "Thank you! Your order has been placed.";
     
 } catch (Exception $e) {
     $conn->rollback();

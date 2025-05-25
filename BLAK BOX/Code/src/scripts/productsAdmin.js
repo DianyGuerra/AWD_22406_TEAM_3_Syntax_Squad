@@ -65,23 +65,52 @@ document.querySelectorAll('.btn-delete').forEach(btn => {
     }
   });
 });
-    
-    const urlParams = new URLSearchParams(window.location.search);
-    const status = urlParams.get('status');
-    const msg = urlParams.get('msg');
 
-    if (status === 'success') {
-      Swal.fire({
-        icon: 'success',
-        title: 'Success!',
-        text: 'Product registered successfully.',
-        confirmButtonColor: '#7B2CBF',
-      });
-    } else if (status === 'error') {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: decodeURIComponent(msg),
-        confirmButtonColor: '#C77DFF',
-      });
+document.getElementById('statusForm').addEventListener('submit', function (e) {
+  e.preventDefault(); 
+
+  const select = document.getElementById('statusSelect');
+  const selectedStatus = select.value;
+
+  if (!selectedStatus) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Please select a status',
+      confirmButtonText: 'OK'
+    });
+    return;
+  }
+
+  Swal.fire({
+    title: 'Are you sure?',
+    text: `You are about to change the order status to "${selectedStatus}"`,
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, change it',
+    cancelButtonText: 'Cancel'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      e.target.submit(); 
     }
+  });
+});
+    
+  const urlParams = new URLSearchParams(window.location.search);
+  const status = urlParams.get('status');
+  const msg = urlParams.get('msg');
+
+  if (status === 'success') {
+    Swal.fire({
+      icon: 'success',
+      title: 'Success!',
+      text: 'Product registered successfully.',
+      confirmButtonColor: '#7B2CBF',
+    });
+  } else if (status === 'error') {
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: decodeURIComponent(msg),
+      confirmButtonColor: '#C77DFF',
+    });
+  }

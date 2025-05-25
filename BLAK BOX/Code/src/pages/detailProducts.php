@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['user_id'])) {
+if (!isset($_SESSION['userId'])) {
     header('Location: login.php');
     exit;
 }
@@ -58,10 +58,10 @@ if (!$product) {
               <div class="d-flex mt-3 gap-2">
                 <form method="POST" action="../../backend/controller/addCart.php">
                   <input type="hidden" name="productId" value="<?= $product['productId'] ?>">
-                  <?php if ($p['stock'] <= 0): ?>
+                  <?php if ($product['stock'] <= 0): ?>
                       <button type="button" class="btn btn-secondary btn-sm" disabled>Out of Stock</button>
                     <?php else: ?>
-                      <button type="button" class="btn btn-accent btn-sm" onclick="confirmAddToCart(this, '<?= htmlspecialchars($p['name']) ?>')">Add Cart</button>
+                      <button type="button" class="btn btn-accent btn-sm" onclick="confirmAddToCart(this, '<?= htmlspecialchars($product['name']) ?>')">Add Cart</button>
                     <?php endif; ?>
                 </form>
 

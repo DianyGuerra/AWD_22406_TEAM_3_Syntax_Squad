@@ -165,5 +165,6 @@
     </footer>
 
     <script src="./src/scripts/carousel.js" defer></script>
+    <script src="./src/scripts/loginvalidations.js" defer></script>
 </body>
 </html>

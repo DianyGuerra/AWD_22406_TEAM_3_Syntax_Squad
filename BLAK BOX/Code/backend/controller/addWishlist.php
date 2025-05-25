@@ -2,20 +2,20 @@
 session_start();
 include('../models/Wishlist.php');
 
-if (!isset($_SESSION['user_id'])) {
+if (!isset($_SESSION['userId'])) {
     header('Location: ../../src/pages/Login.php');
     exit;
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addWishlistProductId'])) {
     $productId = (int)$_POST['addWishlistProductId'];
-    $userId = (int)$_SESSION['user_id'];
+    $userId = (int)$_SESSION['userId'];
 
     $added = Wishlist::addProductToWishlist($userId, $productId);
     if ($added) {
-        $_SESSION['products_msg'] = "Product added to wishlist.";
+        $_SESSION['productsMsg'] = "Product added to wishlist.";
     } else {
-        $_SESSION['products_msg'] = "The product is already in your wishlist.";
+        $_SESSION['productsMsg'] = "The product is already in your wishlist.";
     }
 }
 

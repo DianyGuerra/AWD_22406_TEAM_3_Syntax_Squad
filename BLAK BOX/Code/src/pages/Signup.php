@@ -104,6 +104,7 @@
     </footer>
 
     <script src="../scripts/formvalidations.js" defer></script>
+    <script src="../scripts/loginvalidations.js" defer></script>
 </body>
 
 </html>

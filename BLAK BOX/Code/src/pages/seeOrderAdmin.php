@@ -75,37 +75,6 @@ if (!$order) {
   </div>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-<script>
-    document.getElementById('statusForm').addEventListener('submit', function (e) {
-      e.preventDefault(); 
-
-      const select = document.getElementById('statusSelect');
-      const selectedStatus = select.value;
-
-      if (!selectedStatus) {
-        Swal.fire({
-          icon: 'warning',
-          title: 'Please select a status',
-          confirmButtonText: 'OK'
-        });
-        return;
-      }
-
-      Swal.fire({
-        title: 'Are you sure?',
-        text: `You are about to change the order status to "${selectedStatus}"`,
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonText: 'Yes, change it',
-        cancelButtonText: 'Cancel'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          e.target.submit(); 
-        }
-      });
-    });
-</script>
-
+<script src="../productsAdmin.js"></script>
 </body>
 </html>

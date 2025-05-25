@@ -7,15 +7,15 @@ class Product {
     public $description;
     public $price;
     public $stock;
-    public $category_id;
+    public $categoryId;
 
-    public function __construct($id, $name, $description, $price, $stock, $category_id) {
+    public function __construct($id, $name, $description, $price, $stock, $categoryId) {
         $this->id = $id;
         $this->name = $name;
         $this->description = $description;
         $this->price = $price;
         $this->stock = $stock;
-        $this->category_id = $category_id;
+        $this->category_id = $categoryId;
     }
 
     public static function getProductById($id) {
