@@ -48,13 +48,6 @@ class Category {
         mysqli_stmt_execute($stmt);
     }
 
-    public static function deleteCategory($id) {
-        $db = new ConnectionDB();
-        $conn = $db->connection();
-        $query = "DELETE FROM Category WHERE categoryId = ?";
-        $stmt = mysqli_prepare($conn, $query);
-        mysqli_stmt_bind_param($stmt, "i", $id);
-        mysqli_stmt_execute($stmt);
-    }
+    
 }
 ?>
