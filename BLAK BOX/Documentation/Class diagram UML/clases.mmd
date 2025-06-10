@@ -104,18 +104,19 @@ classDiagram
         + trackShipping()
     }
 
-
-    User --|> Cart : "Owns"
-    Cart --> Order : "Generates"
-    Order --> Payment : "Paid with"
-    Order --> Shipping : "Has"
-    Product --> Inventory : "Managed in"
-    Product --> Cart : "Added to"
-    Cart --> CartProduct : "Contains"
-    Order --> OrderProduct : "Has products"
-    Product --> Category : "Belongs to"
-    User --|> Wishlist : "Creates"
-    Wishlist --> WishlistProduct : "Has products"
+    User "1" --> "1" Cart : "has"
+    User "1" --> "1" Order : "places"
+    User "1" --> "1" Wishlist : "creates"
+    Cart "1" --> "0..*" CartProduct : "contains"
+    CartProduct "1" --> "1" Product : "refers to"
+    Order "1" --> "0..*" OrderProduct : "includes"
+    OrderProduct "1" --> "1" Product : "refers to"
+    Product "1" --> "1" Category : "belongs to"
+    Product "1" --> "1" Inventory : "tracked in"
+    Order "1" --> "1" Payment : "is paid by"
+    Order "1" --> "1" Shipping : "has"
+    Wishlist "1" --> "0..*" WishlistProduct : "contains"
+    WishlistProduct "1" --> "1" Product : "refers to"
 
     classDef entity fill:#cce7ff,stroke:#004080,stroke-width:2px;
     classDef relationship fill:#e6ffe6,stroke:#004080,stroke-width:2px;
