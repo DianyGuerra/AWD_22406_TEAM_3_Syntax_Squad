@@ -1,5 +1,8 @@
 const Product = require('../models/product');
 
+//------------------------------------------------------------------------PRODUCT operations-----------------------------------------------------
+
+//GET: get all products
 const getAllProducts = async (req, res) => {
   try {
     const products = await Product.find()
@@ -10,6 +13,69 @@ const getAllProducts = async (req, res) => {
     res.status(500).json({ message: "Server error while getting products." });
   }
 };
+
+//POST: Create a new product
+const createProduct = async (req, res) => {
+  try {
+    const { name, price, category, stock } = req.body;
+
+    const newProduct = new Product({
+      name,
+      price,
+      stock,
+      brand: "--", 
+      description: "--",
+      categoryId: category, 
+    });
+
+    await newProduct.save();
+    res.status(201).json({ message: 'Product created successfully' });
+
+  } catch (error) {
+    console.error("Error creating product:", error);
+    res.status(500).json({ message: 'Server error while creating product' });
+  }
+};
+
+
+//PUT:  Update an existing product
+const updateProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updateData = req.body;
+
+    const updated = await Product.findByIdAndUpdate(id, updateData, { new: true });
+
+    if (!updated) {
+      return res.status(404).json({ message: 'Producto not found' });
+    }
+
+    res.status(204).send(); // No Content
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+};
+
+//DELETE:  Delete a product
+const deleteProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const deleted = await Product.findByIdAndDelete(id);
+
+    if (!deleted) {
+      return res.status(404).json({ message: 'Producto not found' });
+    }
+
+    res.status(204).send(); // No Content
+  } catch (error) {
+    console.error("Error", error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+};
+
+//-----------------------------------------------------------------------SERVICES operations for products-----------------------------------------------------
 
 const getProductById = async (req, res) => {
   try {
@@ -37,64 +103,40 @@ const getProductById = async (req, res) => {
   }
 };
 
-const createProduct = async (req, res) => {
-  try {
-    const { name, price, category, stock } = req.body;
-
-    const newProduct = new Product({
-      name,
-      price,
-      stock,
-      brand: "--", 
-      description: "--",
-      categoryId: category, 
-    });
-
-    await newProduct.save();
-    res.status(201).json({ message: 'Product created successfully' });
-
-  } catch (error) {
-    console.error("Error creating product:", error);
-    res.status(500).json({ message: 'Server error while creating product' });
-  }
-};
-
-const updateProduct = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const updateData = req.body;
-
-    const updated = await Product.findByIdAndUpdate(id, updateData, { new: true });
-
-    if (!updated) {
-      return res.status(404).json({ message: 'Producto not found' });
+// Get products by price range
+const getProductsByPriceRange = async (req, res) => {
+    try {
+        const minPrice = parseFloat(req.params.min);
+        const maxPrice = parseFloat(req.params.max);
+        const products = await Product.find({ price: { $gte: minPrice, $lte: maxPrice } });
+        if (products.length === 0) {
+            return res.status(404).json({ message: "No products found in this price range." });
+        }
+        res.status(200).json(products);
+    } catch (error) {
+        console.error("Error getting products by price range:", error);
+        res.status(500).json({ message: "Server error while getting products by price range." });
     }
-
-    res.status(204).send(); // No Content
-  } catch (error) {
-    console.error("Error:", error);
-    res.status(500).json({ message: 'Server Error' });
-  }
 };
 
-
-const deleteProduct = async (req, res) => {
+// Get products with low stock
+const getLowStockProducts = async (req, res) => {
   try {
-    const { id } = req.params;
+    const threshold = 5;
 
-    const deleted = await Product.findByIdAndDelete(id);
+    const lowStockProducts = await Product.find({ stock: { $lte: threshold } })
+      .select('name stock');
 
-    if (!deleted) {
-      return res.status(404).json({ message: 'Producto not found' });
-    }
+    res.status(200).json(lowStockProducts);
 
-    res.status(204).send(); // No Content
   } catch (error) {
-    console.error("Error", error);
-    res.status(500).json({ message: 'Server Error' });
+    console.error("Error getting low stock products:", error);
+    res.status(500).json({ message: "Server error while fetching low stock products." });
   }
 };
 
+
+// Search products by keyword
 const searchProducts = async (req, res) => {
   try {
     const { keyword } = req.query;
@@ -111,6 +153,8 @@ const searchProducts = async (req, res) => {
   }
 };
 
+
+// Filter products by price range
 const filterProductsByPrice = async (req, res) => {
   try {
     const { minPrice = 0, maxPrice = Infinity } = req.query;
@@ -150,22 +194,9 @@ const getTopSellingProducts = async (req, res) => {
   }
 };
 
-const getLowStockProducts = async (req, res) => {
-  try {
-    const products = await Product.find({ stock: { $lte: 5 } }).select('name stock');
 
-    const formatted = products.map(p => ({
-      id: p._id,
-      name: p.name,
-      stock: p.stock
-    }));
 
-    res.status(200).json(formatted);
-  } catch (err) {
-    res.status(500).json({ message: 'Error retrieving low stock products' });
-  }
-};
-
+// Update product stock
 const updateProductStock = async (req, res) => {
   try {
     const { id } = req.params;
@@ -183,6 +214,8 @@ const updateProductStock = async (req, res) => {
   }
 };
 
+
+// Get products with discounts
 const getDiscountedProducts = async (req, res) => {
   try {
     const products = await Product.find({ discount: { $ne: "0%" } }).select('name discount');
@@ -208,5 +241,8 @@ module.exports = {
   getTopSellingProducts,
   getLowStockProducts,
   updateProductStock,
+  getProductsByPriceRange,
+  deleteProduct,
+  getDiscountedProducts,
 };
 

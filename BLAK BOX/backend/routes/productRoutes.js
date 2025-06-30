@@ -16,4 +16,7 @@ router.get('/products/discounted', productController.getDiscountedProducts);
 router.get('/products/discounted', productController.getDiscountedProducts);
 
 
+router.get('/products/price/:min/:max', productController.getProductsByPriceRange);
+router.get('/products/lowStock', productController.getLowStockProducts);
+
 module.exports = router;

@@ -11,7 +11,7 @@ const productSchema = new mongoose.Schema(
     discount: { type: String, default: "0%" },
     sales: { type: Number, default: 0 }
 }, {
-  timestamps: true
+  collection: 'product'
 });
 
 module.exports = mongoose.model('Product', productSchema, 'product');

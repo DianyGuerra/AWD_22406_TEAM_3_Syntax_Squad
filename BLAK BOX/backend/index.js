@@ -45,6 +45,9 @@ app.use('/api', shippingRoutes);
 const brandRoutes = require('./routes/brandRoutes');
 app.use('/api', brandRoutes);
 
+const notificationsRoutes = require('./routes/notificationsRoutes');
+app.use('/api', notificationsRoutes);
+
 mongoose.connect(process.env.MONGO_URI, {
   useUnifiedTopology: true,
 })

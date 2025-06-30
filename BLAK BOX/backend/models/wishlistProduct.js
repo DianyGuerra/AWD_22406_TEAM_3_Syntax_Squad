@@ -12,7 +12,7 @@ const wishlistProductSchema = new mongoose.Schema({
         required: true
     }
 }, {
-  timestamps: true
+  collection: 'wishlistproduct'
 });
 
-module.exports = mongoose.model('WishlistProduct', wishlistProductSchema, 'wishlistProduct');
+module.exports = mongoose.model('WishlistProduct', wishlistProductSchema, 'wishlistproduct');

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
     firstName: {
@@ -36,7 +37,7 @@ const userSchema = new mongoose.Schema({
         match: [/^\+?[0-9]{7,14}$/, 'Please enter a valid phone number']
     },
 }, {
-  timestamps: true
+  collection: 'user'
 });
 
 module.exports = mongoose.model('User', userSchema, 'user');

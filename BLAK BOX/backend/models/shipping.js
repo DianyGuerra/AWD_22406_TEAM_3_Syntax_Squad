@@ -28,7 +28,7 @@ const shippingSchema = new mongoose.Schema({
         required: true
     }
 }, {
-  timestamps: true
+  collection: 'shipping'
 });
 
 module.exports = mongoose.model('Shipping', shippingSchema, 'shipping');

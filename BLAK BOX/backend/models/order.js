@@ -18,11 +18,11 @@ const orderSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['pending', 'paid', 'shipped', 'delivered', 'cancelled'],
+        enum: ['pending', 'paid', 'shipped', 'delivered', 'completed', 'cancelled'],
         default: 'pending'
     }
 }, {
-  timestamps: true
+  collection: 'order'
 });
 
 module.exports = mongoose.model('Order', orderSchema, 'order');
