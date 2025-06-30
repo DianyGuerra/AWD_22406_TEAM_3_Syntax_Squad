@@ -154,7 +154,6 @@ const searchProducts = async (req, res) => {
 };
 
 
-// Filter products by price range
 const filterProductsByPrice = async (req, res) => {
   try {
     const { minPrice = 0, maxPrice = Infinity } = req.query;
