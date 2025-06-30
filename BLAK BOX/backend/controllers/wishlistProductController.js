@@ -36,7 +36,49 @@ const addProductToWishlist = async (req, res) => {
   }
 };
 
+
+
+const AddProductToWishlist = async (req, res) => {
+  const { wishlistId, productId } = req.body;
+  const entry = new WishlistProduct({ wishlistId, productId });
+  try {
+      await entry.save();
+      res.status(201).json({ message: "Product added to wishlist" });
+  } catch (err) {
+      res.status(500).json({ message: err.message });
+  }
+};
+
+const GetProductsWishlist = async (req, res) => {
+  try {
+      const items = await WishlistProduct.find({ wishlistId: req.params.wishlistId }).populate("productId");
+      const products = items.map(i => ({
+          productId: i.productId._id,
+          name: i.productId.name
+      }));
+      res.status(200).json(products);
+  } catch (err) {
+      res.status(500).json({ message: err.message });
+  }
+};
+
+const DeleteProductFromWishlist = async (req, res) => {
+    try {
+        await WishlistProduct.findOneAndDelete({
+            wishlistId: req.params.wishlistId,
+            productId: req.params.productId
+        });
+        res.status(200).json({ message: "Product removed from wishlist" });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
+
+
 module.exports = {
   getAllWishlistProducts,
-  addProductToWishlist
+  addProductToWishlist,
+  AddProductToWishlist,
+  GetProductsWishlist,
+  DeleteProductFromWishlist
 };

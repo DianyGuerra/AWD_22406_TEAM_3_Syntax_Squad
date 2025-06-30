@@ -87,9 +87,19 @@ const checkoutCart = async (req, res) => {
   }
 };
 
+const GetCartByID = async (req, res) => {
+    try {
+        const cart = await Cart.findOne({ userId: req.params.userId });
+        if (!cart) return res.status(404).json({ message: "Cart not found" });
+        res.status(200).json(cart);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
 
 module.exports = {
   getAllCarts,
   createCart,
-  checkoutCart
+  checkoutCart,
+  GetCartByID
 };

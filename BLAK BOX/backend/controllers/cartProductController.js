@@ -66,9 +66,56 @@ const getCartProductsByCartId = async (req, res) => {
 };
 
 
+const AddProductToCart = async (req, res) => {
+    const { cartId, productId, quantity } = req.body;
+    const newItem = new CartProduct({ cartId, productId, quantity });
+    try {
+        await newItem.save();
+        res.status(201).json({ message: "Product added to cart" });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
+
+const UpdateProductCart = async (req, res) => {
+    try {
+        await CartProduct.findOneAndUpdate(
+            { cartId: req.params.cartId, productId: req.params.productId },
+            { quantity: req.body.quantity }
+        );
+        res.status(200).json({ message: "Quantity updated" });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
+
+const DeleteProductFromCart = async (req, res) => {
+    try {
+        await CartProduct.findOneAndDelete({
+            cartId: req.params.cartId,
+            productId: req.params.productId
+        });
+        res.status(200).json({ message: "Product removed from cart" });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
+
+const ClearCartProduct = async (req, res) => {
+    try {
+        await CartProduct.deleteMany({ cartId: req.params.cartId });
+        res.status(200).json({ message: "Cart cleared" });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
 
 module.exports = {
   getAllCartProducts,
   addCartProduct,
   getCartProductsByCartId,
+  AddProductToCart,
+  UpdateProductCart,
+  DeleteProductFromCart,
+  ClearCartProduct
 };

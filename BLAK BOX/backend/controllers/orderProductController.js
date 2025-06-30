@@ -12,6 +12,65 @@ const getAllOrderProducts = async (req, res) => {
   }
 };
 
+
+
+const GetAllProductToOrder = async (req, res) => {
+    try {
+        const items = await OrderProduct.find({ orderId: req.params.orderId }).populate("productId");
+        const result = items.map(i => ({
+            productId: i.productId._id,
+            name: i.productId.name,
+            quantity: i.quantity
+        }));
+        res.status(200).json(result);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
+
+const AddProductToOrder = async (req, res) => {
+    const { productId, quantity } = req.body;
+    const item = new OrderProduct({
+        orderId: req.params.orderId,
+        productId,
+        quantity
+    });
+    try {
+        await item.save();
+        res.status(201).json({ message: "Product added to order" });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
+
+const UpdateProductOrder = async (req, res) => {
+    try {
+        await OrderProduct.findOneAndUpdate(
+            { orderId: req.params.orderId, productId: req.params.productId },
+            { quantity: req.body.quantity }
+        );
+        res.status(200).json({ message: "Order quantity updated" });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
+
+const DeleteProductFromOrder = async (req, res) => {
+    try {
+        await OrderProduct.findOneAndDelete({
+            orderId: req.params.orderId,
+            productId: req.params.productId
+        });
+        res.status(200).json({ message: "Product removed from order" });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
+
 module.exports = {
-  getAllOrderProducts
+  getAllOrderProducts,
+  GetAllProductToOrder,
+  AddProductToOrder,
+  UpdateProductOrder,
+  DeleteProductFromOrder
 };
