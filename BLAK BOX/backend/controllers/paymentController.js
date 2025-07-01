@@ -33,7 +33,7 @@ const createNewPayment = async (req, res) => {
     });
 
     const savedPayment = await newPayment.save();
-    res.status(201).json(savedPayment);
+    res.status(201).json({message: "Payment created successfully.", payment: savedPayment });
   } catch (error) {
     console.error("Error creating payment:", error);
     res.status(500).json({ message: "Server error while creating payment." });

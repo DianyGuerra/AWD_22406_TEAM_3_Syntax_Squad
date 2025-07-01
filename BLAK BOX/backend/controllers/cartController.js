@@ -87,9 +87,37 @@ const checkoutCart = async (req, res) => {
   }
 };
 
+// GET total price of items in a cart
+const getTotalCartPrice = async (req, res) => {
+  const { cartId } = req.query;
+
+  if (!cartId) {
+    return res.status(400).json({ message: "Cart ID is required." });
+  }
+
+  try {
+    const cartProducts = await CartProduct.find({ cartId }).populate('productId');
+
+    if (!cartProducts || cartProducts.length === 0) {
+      return res.status(404).json({ message: "Cart not found or is empty." });
+    }
+
+    const total = cartProducts.reduce((sum, item) => {
+      return sum + (item.productId.price * item.quantity);
+    }, 0);
+
+    res.status(200).json({ total: parseFloat(total.toFixed(2)) });
+
+  } catch (error) {
+    console.error("Error getting total cart price:", error);
+    res.status(500).json({ message: "Server error while calculating total price." });
+  }
+};
+
 
 module.exports = {
   getAllCarts,
   createCart,
-  checkoutCart
+  checkoutCart,
+  getTotalCartPrice
 };

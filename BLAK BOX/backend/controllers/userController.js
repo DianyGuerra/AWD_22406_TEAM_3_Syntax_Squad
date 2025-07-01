@@ -20,7 +20,8 @@ const createNewUser = async (req, res) => {
   try {
     const newUser = new User({ firstName, lastName, email, password, phoneNumber});
     await newUser.save();
-    res.status(201).json(newUser);
+    res.status(201).json({ message: "User created successfully", user: newUser });
+
   } catch (error) {
     console.error("Error creating user:", error);
     res.status(500).json({ message: "Server error while creating user." });

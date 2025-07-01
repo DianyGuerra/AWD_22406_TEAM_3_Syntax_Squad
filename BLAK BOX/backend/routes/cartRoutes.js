@@ -6,5 +6,6 @@ router.get('/carts', cartController.getAllCarts);
 router.post('/cart', cartController.createCart);
 
 router.post('/cart/checkout', cartController.checkoutCart);
+router.get('/cart/total', cartController.getTotalCartPrice);
 
 module.exports = router;
