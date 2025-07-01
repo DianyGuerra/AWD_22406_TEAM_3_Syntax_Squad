@@ -127,5 +127,7 @@ const GetCartByID = async (req, res) => {
 module.exports = {
   getAllCarts,
   createCart,
-  checkoutCart
+  checkoutCart,
+  getTotalCartPrice,
+  GetCartByID
 };

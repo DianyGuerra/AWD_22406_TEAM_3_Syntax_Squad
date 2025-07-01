@@ -4,24 +4,24 @@ BLAK BOX URI'S
 
 GET: Get all users
 
-	http://ip:3007/api/users
+	/api/users
 
 POST: Create new user
 
-	http://ip:3007/api/user
+	/api/user
 
 PUT: Update user by ID
 
-	http://ip:3007/api/user/:id
+	/api/user/:id
 
 DELETE: Delete User by Id
 
-	http://ip:3007/api/user/:id
+	/api/user/:id
 
 
 Get user by Id
 
-	http://ip:3007/api/users/:id
+	/api/users/:id
 
 
 
@@ -120,9 +120,11 @@ POST: Create a new cart
 
 Cart Checkout
 
-	api/checkout
+	api/cart/checkout
 
+Get total cart price
 
+	api/cart/total?cartId=:cartId
 ♦♦♦ WISHLIST ♦♦♦
 
 GET: Get all wishlist
