@@ -9,7 +9,16 @@ const productSchema = new mongoose.Schema(
     stock: { type: Number, default: 0 },
     categoryId: { type: mongoose.Schema.Types.ObjectId, ref: 'Category' },
     discount: { type: String, default: "0%" },
-    sales: { type: Number, default: 0 }
+    features: [{ type: String }],
+    sales: { type: Number, default: 0 },
+    ratings: [
+      {
+        rating: { type: Number, min: 1, max: 5 },
+        comment: { type: String },
+        date: { type: Date, default: Date.now }
+      }
+    ]
+
 }, {
   collection: 'product'
 });

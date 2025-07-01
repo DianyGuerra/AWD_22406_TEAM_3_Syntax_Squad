@@ -8,4 +8,6 @@ router.post('/cart', cartController.createCart);
 router.post('/cart/checkout', cartController.checkoutCart);
 router.get('/cart/total', cartController.getTotalCartPrice);
 
+
+router.get("/cart/:userId", cartController.GetCartByID);
 module.exports = router;
