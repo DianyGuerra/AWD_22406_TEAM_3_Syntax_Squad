@@ -172,4 +172,69 @@ Notify products back in stock to wishlist user
 
 {"productId": "688bc3a6e240f807107b123b"}
 
+♦♦♦ USER ♦♦♦
+GET: Get user order history
+  /api/users/:userId/orders
+
+♦♦♦ PRODUCT ♦♦♦
+GET: Search products by keyword
+  /api/products/search?keyword=mouse
+
+GET: Filter products by price
+  /api/products/filter?minPrice=20&maxPrice=100
+
+GET: Get top-selling products
+  /api/products/top-sellers
+
+GET: Get discounted products
+  /api/products/discounted
+
+PUT: Update stock of a product
+  /api/products/:id/stock
+
+POST: Submit product rating
+  /api/products/:id/rate
+
+GET: Get average product rating
+  /api/products/:id/average-rating
+
+GET: Compare products
+  /api/products/compare?ids=1,2
+
+♦♦♦ ORDER ♦♦♦
+GET: Get all products in an order
+  /api/orders/:orderId/products
+
+POST: Add product to order
+  /api/orders/:orderId/products
+
+PUT: Update product quantity in order
+  /api/orders/:orderId/products/:productId
+
+DELETE: Delete product from order
+  /api/orders/:orderId/products/:productId
+
+♦♦♦ CART ♦♦♦
+GET: Get cart by user ID
+  /api/cart/user/:userId
+
+♦♦♦ WISHLIST ♦♦♦
+GET: Get wishlist by ID
+  /api/wishlists/:id
+
+DELETE: Delete wishlist by ID
+  /api/wishlists/:id
+
+POST: Add product to wishlist
+  /api/wishlists/:wishlistId/products
+
+GET: Get products in wishlist
+  /api/wishlists/:wishlistId/products
+
+DELETE: Remove product from wishlist
+  /api/wishlists/:wishlistId/product/:productId
+
+♦♦♦ REPORTS ♦♦♦
+GET: Inventory summary report
+  /api/reports/inventory-summary
 
