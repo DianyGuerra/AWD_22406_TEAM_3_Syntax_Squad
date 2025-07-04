@@ -21,20 +21,20 @@ const getAllCartProducts = async (req, res) => {
 //POST new cart product
 const addCartProduct = async (req, res) => {
   try {
-    const { cartId, productId, quantity } = req.body;
+    const { cartId, productId, quantify } = req.body;
 
-    if (!cartId || !productId || !quantity) {
-      return res.status(400).json({ message: "Cart ID, Product ID, and quantity are required." });
+    if (!cartId || !productId || !quantify) {
+      return res.status(400).json({ message: "Cart ID, Product ID, and quantify are required." });
     }
 
     if (quantify <= 0) {
-        return res.status(400).json({ message: "Quantity must be a positive number." });
+        return res.status(400).json({ message: "Quantify must be a positive number." });
       }
     
     const newCartProduct = new CartProduct({
       cartId,
       productId,
-      quantity
+      quantify
     });
     await newCartProduct.save();
     res.status(201).json({ message: "Product added to cart successfully" });
@@ -50,14 +50,14 @@ const updateProductCart = async (req, res) => {
       const { quantify } = req.body;
 
       if (!quantify || quantify <= 0) {
-        return res.status(400).json({ message: "Quantity must be a positive number." });
+        return res.status(400).json({ message: "Quantify must be a positive number." });
       }
 
-      const updated = await CartProduct.findByIdAndUpdate(id, { quantity: quantify });
+      const updated = await CartProduct.findByIdAndUpdate(id, { quantify: quantify });
       if (!updated) {
         return res.status(404).json({ message: 'Cart not found' });
       }
-      res.status(200).json({ message: "Quantity updated" });
+      res.status(200).json({ message: "Quantify updated" });
     } catch (err) {
       res.status(500).json({ message: "Server error while updating quantify product of cart." });
     }

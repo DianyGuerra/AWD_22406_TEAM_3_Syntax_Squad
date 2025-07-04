@@ -72,7 +72,7 @@ const checkoutCart = async (req, res) => {
     }
 
     const total = cartProducts.reduce((acc, item) => {
-      return acc + item.productId.price * item.quantity;
+      return acc + item.productId.price * item.quantify;
     }, 0);
 
     const newOrder = new Order({
@@ -88,7 +88,7 @@ const checkoutCart = async (req, res) => {
       await OrderProduct.create({
         orderId: savedOrder._id,
         productId: item.productId._id,
-        quantity: item.quantity
+        quantify: item.quantify
       });
     }
 
@@ -118,7 +118,7 @@ const getTotalCartPrice = async (req, res) => {
     }
 
     const total = cartProducts.reduce((sum, item) => {
-      return sum + (item.productId.price * item.quantity);
+      return sum + (item.productId.price * item.quantify);
     }, 0);
 
     res.status(200).json({ total: parseFloat(total.toFixed(2)) });

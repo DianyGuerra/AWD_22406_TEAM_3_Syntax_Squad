@@ -14,14 +14,14 @@ const getAllOrderProducts = async (req, res) => {
 
 const addProductToOrder = async (req, res) => {
     try {
-        const { orderId, productId, quantity } = req.body;
-        if (!orderId || !productId || !quantity) {
-            return res.status(400).json({ message: "Order ID, Product ID, and Quantity are required" });
+        const { orderId, productId, quantify } = req.body;
+        if (!orderId || !productId || !quantify) {
+            return res.status(400).json({ message: "Order ID, Product ID, and quantify are required" });
         }
         const item = new OrderProduct({
             orderId,
             productId,
-            quantity
+            quantify
         });
         await item.save();
         res.status(201).json({ message: "Product added to order" });
@@ -33,22 +33,22 @@ const addProductToOrder = async (req, res) => {
 const updateProductOrder = async (req, res) => {
     try {
         const { id } = req.params;
-        const { quantity } = req.body;
+        const { quantify } = req.body;
 
-        if (!quantity || quantity <= 0) {
-            return res.status(400).json({ message: "Quantity must be a positive number." });
+        if (!quantify || quantify <= 0) {
+            return res.status(400).json({ message: "Quantify must be a positive number." });
         }
 
         const updatedItem = await OrderProduct.findByIdAndUpdate(
             id,
-            { quantity }
+            { quantify }
         );
 
         if (!updatedItem) {
             return res.status(404).json({ message: "Order product not found." });
         }
 
-        res.status(200).json({ message: "Order quantity updated"});
+        res.status(200).json({ message: "Order quantify updated"});
     } catch (err) {
         res.status(500).json({ message: "Server error while updating order product." });
     }
