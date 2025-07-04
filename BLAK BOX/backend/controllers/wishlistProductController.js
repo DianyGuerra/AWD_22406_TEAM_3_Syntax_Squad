@@ -12,8 +12,6 @@ const getAllWishlistProducts = async (req, res) => {
   }
 };
 
-
-//POST: Add a product to the wishlist
 const addProductToWishlist = async (req, res) => {
   try {
     const { wishlistId, productId } = req.body;
@@ -36,41 +34,27 @@ const addProductToWishlist = async (req, res) => {
   }
 };
 
-
-
-const AddProductToWishlist = async (req, res) => {
-  const { wishlistId, productId } = req.body;
-  const entry = new WishlistProduct({ wishlistId, productId });
+const getProductsWishlistId = async (req, res) => {
   try {
-      await entry.save();
-      res.status(201).json({ message: "Product added to wishlist" });
+      if (!req.params.id) {
+          return res.status(400).json({ message: "Wishlist ID is required" });
+      }
+      const wishlistProduct = await WishlistProduct.findById(req.params.id)
+        .populate('wishlistId', '_id')
+        .populate('productId', 'name price brand');;
+
+      res.status(200).json(wishlistProduct);
   } catch (err) {
-      res.status(500).json({ message: err.message });
+      res.status(500).json({ message: "Server error while getting product to wishlist" });
   }
 };
 
-const GetProductsWishlist = async (req, res) => {
-  try {
-      const items = await WishlistProduct.find({ wishlistId: req.params.wishlistId }).populate("productId");
-      const products = items.map(i => ({
-          productId: i.productId._id,
-          name: i.productId.name
-      }));
-      res.status(200).json(products);
-  } catch (err) {
-      res.status(500).json({ message: err.message });
-  }
-};
-
-const DeleteProductFromWishlist = async (req, res) => {
+const deleteProductFromWishlist = async (req, res) => {
     try {
-        await WishlistProduct.findOneAndDelete({
-            wishlistId: req.params.wishlistId,
-            productId: req.params.productId
-        });
+        await WishlistProduct.findByIdAndDelete(req.params.id);
         res.status(200).json({ message: "Product removed from wishlist" });
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        res.status(500).json({ message: "Server error while deleting product to wishlist" });
     }
 };
 
@@ -78,7 +62,6 @@ const DeleteProductFromWishlist = async (req, res) => {
 module.exports = {
   getAllWishlistProducts,
   addProductToWishlist,
-  AddProductToWishlist,
-  GetProductsWishlist,
-  DeleteProductFromWishlist
+  getProductsWishlistId,
+  deleteProductFromWishlist
 };

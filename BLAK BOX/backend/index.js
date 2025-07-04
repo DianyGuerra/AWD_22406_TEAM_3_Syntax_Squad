@@ -7,46 +7,46 @@ const app = express();
 app.use(express.json());
 
 const userRoutes = require('./routes/userRoutes');
-app.use('/api', userRoutes);
+app.use('/blakbox', userRoutes);
 
 const orderRoutes = require('./routes/orderRoutes');
-app.use('/api', orderRoutes);
+app.use('/blakbox', orderRoutes);
 
 const orderProductRoutes = require('./routes/orderProductRoutes');
-app.use('/api', orderProductRoutes);
+app.use('/blakbox', orderProductRoutes);
 
 const cartRoutes = require('./routes/cartRoutes');
-app.use('/api', cartRoutes);
+app.use('/blakbox', cartRoutes);
 
 const cartProductRoutes = require('./routes/cartProductRoutes');
-app.use('/api', cartProductRoutes);
+app.use('/blakbox', cartProductRoutes);
 
 const wishlistRoutes = require('./routes/wishlistRoutes');
-app.use('/api', wishlistRoutes);
+app.use('/blakbox', wishlistRoutes);
 
 const wishlistProductRoutes = require('./routes/wishlistProductRoutes');
-app.use('/api', wishlistProductRoutes);
+app.use('/blakbox', wishlistProductRoutes);
 
 const productRoutes = require('./routes/productRoutes');
-app.use('/api', productRoutes);
+app.use('/blakbox', productRoutes);
 
 const categoryRoutes = require('./routes/categoryRoutes');
-app.use('/api', categoryRoutes);
+app.use('/blakbox', categoryRoutes);
 
 const inventoryRoutes = require('./routes/inventoryRoutes');
-app.use('/api', inventoryRoutes);
+app.use('/blakbox', inventoryRoutes);
 
 const paymentRoutes = require('./routes/paymentRoutes');
-app.use('/api', paymentRoutes);
+app.use('/blakbox', paymentRoutes);
 
 const shippingRoutes = require('./routes/shippingRoutes');
-app.use('/api', shippingRoutes);
+app.use('/blakbox', shippingRoutes);
 
 const brandRoutes = require('./routes/brandRoutes');
-app.use('/api', brandRoutes);
+app.use('/blakbox', brandRoutes);
 
 const notificationsRoutes = require('./routes/notificationsRoutes');
-app.use('/api', notificationsRoutes);
+app.use('/blakbox', notificationsRoutes);
 
 mongoose.connect(process.env.MONGO_URI, {
   useUnifiedTopology: true,

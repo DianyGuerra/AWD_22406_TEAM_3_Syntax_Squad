@@ -3,10 +3,8 @@ const router = express.Router();
 const shippingController = require('../controllers/shippingController');
 
 router.get('/shippings', shippingController.getAllShippings);
-
-
-router.get("/shipping/:orderId", shippingController.GetShippingByID);
-router.post("/shipping", shippingController.CreateShipping);
-router.put("/shipping/:shippingId", shippingController.UpdateShipping);
+router.get("/shipping/:id", shippingController.getShippingByID);
+router.post("/shipping", shippingController.createShipping);
+router.put("/shipping/:id", shippingController.updateShipping);
 
 module.exports = router;

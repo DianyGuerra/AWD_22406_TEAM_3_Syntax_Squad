@@ -25,6 +25,7 @@ const shippingSchema = new mongoose.Schema({
     },
     estimatedDeliveryDate: {
         type: Date,
+        default: () => new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // Correcto
         required: true
     }
 }, {

@@ -35,6 +35,21 @@ const createCart = async (req, res) => {
   }
 };
 
+const getCartByID = async (req, res) => {
+    try {
+        if (!req.params.id) {
+            return res.status(400).json({ message: "ID is required." });
+        }
+      
+        const cart = await Cart.findById(req.params.id )
+          .populate('userId', 'firstName lastName email');;
+        if (!cart) return res.status(404).json({ message: "Cart not found" });
+        res.status(200).json(cart);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
+
 //------------------------------------------------------------SERVICES operations for carts------------------------------------------------------------
 
 //CHECKOUT cart by cart ID
@@ -114,20 +129,10 @@ const getTotalCartPrice = async (req, res) => {
   }
 };
 
-const GetCartByID = async (req, res) => {
-    try {
-        const cart = await Cart.findOne({ userId: req.params.userId });
-        if (!cart) return res.status(404).json({ message: "Cart not found" });
-        res.status(200).json(cart);
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-};
-
 module.exports = {
   getAllCarts,
   createCart,
   checkoutCart,
   getTotalCartPrice,
-  GetCartByID
+  getCartByID
 };

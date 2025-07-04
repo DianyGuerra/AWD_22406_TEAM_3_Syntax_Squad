@@ -22,7 +22,7 @@ const createWishlist = async (req, res) => {
 
     const newWishlist = new Wishlist({ userId });
     await newWishlist.save();
-    res.status(201).json({ message: 'Wishlist created successfully', wishlist: newWishlist });
+    res.status(201).json({ message: 'Wishlist created successfully'});
 
   } catch (error) {
     console.error("Error creating wishlist:", error);
@@ -30,36 +30,22 @@ const createWishlist = async (req, res) => {
   }
 };
 
-
-
-const GetWishlistbyID = async (req, res) => {
+const getWishlistbyID = async (req, res) => {
   try {
-      const wishlist = await Wishlist.findById(req.params.id);
+      const wishlist = await Wishlist.findById(req.params.id).populate('userId', 'firstName lastName email');
       if (!wishlist) return res.status(404).json({ message: "Wishlist not found" });
       res.status(200).json(wishlist);
   } catch (err) {
-      res.status(500).json({ message: err.message });
+      res.status(500).json({ message: "Server error while getting wishlist by ID" });
   }
 };
 
-const CreateWishlist = async (req, res) => {
-    const wishlist = new Wishlist({
-        userId: req.body.userId
-    });
-    try {
-        await wishlist.save();
-        res.status(201).json({ message: "Wishlist created successfully" });
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-};
-
-const DeleteWishlist = async (req, res) => {
+const deleteWishlist = async (req, res) => {
     try {
         await Wishlist.findByIdAndDelete(req.params.id);
         res.status(200).json({ message: "Wishlist deleted successfully" });
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        res.status(500).json({ message: "Server error while deleting wishlist" });
     }
 };
 
@@ -67,7 +53,6 @@ const DeleteWishlist = async (req, res) => {
 module.exports = {
   getAllWishlists,
   createWishlist,
-  GetWishlistbyID,
-  CreateWishlist,
-  DeleteWishlist
+  getWishlistbyID,
+  deleteWishlist
 };

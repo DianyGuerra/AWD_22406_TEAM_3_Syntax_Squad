@@ -4,11 +4,10 @@ const cartProductController = require('../controllers/cartProductController');
 
 router.get('/cartProducts', cartProductController.getAllCartProducts);
 router.post('/cartProduct', cartProductController.addCartProduct);
+router.put('/cartProduct/:id', cartProductController.updateProductCart);
+router.delete("/cartProduct/:id", cartProductController.deleteProductFromCart);
+router.get('/cartProduct/:id', cartProductController.getCartProductById);
 
 router.get('/cartProducts/:cartId', cartProductController.getCartProductsByCartId);
-
-router.put("/cartProduct/:cartId/:productId", cartProductController.UpdateProductCart);
-router.delete("/cartProduct/:cartId/:productId", cartProductController.DeleteProductFromCart);
-router.delete("/cartProduct/:cartId", cartProductController.ClearCartProduct);
 
 module.exports = router;

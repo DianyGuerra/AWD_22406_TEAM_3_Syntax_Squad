@@ -12,65 +12,84 @@ const getAllOrderProducts = async (req, res) => {
   }
 };
 
-
-
-const GetAllProductToOrder = async (req, res) => {
+const addProductToOrder = async (req, res) => {
     try {
-        const items = await OrderProduct.find({ orderId: req.params.orderId }).populate("productId");
-        const result = items.map(i => ({
-            productId: i.productId._id,
-            name: i.productId.name,
-            quantity: i.quantity
-        }));
-        res.status(200).json(result);
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-};
-
-const AddProductToOrder = async (req, res) => {
-    const { productId, quantity } = req.body;
-    const item = new OrderProduct({
-        orderId: req.params.orderId,
-        productId,
-        quantity
-    });
-    try {
+        const { orderId, productId, quantity } = req.body;
+        if (!orderId || !productId || !quantity) {
+            return res.status(400).json({ message: "Order ID, Product ID, and Quantity are required" });
+        }
+        const item = new OrderProduct({
+            orderId,
+            productId,
+            quantity
+        });
         await item.save();
         res.status(201).json({ message: "Product added to order" });
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        res.status(500).json({ message: "Server error while adding order products." });
     }
 };
 
-const UpdateProductOrder = async (req, res) => {
+const updateProductOrder = async (req, res) => {
     try {
-        await OrderProduct.findOneAndUpdate(
-            { orderId: req.params.orderId, productId: req.params.productId },
-            { quantity: req.body.quantity }
+        const { id } = req.params;
+        const { quantity } = req.body;
+
+        if (!quantity || quantity <= 0) {
+            return res.status(400).json({ message: "Quantity must be a positive number." });
+        }
+
+        const updatedItem = await OrderProduct.findByIdAndUpdate(
+            id,
+            { quantity }
         );
-        res.status(200).json({ message: "Order quantity updated" });
+
+        if (!updatedItem) {
+            return res.status(404).json({ message: "Order product not found." });
+        }
+
+        res.status(200).json({ message: "Order quantity updated"});
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        res.status(500).json({ message: "Server error while updating order product." });
     }
 };
 
-const DeleteProductFromOrder = async (req, res) => {
+const deleteOrderProduct = async (req, res) => {
     try {
-        await OrderProduct.findOneAndDelete({
-            orderId: req.params.orderId,
-            productId: req.params.productId
-        });
-        res.status(200).json({ message: "Product removed from order" });
+        const { id } = req.params;
+
+        const deletedItem = await OrderProduct.findByIdAndDelete(id);
+
+        if (!deletedItem) {
+            return res.status(404).json({ message: "Order product not found." });
+        }
+
+        res.status(200).json({ message: "Order product deleted successfully" });
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        res.status(500).json({ message: "Server error while deleting order product." });
     }
+};
+
+const getOrderProductbyID = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!id) {
+      return res.status(400).json({ message: "OrderPorduct ID is required" });
+    }
+    const orderProducts = await OrderProduct.findById(id)
+      .populate('orderId', '_id')
+      .populate('productId', 'name price');
+    res.status(200).json(orderProducts);
+  } catch (error) {
+    console.error("Error getting order products:", error);
+    res.status(500).json({ message: "Server error while getting order product by id." });
+  }
 };
 
 module.exports = {
   getAllOrderProducts,
-  GetAllProductToOrder,
-  AddProductToOrder,
-  UpdateProductOrder,
-  DeleteProductFromOrder
+  addProductToOrder,
+  updateProductOrder,
+  deleteOrderProduct,
+  getOrderProductbyID
 };
