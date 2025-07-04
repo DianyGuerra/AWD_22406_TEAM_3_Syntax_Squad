@@ -72,7 +72,7 @@ const checkoutCart = async (req, res) => {
     }
 
     const total = cartProducts.reduce((acc, item) => {
-      return acc + item.productId.price * item.quantify;
+      return acc + item.productId.price * item.quantity;
     }, 0);
 
     const newOrder = new Order({
@@ -88,7 +88,7 @@ const checkoutCart = async (req, res) => {
       await OrderProduct.create({
         orderId: savedOrder._id,
         productId: item.productId._id,
-        quantify: item.quantify
+        quantify: item.quantity
       });
     }
 
@@ -118,7 +118,7 @@ const getTotalCartPrice = async (req, res) => {
     }
 
     const total = cartProducts.reduce((sum, item) => {
-      return sum + (item.productId.price * item.quantify);
+      return sum + (item.productId.price * item.quantity);
     }, 0);
 
     res.status(200).json({ total: parseFloat(total.toFixed(2)) });
@@ -129,10 +129,21 @@ const getTotalCartPrice = async (req, res) => {
   }
 };
 
+const getCartByUserID = async (req, res) => {
+    try {
+        const cart = await Cart.findOne({ userId: req.params.userId });
+        if (!cart) return res.status(404).json({ message: "Cart not found" });
+        res.status(200).json(cart);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
+
 module.exports = {
   getAllCarts,
   createCart,
   checkoutCart,
   getTotalCartPrice,
-  getCartByID
+  getCartByID,
+  getCartByUserID
 };

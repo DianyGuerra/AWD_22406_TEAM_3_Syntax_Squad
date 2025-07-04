@@ -48,9 +48,7 @@ app.use('/blakbox', brandRoutes);
 const notificationsRoutes = require('./routes/notificationsRoutes');
 app.use('/blakbox', notificationsRoutes);
 
-mongoose.connect(process.env.MONGO_URI, {
-  useUnifiedTopology: true,
-})
+mongoose.connect(process.env.MONGO_URI)
 .then(() => {
   console.log('✅ Connected to MongoDB');
   app.listen(3007, () => {

@@ -3,15 +3,15 @@ const router = express.Router();
 const orderController = require('../controllers/orderController');
 
 
-//CRUD operations for orders
+// ✅ CRUD
 router.get('/orders', orderController.getAllOrders);
-router.post('/order', orderController.createNewOrder);
-router.delete('/order/:orderId', orderController.deleteOrder);
+router.post('/orders', orderController.createNewOrder);
+router.delete('/orders/:orderId', orderController.deleteOrder);
+router.get("/orders/user/:userId", orderController.getOrderById);
+router.get('/orders/:orderId', orderController.getOrderById);
 
-
-//SERVICES operations for orders
-router.get('/order/:orderId', orderController.getOrderById);
-router.get('/order/history/:userId', orderController.getOrderHistoryByUserId);
-router.put('/order/cancel/:orderId', orderController.cancelOrderById);
+// 🟢 SERVICES
+router.get('/orders/history/:userId', orderController.getOrderHistoryByUserId);
+router.put('/orders/cancel/:orderId', orderController.cancelOrderById);
 
 module.exports = router;

@@ -1,3 +1,4 @@
+const { recompileSchema } = require('../models/payment');
 const Product = require('../models/product');
 
 //------------------------------------------------------------------------PRODUCT operations-----------------------------------------------------
@@ -41,16 +42,16 @@ const createProduct = async (req, res) => {
 //PUT:  Update an existing product
 const updateProduct = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { productId } = req.params;
     const updateData = req.body;
 
-    const updated = await Product.findByIdAndUpdate(id, updateData, { new: true });
+    const updated = await Product.findByIdAndUpdate(productId, updateData, { new: true });
 
     if (!updated) {
-      return res.status(404).json({ message: 'Producto not found' });
+      return res.status(404).json({ message: 'Product not found' });
     }
 
-    res.status(204).send(); // No Content
+    res.status(200).json({message: `Product '${updated.name}' updated successfully.`, product: updated});
   } catch (error) {
     console.error("Error:", error);
     res.status(500).json({ message: 'Server Error' });
@@ -60,15 +61,15 @@ const updateProduct = async (req, res) => {
 //DELETE:  Delete a product
 const deleteProduct = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { productId } = req.params;
 
-    const deleted = await Product.findByIdAndDelete(id);
+    const deleted = await Product.findByIdAndDelete(productId);
 
     if (!deleted) {
-      return res.status(404).json({ message: 'Producto not found' });
+      return res.status(404).json({ message: 'Product not found' });
     }
 
-    res.status(204).send(); // No Content
+    res.status(200).send({message: 'Product deleted successfully' });
   } catch (error) {
     console.error("Error", error);
     res.status(500).json({ message: 'Server Error' });
@@ -79,8 +80,8 @@ const deleteProduct = async (req, res) => {
 
 const getProductById = async (req, res) => {
   try {
-    const { id } = req.params;
-    const product = await Product.findById(id)
+    const { productId } = req.params;
+    const product = await Product.findById(productId)
       .populate('categoryId', 'categoryName');
 
     if (!product) {
@@ -153,27 +154,6 @@ const searchProducts = async (req, res) => {
   }
 };
 
-
-const filterProductsByPrice = async (req, res) => {
-  try {
-    const { minPrice = 0, maxPrice = Infinity } = req.query;
-
-    const results = await Product.find({
-      price: { $gte: parseFloat(minPrice), $lte: parseFloat(maxPrice) }
-    }).select('name price');
-
-    const formatted = results.map(p => ({
-      id: p._id,
-      name: p.name,
-      price: p.price
-    }));
-
-    res.status(200).json(formatted);
-  } catch (err) {
-    res.status(500).json({ message: 'Error filtering products by price' });
-  }
-};
-
 const getTopSellingProducts = async (req, res) => {
   try {
     const topProducts = await Product.find()
@@ -194,20 +174,19 @@ const getTopSellingProducts = async (req, res) => {
 };
 
 
-
 // Update product stock
 const updateProductStock = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { productId } = req.params;
     const { stock } = req.body;
 
-    const updated = await Product.findByIdAndUpdate(id, { stock }, { new: true });
+    const updated = await Product.findByIdAndUpdate(productId, { stock }, { new: true });
 
     if (!updated) {
       return res.status(404).json({ message: 'Product not found' });
     }
 
-    res.status(204).send(); // No content
+    res.status(204).send({message: 'Stock updated successfully' });
   } catch (err) {
     res.status(500).json({ message: 'Error updating stock' });
   }
@@ -229,6 +208,27 @@ const getDiscountedProducts = async (req, res) => {
   }
 };
 
+// Recomend similar products
+const getSimilarProducts = async (req, res) => {
+  const { productId } = req.params;
+
+  try {
+    const product = await Product.findById(productId);
+    if (!product) return res.status(404).json({ message: "Product not found" });
+
+    const similarProducts = await Product.find({
+      _id: { $ne: productId },
+      category: product.category,
+      brand: product.brand
+    }).limit(5);
+
+    res.status(200).json(similarProducts);
+
+  } catch (error) {
+    res.status(500).json({ message: "Error getting similar products" });
+  }
+};
+
 
 module.exports = {
   getAllProducts,
@@ -236,12 +236,12 @@ module.exports = {
   createProduct,
   updateProduct,
   searchProducts,
-  filterProductsByPrice,
   getTopSellingProducts,
   getLowStockProducts,
   updateProductStock,
   getProductsByPriceRange,
   deleteProduct,
   getDiscountedProducts,
+  getSimilarProducts,
 };
 

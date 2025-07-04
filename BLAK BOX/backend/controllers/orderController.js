@@ -88,7 +88,7 @@ const getOrderById = async (req, res) => {
   } 
 };
 
-//GET order history by user ID
+// Get order history by user ID with statistics and grouping by month and year
 const getOrderHistoryByUserId = async (req, res) => {
   const { userId } = req.params;
 
@@ -97,16 +97,53 @@ const getOrderHistoryByUserId = async (req, res) => {
   }
 
   try {
-    const orders = await Order.find({ userId });
+    const orders = await Order.find({ userId }).sort({ orderDate: -1 });
+
     if (orders.length === 0) {
       return res.status(404).json({ message: "No orders found for this user." });
     }
-    res.status(200).json(orders);
+
+    const grouped = {};
+    let totalSpent = 0;
+
+    orders.forEach(order => {
+      const date = new Date(order.orderDate);
+      const year = date.getFullYear();
+      const month = date.toLocaleString('en-US', { month: 'long' });
+
+      totalSpent += order.total;
+
+      if (!grouped[year]) {
+        grouped[year] = {};
+      }
+
+      if (!grouped[year][month]) {
+        grouped[year][month] = [];
+      }
+
+      grouped[year][month].push({
+        orderId: order._id,
+        orderDate: order.orderDate,
+        total: order.total,
+        status: order.status,
+        products: order.products
+      });
+    });
+
+    res.status(200).json({
+      userId,
+      totalOrders: orders.length,
+      totalSpent,
+      lastOrderDate: orders[0].orderDate,
+      history: grouped
+    });
+
   } catch (error) {
     console.error("Error getting order history by user ID:", error);
     res.status(500).json({ message: "Server error while getting order history by user ID." });
   }
-}
+};
+
 
 //Cancel order by ID
 const cancelOrderById = async (req, res) => {

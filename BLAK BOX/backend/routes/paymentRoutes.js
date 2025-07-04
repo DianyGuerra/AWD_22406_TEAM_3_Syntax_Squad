@@ -2,12 +2,12 @@ const express = require('express');
 const router = express.Router();
 const paymentController = require('../controllers/paymentController');
 
-//CRUD operations for payments
+// ✅ CRUD
 router.get('/payments', paymentController.getAllPayments);
-router.post('/payment', paymentController.createNewPayment);
+router.post('/payments', paymentController.createNewPayment);
+router.put('/payments/:paymentId/status', paymentController.updatePaymentStatus);
 
-
-//SERVICE operations for payments
-router.post('/payment/validate', paymentController.validatePayment);
-router.put('/payment/:paymentId/status', paymentController.updatePaymentStatus);
+// 🟢 SERVICES
+router.post('/payments/validate', paymentController.validatePayment);
+router.post('/payments/confirm/:paymentId', paymentController.confirmPayment);
 module.exports = router;

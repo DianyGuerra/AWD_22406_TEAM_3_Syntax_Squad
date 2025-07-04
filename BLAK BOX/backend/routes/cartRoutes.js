@@ -2,11 +2,14 @@ const express = require('express');
 const router = express.Router();
 const cartController = require('../controllers/cartController');
 
+// ✅ CRUD
 router.get('/carts', cartController.getAllCarts);
-router.post('/cart', cartController.createCart);
-router.get("/cart/:id", cartController.getCartByID);
+router.post('/carts', cartController.createCart);
+router.get("/carts/:id", cartController.getCartByID);
+router.get("/carts/:userId", cartController.getCartByUserID);
 
-router.post('/cart/checkout', cartController.checkoutCart);
-router.get('/cart/total', cartController.getTotalCartPrice);
+// 🟢 SERVICES
+router.post('/carts/checkout', cartController.checkoutCart);
+router.get('/carts/total', cartController.getTotalCartPrice);
 
 module.exports = router;

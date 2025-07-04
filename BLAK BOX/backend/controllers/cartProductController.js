@@ -21,20 +21,20 @@ const getAllCartProducts = async (req, res) => {
 //POST new cart product
 const addCartProduct = async (req, res) => {
   try {
-    const { cartId, productId, quantify } = req.body;
+    const { cartId, productId, quantity } = req.body;
 
-    if (!cartId || !productId || !quantify) {
-      return res.status(400).json({ message: "Cart ID, Product ID, and quantify are required." });
+    if (!cartId || !productId || !quantity) {
+      return res.status(400).json({ message: "Cart ID, Product ID, and quantity are required." });
     }
 
-    if (quantify <= 0) {
-        return res.status(400).json({ message: "Quantify must be a positive number." });
+    if (quantity <= 0) {
+        return res.status(400).json({ message: "Quantity must be a positive number." });
       }
     
     const newCartProduct = new CartProduct({
       cartId,
       productId,
-      quantify
+      quantity
     });
     await newCartProduct.save();
     res.status(201).json({ message: "Product added to cart successfully" });
@@ -45,32 +45,47 @@ const addCartProduct = async (req, res) => {
 };
 
 const updateProductCart = async (req, res) => {
-    try {
-      const { id } = req.params;
-      const { quantify } = req.body;
+  const { cartId, productId } = req.params;
+  const { quantity } = req.body;
 
-      if (!quantify || quantify <= 0) {
-        return res.status(400).json({ message: "Quantify must be a positive number." });
-      }
+  if (!quantity || quantity <= 0) {
+    return res.status(400).json({ message: "Quantity must be a positive number." });
+  }
 
-      const updated = await CartProduct.findByIdAndUpdate(id, { quantify: quantify });
-      if (!updated) {
-        return res.status(404).json({ message: 'Cart not found' });
-      }
-      res.status(200).json({ message: "Quantify updated" });
-    } catch (err) {
-      res.status(500).json({ message: "Server error while updating quantify product of cart." });
+  try {
+    const updated = await CartProduct.findOneAndUpdate(
+      { cartId, productId },
+      { quantity },
+      { new: true }
+    );
+
+    if (!updated) {
+      return res.status(404).json({ message: 'Cart product not found.' });
     }
+
+    res.status(200).json({ message: "Quantity updated", product: updated });
+  } catch (err) {
+    res.status(500).json({ message: "Server error while updating product quantity." });
+  }
 };
+
 
 const deleteProductFromCart = async (req, res) => {
-    try {
-        await CartProduct.findByIdAndDelete(req.params.id);
-        res.status(200).json({ message: "Product removed from cart" });
-    } catch (err) {
-        res.status(500).json({ message: err.message });
+  const { cartId, productId } = req.params;
+
+  try {
+    const deleted = await CartProduct.findOneAndDelete({ cartId, productId });
+
+    if (!deleted) {
+      return res.status(404).json({ message: "Product not found in cart." });
     }
+
+    res.status(200).json({ message: "Product removed from cart" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 };
+
 
 const getCartProductById = async (req, res) => {
   try {
@@ -87,7 +102,21 @@ const getCartProductById = async (req, res) => {
   }
 };
 
-//------------------------------------------------------------SERVICES operations for cart products------------------------------------------------------------
+const clearCartProduct = async (req, res) => {
+  const { cartId } = req.params;
+
+  try {
+    const result = await CartProduct.deleteMany({ cartId });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ message: "No products found to remove from cart." });
+    }
+
+    res.status(200).json({ message: "All products removed from cart." });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
 
 //Get all cart products by cart ID
 
@@ -121,5 +150,6 @@ module.exports = {
   getCartProductsByCartId,
   updateProductCart,
   deleteProductFromCart,
-  getCartProductById
+  getCartProductById,
+  clearCartProduct
 };

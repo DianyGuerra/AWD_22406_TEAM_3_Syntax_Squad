@@ -40,34 +40,6 @@ const createNewPayment = async (req, res) => {
   }
 };
 
-
-//SERVICE operations for payments
-
-// POST validate a payment
-const validatePayment = async (req, res) => {
-  const { paymentId } = req.body;
-
-  if (!paymentId) {
-    return res.status(400).json({ message: "paymentId is required." });
-  }
-
-  try {
-    const payment = await Payment.findById(paymentId);
-
-    if (!payment) {
-      return res.status(404).json({ message: "Payment not found." });
-    }
-
-    const isValid = payment.status === 'confirmed';
-
-    return res.status(200).json({ valid: isValid });
-
-  } catch (error) {
-    console.error("Error validating payment:", error);
-    return res.status(500).json({ message: "Internal server error." });
-  }
-};
-
 // PUT update payment status
 const updatePaymentStatus = async (req, res) => {
   const { paymentId } = req.params;
@@ -95,11 +67,70 @@ const updatePaymentStatus = async (req, res) => {
   }
 };
 
+//SERVICE operations for payments
+
+// POST validate a payment
+const validatePayment = async (req, res) => {
+  const { paymentId } = req.body;
+
+  if (!paymentId) {
+    return res.status(400).json({ message: "paymentId is required." });
+  }
+
+  try {
+    const payment = await Payment.findById(paymentId);
+
+    if (!payment) {
+      return res.status(404).json({ message: "Payment not found." });
+    }
+
+    const isValid = payment.status === 'confirmed';
+
+    return res.status(200).json({ message: `The payment validation is: ${isValid}`});
+
+  } catch (error) {
+    console.error("Error validating payment:", error);
+    return res.status(500).json({ message: "Internal server error." });
+  }
+};
+
+//POST confirm payment
+
+const confirmPayment = async (req, res) => {
+  const { paymentId } = req.params;
+
+  if (!paymentId) {
+    return res.status(400).json({ message: "Payment ID is required." });
+  }
+
+  try {
+    const payment = await Payment.findById(paymentId);
+    if (!payment) {
+      return res.status(404).json({ message: "Payment not found." });
+    }
+
+    if (payment.status !== 'pending') {
+      return res.status(400).json({ message: "Only pending payments can be confirmed." });
+    }
+
+    payment.status = 'confirmed';
+    await payment.save();
+
+    console.log(`📢 Usuario notificado: Pago ${paymentId} confirmado.`);
+
+    res.status(200).json({ message: "Payment confirmed successfully." });
+
+  } catch (error) {
+    console.error("Error confirming payment:", error);
+    res.status(500).json({ message: "Server error while confirming payment." });
+  }
+};
 
 
 module.exports = {
   getAllPayments,
   createNewPayment,
   validatePayment,
-  updatePaymentStatus
+  updatePaymentStatus,
+  confirmPayment
 };
