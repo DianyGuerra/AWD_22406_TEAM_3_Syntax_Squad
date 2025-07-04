@@ -35,19 +35,28 @@ const addProductToWishlist = async (req, res) => {
 };
 
 const getProductsWishlistId = async (req, res) => {
-  try {
-      if (!req.params.id) {
-          return res.status(400).json({ message: "Wishlist ID is required" });
-      }
-      const wishlistProduct = await WishlistProduct.findById(req.params.id)
-        .populate('wishlistId', '_id')
-        .populate('productId', 'name price brand');;
+  const { wishlistProductId } = req.params;
 
-      res.status(200).json(wishlistProduct);
+  if (!wishlistProductId) {
+    return res.status(400).json({ message: "WishlistProduct ID is required." });
+  }
+
+  try {
+    const wishlistProduct = await WishlistProduct.findById(wishlistProductId)
+      .populate('wishlistId', '_id')
+      .populate('productId', 'name price brand');
+
+    if (!wishlistProduct) {
+      return res.status(404).json({ message: "WishlistProduct not found." });
+    }
+
+    res.status(200).json(wishlistProduct);
   } catch (err) {
-      res.status(500).json({ message: "Server error while getting product to wishlist" });
+    console.error("Error getting wishlistProduct by ID:", err);
+    res.status(500).json({ message: "Server error while getting wishlist product by ID." });
   }
 };
+
 
 const deleteProductFromWishlist = async (req, res) => {
     try {

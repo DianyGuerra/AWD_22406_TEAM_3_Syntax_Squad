@@ -4,8 +4,8 @@ const shippingController = require('../controllers/shippingController');
 
 // ✅ CRUD
 router.get('/shippings', shippingController.getAllShippings);
-router.get("/shipping/:orderId", shippingController.getShippingByID);
-router.post("/shipping", shippingController.createShipping);
-router.put("/shipping/:shippingId", shippingController.updateShipping);
+router.get("/shippings/:shippingId", shippingController.getShippingByID);
+router.post("/shippings", shippingController.createShipping);
+router.put("/shippings/:shippingId", shippingController.updateShipping);
 
 module.exports = router;

@@ -11,6 +11,24 @@ const getAllInventory = async (req, res) => {
   }
 };
 
+
+const getInventorySummary = async (req, res) => {
+  try {
+    const summary = {
+      totalProducts: 120,
+      outOfStock: 8,
+      categories: 10,
+    };
+
+    res.status(200).json(summary);
+  } catch (error) {
+    console.error("Error fetching inventory summary:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+
 module.exports = {
-  getAllInventory
+  getAllInventory,
+  getInventorySummary
 };

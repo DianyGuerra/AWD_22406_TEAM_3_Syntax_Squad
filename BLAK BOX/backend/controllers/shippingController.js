@@ -13,7 +13,7 @@ const getAllShippings = async (req, res) => {
 
 const getShippingByID = async (req, res) => {
   try {
-      const shipping = await Shipping.findById(req.params.id)
+      const shipping = await Shipping.findById(req.params.shippingId)
         .populate('orderId', '_id');
       if (!shipping) {
         return res.status(404).json({ message: "Shipping info not found" });
@@ -40,14 +40,14 @@ const createShipping = async (req, res) => {
 
 const updateShipping = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { shippingId } = req.params;
     const { shippingAddress, shippingCompany, trackingNumber} = req.body;
     if (!shippingAddress && !shippingCompany && !trackingNumber ) {
       return res.status(400).json({ message: "At least one field must be provided to update." });
     }
 
     const updatedShipping = await Shipping.findByIdAndUpdate(
-      id,
+      shippingId,
       { shippingAddress, shippingCompany, trackingNumber}
     );
 

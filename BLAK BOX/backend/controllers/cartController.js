@@ -72,8 +72,17 @@ const checkoutCart = async (req, res) => {
     }
 
     const total = cartProducts.reduce((acc, item) => {
-      return acc + item.productId.price * item.quantity;
-    }, 0);
+    const price = parseFloat(item.productId?.price);
+    const quantity = parseInt(item.quantity);
+
+    if (isNaN(price) || isNaN(quantity)) {
+      console.warn("⛔ Producto inválido:", item.productId);
+      return acc;
+    }
+
+    return acc + price * quantity;
+  }, 0);
+
 
     const newOrder = new Order({
       userId: cart.userId,
@@ -88,7 +97,7 @@ const checkoutCart = async (req, res) => {
       await OrderProduct.create({
         orderId: savedOrder._id,
         productId: item.productId._id,
-        quantify: item.quantity
+        quantity: item.quantity
       });
     }
 

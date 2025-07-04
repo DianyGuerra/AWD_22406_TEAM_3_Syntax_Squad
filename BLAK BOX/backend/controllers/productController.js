@@ -1,5 +1,7 @@
 const { recompileSchema } = require('../models/payment');
 const Product = require('../models/product');
+const mongoose = require('mongoose');
+
 
 //------------------------------------------------------------------------PRODUCT operations-----------------------------------------------------
 
@@ -186,7 +188,7 @@ const updateProductStock = async (req, res) => {
       return res.status(404).json({ message: 'Product not found' });
     }
 
-    res.status(204).send({message: 'Stock updated successfully' });
+    res.status(200).send({message: 'Stock updated successfully' });
   } catch (err) {
     res.status(500).json({ message: 'Error updating stock' });
   }
@@ -229,6 +231,104 @@ const getSimilarProducts = async (req, res) => {
   }
 };
 
+const submitProductRating = async (req, res) => {
+  const { productId } = req.params;
+  const { rating, comment } = req.body;
+
+  if (!rating || !comment) {
+    return res.status(400).json({ message: "Rating and comment are required." });
+  }
+
+  if (rating < 1 || rating > 5) {
+    return res.status(400).json({ message: "Rating must be between 1 and 5." });
+  }
+
+  try {
+    const product = await Product.findById(productId);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found." });
+    }
+
+    product.ratings.push({ rating, comment });
+    await product.save();
+
+    res.status(201).json({ message: "Review submitted" });
+  } catch (err) {
+    console.error("Error submitting review:", err);
+    res.status(500).json({ message: "Server error while submitting review." });
+  }
+};
+
+const getAverageProductRating = async (req, res) => {
+  const { productId } = req.params;
+
+  try {
+    const product = await Product.findById(productId);
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found." });
+    }
+
+    const ratings = product.ratings;
+
+    if (ratings.length === 0) {
+      return res.status(200).json({ averageRating: 0 });
+    }
+
+    const sum = ratings.reduce((acc, r) => acc + r.rating, 0);
+    const average = (sum / ratings.length).toFixed(1); // redondeo a 1 decimal
+
+    res.status(200).json({ averageRating: parseFloat(average) });
+  } catch (error) {
+    console.error("Error calculating average rating:", error);
+    res.status(500).json({ message: "Server error while calculating average rating." });
+  }
+};
+
+const compareProductsById = async (req, res) => {
+  try {
+    const { productId1, productId2 } = req.params;
+
+    // Validar IDs
+    if (!mongoose.Types.ObjectId.isValid(productId1) || !mongoose.Types.ObjectId.isValid(productId2)) {
+      return res.status(400).json({ error: "Invalid product ID(s)" });
+    }
+
+    // Buscar productos
+    const products = await Product.find({ _id: { $in: [productId1, productId2] } })
+      .select('name features price')
+      .lean();
+
+    if (products.length !== 2) {
+      return res.status(404).json({ error: "One or both products not found" });
+    }
+
+    const formatted = products.map(p => ({
+      id: p._id,
+      name: p.name,
+      features: p.features,
+      price: p.price
+    }));
+
+    // Determinar cuál es más barato
+    let cheaperMessage = '';
+    if (formatted[0].price < formatted[1].price) {
+      cheaperMessage = `${formatted[0].name} is cheaper than ${formatted[1].name}`;
+    } else if (formatted[0].price > formatted[1].price) {
+      cheaperMessage = `${formatted[1].name} is cheaper than ${formatted[0].name}`;
+    } else {
+      cheaperMessage = `Both products have the same price`;
+    }
+
+    res.status(200).json({
+      products: formatted,
+      comparison: cheaperMessage
+    });
+  } catch (error) {
+    console.error("Error comparing products:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
 
 module.exports = {
   getAllProducts,
@@ -243,5 +343,8 @@ module.exports = {
   deleteProduct,
   getDiscountedProducts,
   getSimilarProducts,
+  submitProductRating,
+  getAverageProductRating,
+  compareProductsById
 };
 

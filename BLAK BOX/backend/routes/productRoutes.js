@@ -10,6 +10,9 @@ router.get('/products/discounted', productController.getDiscountedProducts);
 router.get('/products/price/:min/:max', productController.getProductsByPriceRange);
 router.put('/products/:productId/stock', productController.updateProductStock);
 router.get('/products/similar/:productId', productController.getSimilarProducts);
+router.post('/products/:productId/rating', productController.submitProductRating);
+router.get('/products/:productId/average-rating', productController.getAverageProductRating);
+router.get('/products/compare/:productId1/:productId2', productController.compareProductsById);
 
 
 // ✅ CRUD
