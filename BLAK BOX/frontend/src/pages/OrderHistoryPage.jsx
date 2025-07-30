@@ -52,7 +52,7 @@ export default function OrderHistoryPage() {
         <FaUserCircle className="profile-avatar" />
         <div className="profile-info">
           <h2>
-            {user.name} {user.lastName}
+            {user.firstName} {user.lastName}
           </h2>
           <p>{user.email}</p>
           <p>{user.phone}</p>
