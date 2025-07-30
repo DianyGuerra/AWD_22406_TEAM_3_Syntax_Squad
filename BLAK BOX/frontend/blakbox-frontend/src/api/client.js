@@ -1,8 +1,7 @@
-// src/api/client.js
 import axios from 'axios';
 
 const client = axios.create({
-  baseURL: 'https://awd-22406-team-3-syntax-squad.onrender.com', 
+  baseURL: import.meta.env.VITE_API_URL || '', 
   headers: { 'Content-Type': 'application/json' },
 });
 
