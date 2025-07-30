@@ -5,15 +5,17 @@ require('dotenv').config();
 
 const app = express();
 
-// 1) CORS
-app.use(cors({
-  origin: 'http://localhost:5173'
-}));
+app.use(
+  cors({
+    origin: '*',    // ← cualquier dominio
+    methods: ['GET','POST','PUT','DELETE','OPTIONS'],
+    allowedHeaders: ['Content-Type','Authorization']
+  })
+);
 
-// 2) JSON body parsing
+
 app.use(express.json());
 
-// 3) Rutas
 const userRoutes              = require('./routes/userRoutes');
 const orderRoutes             = require('./routes/orderRoutes');
 const orderProductRoutes      = require('./routes/orderProductRoutes');
@@ -44,7 +46,6 @@ app.use('/blakbox', shippingRoutes);
 app.use('/blakbox', brandRoutes);
 app.use('/blakbox', notificationsRoutes);
 
-// 4) Conexión MongoDB y arranque del servidor
 const PORT = process.env.PORT || 3007;
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
