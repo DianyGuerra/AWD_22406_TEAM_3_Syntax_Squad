@@ -37,8 +37,13 @@ export default function OrderHistoryPage() {
       .catch(err => console.error(err))
   }, [userId])
 
-  if (!user || !data) {
-    return <div className="order-history-container">Loading…</div>
+  // 3) Guard: si no tenemos user o data o totalSpent no es número, mostramos loading
+  if (!user || !data || typeof data.totalSpent !== 'number') {
+    return (
+      <div className="order-history-container">
+        Loading order history…
+      </div>
+    )
   }
 
   const { totalOrders, totalSpent, lastOrderDate, history } = data
@@ -89,31 +94,22 @@ export default function OrderHistoryPage() {
       {/* Order History */}
       {Object.entries(history).map(([year, months]) =>
         Object.entries(months).map(([month, orders]) => (
-          <section
-            key={`${year}-${month}`}
-            className="order-section"
-          >
+          <section key={`${year}-${month}`} className="order-section">
             <h2>
               {year} — {month}
             </h2>
             <div className="order-cards">
               {orders.map(o => (
-                <div
-                  key={o.orderId}
-                  className="order-card"
-                >
+                <div key={o.orderId} className="order-card">
                   <h4>Order #{o.orderId.slice(-6)}</h4>
                   <p>
                     <strong>Date:</strong>{' '}
                     {new Date(o.orderDate).toLocaleDateString()}
                   </p>
                   <p>
-                    <strong>Total:</strong> $
-                    {o.total.toFixed(2)}
+                    <strong>Total:</strong> ${o.total.toFixed(2)}
                   </p>
-                  <p
-                    className={`order-status status-${o.status}`}
-                  >
+                  <p className={`order-status status-${o.status}`}>
                     {o.status.toUpperCase()}
                   </p>
                 </div>
