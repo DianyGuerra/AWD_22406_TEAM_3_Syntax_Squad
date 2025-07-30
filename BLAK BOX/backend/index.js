@@ -1,58 +1,55 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
 
+// 1) CORS
+app.use(cors({
+  origin: 'http://localhost:5173'
+}));
+
+// 2) JSON body parsing
 app.use(express.json());
 
-const userRoutes = require('./routes/userRoutes');
+// 3) Rutas
+const userRoutes              = require('./routes/userRoutes');
+const orderRoutes             = require('./routes/orderRoutes');
+const orderProductRoutes      = require('./routes/orderProductRoutes');
+const cartRoutes              = require('./routes/cartRoutes');
+const cartProductRoutes       = require('./routes/cartProductRoutes');
+const wishlistRoutes          = require('./routes/wishlistRoutes');
+const wishlistProductRoutes   = require('./routes/wishlistProductRoutes');
+const productRoutes           = require('./routes/productRoutes');
+const categoryRoutes          = require('./routes/categoryRoutes');
+const inventoryRoutes         = require('./routes/inventoryRoutes');
+const paymentRoutes           = require('./routes/paymentRoutes');
+const shippingRoutes          = require('./routes/shippingRoutes');
+const brandRoutes             = require('./routes/brandRoutes');
+const notificationsRoutes     = require('./routes/notificationsRoutes');
+
 app.use('/blakbox', userRoutes);
-
-const orderRoutes = require('./routes/orderRoutes');
 app.use('/blakbox', orderRoutes);
-
-const orderProductRoutes = require('./routes/orderProductRoutes');
 app.use('/blakbox', orderProductRoutes);
-
-const cartRoutes = require('./routes/cartRoutes');
 app.use('/blakbox', cartRoutes);
-
-const cartProductRoutes = require('./routes/cartProductRoutes');
 app.use('/blakbox', cartProductRoutes);
-
-const wishlistRoutes = require('./routes/wishlistRoutes');
 app.use('/blakbox', wishlistRoutes);
-
-const wishlistProductRoutes = require('./routes/wishlistProductRoutes');
 app.use('/blakbox', wishlistProductRoutes);
-
-const productRoutes = require('./routes/productRoutes');
 app.use('/blakbox', productRoutes);
-
-const categoryRoutes = require('./routes/categoryRoutes');
 app.use('/blakbox', categoryRoutes);
-
-const inventoryRoutes = require('./routes/inventoryRoutes');
 app.use('/blakbox', inventoryRoutes);
-
-const paymentRoutes = require('./routes/paymentRoutes');
 app.use('/blakbox', paymentRoutes);
-
-const shippingRoutes = require('./routes/shippingRoutes');
 app.use('/blakbox', shippingRoutes);
-
-const brandRoutes = require('./routes/brandRoutes');
 app.use('/blakbox', brandRoutes);
-
-const notificationsRoutes = require('./routes/notificationsRoutes');
 app.use('/blakbox', notificationsRoutes);
 
+// 4) Conexión MongoDB y arranque del servidor
+const PORT = process.env.PORT || 3007;
 mongoose.connect(process.env.MONGO_URI)
-.then(() => {
-  console.log('✅ Connected to MongoDB');
-  app.listen(3007, () => {
-    console.log('🚀 Server running on http://localhost:3007');
-  });
-})
-.catch(err => console.error('❌ Connection error:', err));
+  .then(() => {
+    console.log('✅ Connected to MongoDB');
+    console.log(`🚀 Server running on http://localhost:${PORT}`);
+    app.listen(PORT);
+  })
+  .catch(err => console.error('❌ Connection error:', err));
