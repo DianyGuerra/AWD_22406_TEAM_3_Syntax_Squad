@@ -167,3 +167,7 @@ html {
 .btn-delete:hover {
   background-color: #d61e6c;
 }
+
+.product-card .card {
+  width: 100%;
+}

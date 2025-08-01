@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import "../styles/styleUser.css";
 import HeaderUser from "./HeaderUser";
 import HeaderResponsiveUser from "./HeaderResponsiveUser";
+import client from "../api/client";
 
 const ProductsPage = () => {
   const [categories, setCategories] = useState([]);
@@ -18,28 +21,24 @@ const ProductsPage = () => {
   const [loadingPriceFilter, setLoadingPriceFilter] = useState(false);
   const [errorPriceFilter, setErrorPriceFilter] = useState(null);
 
+  const userId = "685bb91a0eeff8b08e0e130b"; // Diana
+
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const [categoriesRes, productsRes] = await Promise.all([
-          fetch("/blakbox/categories"),
-          fetch("/blakbox/products"),
-        ]);
+    try {
+      const [categoriesRes, productsRes] = await Promise.all([
+        client.get("/blakbox/categories"),
+        client.get("/blakbox/products"),
+      ]);
 
-        if (!categoriesRes.ok) throw new Error("Failed to fetch categories");
-        if (!productsRes.ok) throw new Error("Failed to fetch products");
-
-        const categoriesData = await categoriesRes.json();
-        const productsData = await productsRes.json();
-
-        setCategories(categoriesData);
-        setProducts(productsData);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+      setCategories(categoriesRes.data);
+      setProducts(productsRes.data);
+    } catch (err) {
+      setError(err.message || "Error fetching data");
+    } finally {
+      setLoading(false);
+    }
+  };
 
     fetchData();
   }, []);
@@ -65,11 +64,8 @@ const ProductsPage = () => {
     setErrorPriceFilter(null);
 
     try {
-      const res = await fetch(`/blakbox/products/price/${minPrice}/${maxPrice}`);
-      if (!res.ok) throw new Error("Failed to fetch products by price range");
-
-      const data = await res.json();
-      setPriceFilteredProducts(data);
+      const res = await client.get(`/blakbox/products/price/${minPrice}/${maxPrice}`);
+      setPriceFilteredProducts(res.data);
     } catch (err) {
       setErrorPriceFilter(err.message);
       setPriceFilteredProducts([]);
@@ -78,9 +74,54 @@ const ProductsPage = () => {
     }
   };
 
-  const addToCart = (productId, productName) => {
-    if (window.confirm(`Do you want to add "${productName}" to your cart?`)) {
-      alert(`Added "${productName}" to cart (demo)`);
+  const addToCart = async (productId, productName) => {
+    if (!window.confirm(`Do you want to add "${productName}" to your cart?`)) return;
+
+    try {
+      let cartId = null;
+
+      const cartRes = await client.get(`/blakbox/carts/users/${userId}`);
+      if (cartRes.data && cartRes.data.length > 0) {
+        cartId = cartRes.data[0]._id;
+      } else {
+        const createCartRes = await client.post("/blakbox/carts", { userId });
+        cartId = createCartRes.data._id;
+      }
+
+      await client.post("/blakbox/cartProducts", {
+        cartId,
+        productId,
+        quantity: 1
+      });
+
+      alert(`Added "${productName}" to cart!`);
+    } catch (error) {
+      console.error(error);
+      alert("Failed to add product to cart.");
+    }
+  };
+
+  const addToWishlist = async (productId, productName) => {
+    try {
+      let wishlistId = null;
+
+      const res = await client.get(`/blakbox/wishlist/users/${userId}`);
+      if (res.data && res.data.length > 0) {
+        wishlistId = res.data[0]._id;
+      } else {
+        const createRes = await client.post("/blakbox/wishlists", { userId });
+        wishlistId = createRes.data._id;
+      }
+
+      await client.post("/blakbox/wishlistProducts", {
+        wishlistId,
+        productId
+      });
+
+      alert(`Added "${productName}" to wishlist!`);
+    } catch (err) {
+      console.error(err);
+      alert("Failed to add to wishlist.");
     }
   };
 
@@ -149,6 +190,14 @@ const ProductsPage = () => {
               <button className="btn btn-accent" onClick={fetchProductsByPriceRange}>
                 Filter by Price
               </button>
+
+              <button className="btn btn-secondary ms-2 " style={{ maxWidth: "100px" }} onClick={() => {
+                setMinPrice("");
+                setMaxPrice("");
+                setPriceFilteredProducts([]);
+              }}>
+                Clear Price Filter
+              </button>
             </div>
           </div>
         </div>
@@ -157,7 +206,12 @@ const ProductsPage = () => {
         {errorPriceFilter && <p className="text-danger">Error: {errorPriceFilter}</p>}
 
         {(priceFilteredProducts.length > 0 ? priceFilteredProducts : filteredProducts).length > 0 ? (
-          <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+          <div className={`row g-4 justify-content-center ${
+              (priceFilteredProducts.length > 0 ? priceFilteredProducts : filteredProducts).length === 1 || (priceFilteredProducts.length > 0 ? priceFilteredProducts : filteredProducts).length === 2
+                ? "row-cols-1 row-cols-md-2"
+                : "row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4"
+            }`}
+          >
             {(priceFilteredProducts.length > 0 ? priceFilteredProducts : filteredProducts).map((p) => {
               const categoryName = p.categoryId?.categoryName || "Uncategorized";
               return (
@@ -176,12 +230,9 @@ const ProductsPage = () => {
                         <p><strong>${p.price.toFixed(2)}</strong></p>
                       </div>
                       <div className="mt-3 d-flex justify-content-between align-items-center">
-                        <a
-                          href={`/detailProducts?id=${p._id}`}
-                          className="btn btn-outline-light btn-sm"
-                        >
+                        <Link to={`/product/${p._id}`} className="btn btn-outline-light btn-sm">
                           View
-                        </a>
+                        </Link>
                         {p.stock <= 0 ? (
                           <button
                             type="button"
@@ -202,9 +253,9 @@ const ProductsPage = () => {
                         <button
                           type="button"
                           className="btn btn-outline-warning btn-sm"
-                          onClick={() => alert("Add to favorites feature")}
+                          onClick={() => addToWishlist(p._id, p.name)}
                         >
-                          Favorite
+                          ⭐ Favorite
                         </button>
                       </div>
                     </div>

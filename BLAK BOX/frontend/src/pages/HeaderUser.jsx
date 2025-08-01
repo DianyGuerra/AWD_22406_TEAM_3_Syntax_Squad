@@ -19,7 +19,7 @@ const HeaderUser = () => {
           </a>
         </li>
         <li className="nav-item">
-          <a className="nav-link text-white" href="">
+          <a className="nav-link text-white" href="/productsUser">
             <i className="bi bi-box-seam me-2"></i> Products
           </a>
         </li>

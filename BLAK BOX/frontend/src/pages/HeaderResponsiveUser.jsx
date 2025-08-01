@@ -1,6 +1,5 @@
 import React from 'react';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 const HeaderResponsiveUser = () => {
   return (
@@ -46,7 +45,7 @@ const HeaderResponsiveUser = () => {
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link text-white" href="">
+              <a className="nav-link text-white" href="/productsUser">
                 <i className="bi bi-box-seam me-2"></i> Products
               </a>
             </li>
