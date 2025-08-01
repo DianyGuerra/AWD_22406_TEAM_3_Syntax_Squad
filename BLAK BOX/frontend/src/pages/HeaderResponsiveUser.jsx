@@ -40,7 +40,7 @@ const HeaderResponsiveUser = () => {
         <div className="offcanvas-body">
           <ul className="nav flex-column">
             <li className="nav-item">
-              <a className="nav-link text-white" href="">
+              <a className="nav-link text-white" href="/homeUser">
                 <i className="bi bi-house-door-fill me-2"></i> Home
               </a>
             </li>

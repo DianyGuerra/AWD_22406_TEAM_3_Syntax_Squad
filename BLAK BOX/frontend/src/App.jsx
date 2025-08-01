@@ -7,6 +7,7 @@ import './App.css';
 import OrderHistoryPage from './pages/OrderHistoryPage';
 import ProductsUserPage from './pages/ProductsUserPage';
 import ProductDetail from './pages/ProductDetailPage';
+import HomeUserPage from './pages/HomeUserPage';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       {/* Aquí iría tu Navbar, si ya lo tienes */}
       <Routes>
         {/*Rutas por parte de los clientes*/}
+        <Route path="/homeUser/" element={<HomeUserPage />} />
         <Route path="/productsUser" element={<ProductsUserPage />} />
         <Route path="/product/:id" element={<ProductDetail />} />
         <Route path="/orders/history/:userId" element={<OrderHistoryPage />} />

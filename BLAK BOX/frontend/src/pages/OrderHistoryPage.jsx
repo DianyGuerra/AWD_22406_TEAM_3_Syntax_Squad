@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import {
   FaClipboardList,
   FaDollarSign,
@@ -49,6 +49,9 @@ export default function OrderHistoryPage() {
 
   return (
     <div className="order-history-container">
+      <Link to="/homeUser" className="text-accent mb-4 d-inline-block text-decoration-none">
+        ← Back to Profile
+      </Link>
       <h1 className="order-history-title">Order History</h1>
 
       {/* Profile Section */}
