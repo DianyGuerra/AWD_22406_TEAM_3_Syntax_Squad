@@ -55,7 +55,7 @@ const HeaderResponsiveUser = () => {
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link text-white" href="">
+              <a className="nav-link text-white" href="/profileUser">
                 <i className="bi bi-person-circle me-2"></i> Profile
               </a>
             </li>
