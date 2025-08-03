@@ -6,7 +6,7 @@ const HeaderUser = () => {
     <aside className="bg-dark text-white p-3 sidebar d-none d-lg-block">
       <div className="text-center mb-4">
         <img
-          src="../../Images/Logoblanco-removebg-preview.png"
+          src="../../public/Images/Logoblanco-removebg-preview.png"
           alt="Blak Box Logo"
           className="img-fluid"
           style={{ maxHeight: '150px', filter: 'invert(1) brightness(2)' }}
@@ -24,7 +24,7 @@ const HeaderUser = () => {
           </a>
         </li>
         <li className="nav-item">
-          <a className="nav-link text-white" href="">
+          <a className="nav-link text-white" href="/cartUser">
             <i className="bi bi-cart3 me-2"></i> Cart
           </a>
         </li>

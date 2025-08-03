@@ -22,7 +22,7 @@ const createWishlist = async (req, res) => {
 
     const newWishlist = new Wishlist({ userId });
     await newWishlist.save();
-    res.status(201).json({ message: 'Wishlist created successfully'});
+    res.status(201).json(newWishlist);
 
   } catch (error) {
     console.error("Error creating wishlist:", error);
@@ -51,7 +51,7 @@ const deleteWishlist = async (req, res) => {
 
 const getWishlistByUserID = async (req, res) => {
     try {
-        const wishlist = await Wishlist.findOne({ userId: req.params.userId });
+        const wishlist = await Wishlist.find({ userId: req.params.userId });
         if (!wishlist) return res.status(404).json({ message: "Wishlist not found" });
         res.status(200).json(wishlist);
     } catch (err) {

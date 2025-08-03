@@ -7,7 +7,7 @@ const orderController = require('../controllers/orderController');
 router.get('/orders', orderController.getAllOrders);
 router.post('/orders', orderController.createNewOrder);
 router.delete('/orders/:orderId', orderController.deleteOrder);
-router.get("/orders/user/:userId", orderController.getOrderById);
+router.get("/orders/user/:userId", orderController.getOrderByUserId);
 router.get('/orders/:orderId', orderController.getOrderById);
 
 // 🟢 SERVICES

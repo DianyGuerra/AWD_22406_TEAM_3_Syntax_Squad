@@ -11,5 +11,6 @@ router.get('/carts', cartController.getAllCarts);
 router.post('/carts', cartController.createCart);
 router.get('/carts/users/:userId', cartController.getCartByUserID); // más específico que /:id
 router.get('/carts/:id', cartController.getCartByID);
+router.delete('/carts/:id', cartController.deleteCart);
 
 module.exports = router;

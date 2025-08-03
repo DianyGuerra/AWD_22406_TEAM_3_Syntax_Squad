@@ -60,17 +60,46 @@ const getProductsWishlistId = async (req, res) => {
 
 const deleteProductFromWishlist = async (req, res) => {
     try {
-        await WishlistProduct.findByIdAndDelete(req.params.id);
-        res.status(200).json({ message: "Product removed from wishlist" });
-    } catch (err) {
-        res.status(500).json({ message: "Server error while deleting product to wishlist" });
+        const { wishlistId, productId } = req.params;
+        if (!wishlistId || !productId) {
+            return res.status(400).json({ message: "Wishlist ID and Product ID are required." });
+        }
+        const result = await WishlistProduct.findOneAndDelete({ wishlistId, productId });
+        if (!result) {
+            return res.status(404).json({ message: "Product not found in wishlist." });
+        }
+        res.status(200).json({ message: "Product removed from wishlist successfully." });
+    }catch (error) {
+        console.error("Error deleting product from wishlist:", error);
+        res.status(500).json({ message: "Server error while deleting product from wishlist." });
     }
 };
+
+const getProductsbyWishlistId = async (req, res) => {
+  const { wishlistId } = req.params;
+  if (!wishlistId) {
+    return res.status(400).json({ message: "Wishlist ID is required." });
+  }
+  try {
+    const wishlistProducts = await WishlistProduct
+      .find({ wishlistId })
+      .populate('productId', 'name price brand');
+    if (!wishlistProducts || wishlistProducts.length === 0) {
+      return res.status(404).json({ message: "No products found in this wishlist."
+      });
+    }
+    res.status(200).json(wishlistProducts);
+  } catch (err) {
+    console.error("Error getting products by wishlist ID:", err);
+    res.status(500).json({ message: "Server error while getting products by wishlist ID." });
+  }
+}
 
 
 module.exports = {
   getAllWishlistProducts,
   addProductToWishlist,
   getProductsWishlistId,
-  deleteProductFromWishlist
+  deleteProductFromWishlist,
+  getProductsbyWishlistId
 };

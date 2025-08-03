@@ -64,7 +64,25 @@ const deleteOrder = async (req, res) => {
   }
 };
 
-
+const getOrderByUserId = async (req, res) => {
+  const { userId } = req.params;
+  if (!userId) {
+    return res.status(400).json({ message: "User ID is required." });
+  }
+  try {
+    const orders = await Order.find({ userId })
+      .populate('userId', 'firstName lastName email')
+      .sort({ orderDate: -1 });
+    if (orders.length === 0) {
+      return res.status(404).json({ message: "No orders found for this user."
+      });
+    }
+    res.status(200).json(orders);
+  } catch (err) {
+    console.error("Error getting orders by user ID:", err);
+    res.status(500).json({ message: "Server error while getting orders by user ID." });
+  }
+};
 
 // SERVICES operations for orders
 
@@ -177,6 +195,7 @@ module.exports = {
   getAllOrders,
   createNewOrder,
   deleteOrder,
+  getOrderByUserId,
   getOrderById,
   getOrderHistoryByUserId,
   cancelOrderById

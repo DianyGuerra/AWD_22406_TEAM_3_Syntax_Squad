@@ -50,7 +50,7 @@ const HeaderResponsiveUser = () => {
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link text-white" href="">
+              <a className="nav-link text-white" href="/cartUser">
                 <i className="bi bi-cart3 me-2"></i> Cart
               </a>
             </li>

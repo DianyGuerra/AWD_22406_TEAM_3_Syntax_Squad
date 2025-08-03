@@ -7,5 +7,6 @@
     router.post('/wishlistProducts', wishlistProductController.addProductToWishlist);
     router.get("/wishlistProducts/:wishlistProductId", wishlistProductController.getProductsWishlistId);
     router.delete("/wishlistProducts/:wishlistId/:productId", wishlistProductController.deleteProductFromWishlist);
+    router.get("/wishlistProducts/wishlist/:wishlistId", wishlistProductController.getProductsbyWishlistId);
 
     module.exports = router;

@@ -50,6 +50,22 @@ const getCartByID = async (req, res) => {
     }
 };
 
+const deleteCart = async (req, res) => {
+  try {
+    if (!req.params.id) {
+      return res.status(400).json({ message: "ID is required." });
+    }
+    const deletedCart = await Cart.findByIdAndDelete(req.params.id);
+    if (!deletedCart) {
+      return res.status(404).json({ message: "Cart not found." });
+    }
+    res.status(200).json({ message: "Cart deleted successfully." });
+  } catch (error) {
+    console.error("Error deleting cart:", error);
+    res.status(500).json({ message: "Server error while deleting cart." });
+  }
+};
+
 //------------------------------------------------------------SERVICES operations for carts------------------------------------------------------------
 
 //CHECKOUT cart by cart ID
@@ -140,7 +156,7 @@ const getTotalCartPrice = async (req, res) => {
 
 const getCartByUserID = async (req, res) => {
     try {
-        const cart = await Cart.findOne({ userId: req.params.userId });
+        const cart = await Cart.find({ userId: req.params.userId });
         if (!cart) return res.status(404).json({ message: "Cart not found" });
         res.status(200).json(cart);
     } catch (err) {
@@ -154,5 +170,6 @@ module.exports = {
   checkoutCart,
   getTotalCartPrice,
   getCartByID,
-  getCartByUserID
+  getCartByUserID,
+  deleteCart
 };

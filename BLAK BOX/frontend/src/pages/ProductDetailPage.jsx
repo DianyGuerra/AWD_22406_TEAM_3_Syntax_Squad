@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import '../styles/styleUser.css';
@@ -10,13 +10,12 @@ import client from '../api/client';
 
 const ProductDetail = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
 
   const [product, setProduct] = useState(null);
   const [notFound, setNotFound] = useState(false);
   const [msg, setMsg] = useState('');
 
-  const userId = "685bb91a0eeff8b08e0e130b"; //Diana
+  const userId = "685bb91a0eeff8b08e0e130b"; // Diana
 
   useEffect(() => {
     client.get(`/blakbox/products/${id}`)
@@ -25,28 +24,44 @@ const ProductDetail = () => {
   }, [id]);
 
   const handleAddToCart = async () => {
-    console.log(product);
+    if (!product) return;
+
+    if (!window.confirm(`Do you want to add "${product.name}" to your cart?`)) return;
+
     try {
-        let cartId = null;
-        const cartRes = await client.get(`/blakbox/carts/users/${userId}`);
+      const productRes = await client.get(`/blakbox/products/${product.id}`);
+      const currentStock = productRes.data.stock;
 
-        if (cartRes.data && cartRes.data.length > 0) {
-            cartId = cartRes.data[0]._id;
-        } else {
-            const createCartRes = await client.post("/blakbox/carts", { userId });
-            cartId = createCartRes.data._id;
-        }
+      if (currentStock <= 0) {
+        setMsg("Sorry, this product is out of stock.");
+        return;
+      }
 
-        await client.post("/blakbox/cartProducts", {
-            cartId,
-            productId: product.id,
-            quantity: 1
-        });
+      const cartRes = await client.get(`/blakbox/carts/users/${userId}`);
+      let cartId;
 
-        setMsg("Product added to cart!");
+      if (Array.isArray(cartRes.data) && cartRes.data.length > 0) {
+        cartId = cartRes.data[0]._id;
+      } else {
+        const createRes = await client.post("/blakbox/carts", { userId });
+        cartId = createRes.data._id;
+      }
+
+      await client.post("/blakbox/cartProducts", {
+        cartId,
+        productId: product.id,
+        quantity: 1,
+      });
+
+      const updatedStock = currentStock - 1;
+      await client.put(`/blakbox/products/${product.id}/stock`, { stock: updatedStock });
+
+      setProduct(prev => ({ ...prev, stock: updatedStock }));
+
+      setMsg(`Added "${product.name}" to cart!`);
     } catch (error) {
-        console.error(error);
-        setMsg("Failed to add product to cart.");
+      console.error(error);
+      setMsg("Failed to add product to cart.");
     }
   };
 
@@ -55,28 +70,27 @@ const ProductDetail = () => {
     e.preventDefault();
 
     try {
-        let wishlistId = null;
-        const res = await client.get(`/blakbox/wishlist/users/${userId}`);
+      const res = await client.get(`/blakbox/wishlists/users/${userId}`);
+      let wishlistId;
 
-        if (res.data && res.data.length > 0) {
-            wishlistId = res.data[0]._id;
-        } else {
-            const createRes = await client.post("/blakbox/wishlists", { userId });
-            wishlistId = createRes.data._id;
-        }
+      if (res.data && res.data._id) {
+        wishlistId = res.data._id;
+      } else {
+        const createRes = await client.post("/blakbox/wishlists", { userId });
+        wishlistId = createRes.data._id;
+      }
 
-        await client.post("/blakbox/wishlistProducts", {
-            wishlistId,
-            productId: product.id
-        });
+      await client.post("/blakbox/wishlistProducts", {
+        wishlistId,
+        productId: product.id,
+      });
 
-        setMsg("Product added to wishlist!");
+      setMsg(`Added "${product.name}" to wishlist!`);
     } catch (err) {
-        console.error(err);
-        setMsg("Failed to add to wishlist.");
+      console.error(err);
+      setMsg("Failed to add to wishlist.");
     }
-    };
-
+  };
 
   if (notFound) {
     return (
@@ -105,35 +119,36 @@ const ProductDetail = () => {
             </Link>
 
             <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '50vh', minWidth: '160vh' }}>
-            <div className="row" >
-              <div className="text-center d-flex flex-column align-items-center">
-                <h2 className="text-accent">{product.name}</h2>
-                <p>{product.description}</p>
-                <p><strong>Stock:</strong> {product.stock}</p>
-                <p><strong>Category:</strong> {product.category?.categoryName}</p>
-                {product.category?.categoryDescription && (
-                  <p><strong>Category Description:</strong> {product.category.categoryDescription}</p>
-                )}
-                <h4>${product.price.toFixed(2)}</h4><br />
-
-                <div className="d-flex mt-3 gap-2">
-                  {product.stock <= 0 ? (
-                    <button className="btn btn-secondary btn-sm" disabled>Out of Stock</button>
-                  ) : (
-                    <button className="btn btn-accent btn-sm" onClick={handleAddToCart}>
-                      Add Cart
-                    </button>
+              <div className="row">
+                <div className="text-center d-flex flex-column align-items-center">
+                  <h2 className="text-accent">{product.name}</h2>
+                  <p>{product.description}</p>
+                  <p><strong>Stock:</strong> {product.stock}</p>
+                  <p><strong>Category:</strong> {product.category?.categoryName}</p>
+                  {product.category?.categoryDescription && (
+                    <p><strong>Category Description:</strong> {product.category.categoryDescription}</p>
                   )}
+                  <h4>${product.price.toFixed(2)}</h4><br />
 
-                  <form onSubmit={handleAddToWishlist}>
-                    <button type="submit" className="btn btn-outline-warning">
-                      ⭐ Favorite
-                    </button>
-                  </form>
+                  <div className="d-flex mt-3 gap-2">
+                    {product.stock <= 0 ? (
+                      <button className="btn btn-secondary btn-sm" disabled>Out of Stock</button>
+                    ) : (
+                      <button className="btn btn-accent btn-sm" onClick={handleAddToCart}>
+                        🛒Add to Cart
+                      </button>
+                    )}
+
+                    <form onSubmit={handleAddToWishlist}>
+                      <button type="submit" className="btn btn-outline-warning">
+                        ⭐ Favorite
+                      </button>
+                    </form>
+                  </div>
                 </div>
               </div>
             </div>
-            </div>
+
             {msg && (
               <div className="alert alert-info text-center mt-4">
                 {msg}

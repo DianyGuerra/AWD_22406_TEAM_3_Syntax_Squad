@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "../styles/styleUser.css";
 import HeaderUser from "./HeaderUser";
@@ -10,37 +11,120 @@ const ProfileUserPage = () => {
   const [wishlistProducts, setWishlistProducts] = useState([]);
   const [orders, setOrders] = useState([]);
   const [profileMsg, setProfileMsg] = useState("");
+  const [groupedWishlistItems, setGroupedWishlistItems] = useState(new Map());
+
 
   const userId = "685bb91a0eeff8b08e0e130b"; // Diana
 
   useEffect(() => {
-    const fetchProfileData = async () => {
-      try {
-        const userRes = await client.get(`/blakbox/users/${userId}`);
-        const wishlistRes = await client.get(`/blakbox/wishlists/users/${userId}`);
-        const ordersRes = await client.get(`/blakbox/history/user/${userId}`);
-
-        setUser(userRes.data);
-        setWishlistProducts(wishlistRes.data[0]?.products || []);
-        setOrders(ordersRes.data);
-      } catch (err) {
-        console.error("Error loading profile:", err);
-        setProfileMsg("There was an error loading your profile.");
-      }
-    };
-
     fetchProfileData();
   }, [userId]);
 
-  const handleRemoveFromWishlist = async (wishlistProductId) => {
+  const groupOrderProducts = (products) => {
+    const grouped = {};
+
+    products.forEach((product) => {
+      const key = product.name; // también puedes usar product.productId si es único
+
+      if (!grouped[key]) {
+        grouped[key] = {
+          ...product,
+          quantity: product.quantity,
+          totalPrice: product.price * product.quantity
+        };
+      } else {
+        grouped[key].quantity += product.quantity;
+        grouped[key].totalPrice += product.price * product.quantity;
+      }
+    });
+
+    return Object.values(grouped);
+  };
+
+
+  const fetchProfileData = async () => {
     try {
-      await client.delete(`/blakbox/wishlistProducts/${wishlistProductId}`);
-      setWishlistProducts(prev => prev.filter(item => item._id !== wishlistProductId));
+      const userRes = await client.get(`/blakbox/users/${userId}`);
+      const wishlistRes = await client.get(`/blakbox/wishlists/users/${userId}`);
+      const ordersRes = await client.get(`/blakbox/orders/user/${userId}`);
+
+      setUser(userRes.data);
+
+      const enrichedOrders = await Promise.all(
+        ordersRes.data.map(async (order) => {
+          try {
+            const prodRes = await client.get(`/blakbox/orderProducts/${order._id}`);
+            return {
+              ...order,
+              products: prodRes.data?.products || [],
+            };
+          } catch (error) {
+            console.error(`Error fetching products for order ${order._id}:`, error);
+            return {
+              ...order,
+              products: [],
+            };
+          }
+        })
+      );
+
+      setOrders(enrichedOrders);
+
+      const productFetchPromises = wishlistRes.data.map(async (wishlist) => {
+        try {
+          const response = await client.get(`/blakbox/wishlistProducts/wishlist/${wishlist._id}`);
+          return Array.isArray(response.data)
+            ? response.data.filter(item => item?.productId)
+            : [];
+        } catch (err) {
+          console.warn(`Error fetching wishlist ${wishlist._id}:`, err);
+          return [];
+        }
+      });
+
+      const allWishlistProductsArrays = await Promise.all(productFetchPromises);
+      const allProducts = allWishlistProductsArrays.flat();
+
+      const productIdToItems = new Map();
+      allProducts.forEach((item) => {
+        const productKey = item.productId?._id;
+        if (productKey) {
+          if (!productIdToItems.has(productKey)) {
+            productIdToItems.set(productKey, []);
+          }
+          productIdToItems.get(productKey).push(item);
+        }
+      });
+
+      const uniqueProducts = Array.from(productIdToItems.values()).map(items => items[0]);
+
+      setWishlistProducts(uniqueProducts);
+      setGroupedWishlistItems(productIdToItems);
+
     } catch (err) {
-      console.error("Error removing item:", err);
-      alert("Failed to remove item from wishlist.");
+      console.error("Error loading profile:", err);
+      setProfileMsg("There was an error loading your profile.");
     }
   };
+
+
+  const handleRemoveFromWishlist = async (productId) => {
+    try {
+      const items = groupedWishlistItems.get(productId);
+      if (!items || items.length === 0) return;
+
+      for (const item of items) {
+        await client.delete(`/blakbox/wishlistProducts/${item.wishlistId}/${productId}`);
+        await client.delete(`/blakbox/wishlists/${item.wishlistId}`);
+      }
+
+      await fetchProfileData(); 
+    } catch (err) {
+      console.error("Error removing item from all wishlists:", err);
+      alert("Failed to remove item from wishlists.");
+    }
+  };
+
 
   if (!user) return <div className="text-white p-5">Loading profile...</div>;
 
@@ -57,6 +141,9 @@ const ProfileUserPage = () => {
             <p><strong className="text-accent">Name:</strong> {user.firstName} {user.lastName}</p>
             <p><strong className="text-accent">Email:</strong> {user.email}</p>
             <p><strong className="text-accent">Phone number:</strong> {user.phoneNumber}</p>
+            <p><strong className="text-accent">Order History: </strong> 
+              <Link to={`/orders/history/${userId}`} style={{color: "white"}}>Order History</Link>
+            </p>
           </div>
 
           <h2 className="text-center text-accent mt-4">Wish List</h2>
@@ -65,6 +152,7 @@ const ProfileUserPage = () => {
               <thead>
                 <tr>
                   <th>Product</th>
+                  <th>Brand</th>
                   <th>Price</th>
                   <th>Action</th>
                 </tr>
@@ -73,12 +161,13 @@ const ProfileUserPage = () => {
                 {wishlistProducts.length > 0 ? (
                   wishlistProducts.map((item) => (
                     <tr key={item._id}>
-                      <td>{item.name}</td>
-                      <td>${item.price.toFixed(2)}</td>
+                      <td>{item.productId?.name}</td>
+                      <td>{item.productId?.brand}</td>
+                      <td>${item.productId?.price?.toFixed(2)}</td>
                       <td>
                         <button
                           className="btn-delete"
-                          onClick={() => handleRemoveFromWishlist(item._id)}
+                          onClick={() => handleRemoveFromWishlist(item.productId?._id)}
                         >
                           Delete
                         </button>
@@ -87,7 +176,7 @@ const ProfileUserPage = () => {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="3" className="text-center">Your wish list is empty.</td>
+                    <td colSpan="4" className="text-center">Your wish list is empty.</td>
                   </tr>
                 )}
               </tbody>
@@ -97,9 +186,7 @@ const ProfileUserPage = () => {
               <div className="alert alert-info text-center mt-3">{profileMsg}</div>
             )}
           </div>
-          <Link to={`/orders/history/${userId}`} lassName="text-accent mb-4 d-inline-block text-decoration-none">
-            Order History
-          </Link>
+
           <h2 className="text-center text-accent mt-4">Purchase History</h2>
           <div className="table-responsive">
             <table className="wishlist-table">
@@ -118,13 +205,17 @@ const ProfileUserPage = () => {
                       <td>{new Date(order.orderDate).toLocaleDateString()}</td>
                       <td>{order.status}</td>
                       <td>
-                        <ul className="mb-0">
-                          {order.products.map((prod, idx) => (
-                            <li key={idx}>
-                              {prod.productName} (x{prod.quantity}) - ${prod.price.toFixed(2)}
-                            </li>
-                          ))}
-                        </ul>
+                        {order.products.length > 0 ? (
+                          <ul className="mb-0">
+                            {groupOrderProducts(order.products).map((prod, idx) => (
+                              <li key={idx}>
+                                {prod.name} (x{prod.quantity}) - ${prod.totalPrice.toFixed(2)}
+                              </li>
+                            ))}
+                          </ul>
+                        ) : (
+                          "No product info"
+                        )}
                       </td>
                       <td>${order.total.toFixed(2)}</td>
                     </tr>
