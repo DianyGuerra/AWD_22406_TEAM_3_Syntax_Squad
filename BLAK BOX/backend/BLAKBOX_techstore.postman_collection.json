@@ -1,0 +1,414 @@
+{
+	"info": {
+		"_postman_id": "80357d92-e758-4bb9-8dcb-aeb6b7bc78ac",
+		"name": "BLAKBOX_techstore",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "46108762",
+		"_collection_link": "https://dianaguerra.postman.co/workspace/Diana-Guerra's-Workspace~91fb8334-7a10-4dba-8ff1-4eaba50e90da/collection/46108762-80357d92-e758-4bb9-8dcb-aeb6b7bc78ac?action=share&source=collection_link&creator=46108762"
+	},
+	"item": [
+		{
+			"name": "56. Get  order history by user Id, statistics and grouping by month and year",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"Laura\", \r\n    \"lastName\": \"Vega\", \r\n    \"email\": \"laura@example.com\", \r\n    \"password\": \"securePass123\", \r\n    \"phoneNumber\":\"0658492597\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/blakbox/orders/history/685bb91a0eeff8b08e0e130b",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"blakbox",
+						"orders",
+						"history",
+						"685bb91a0eeff8b08e0e130b"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get products",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://awd-22406-team-3-syntax-squad.onrender.com/blakbox/products",
+					"protocol": "https",
+					"host": [
+						"awd-22406-team-3-syntax-squad",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"blakbox",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://awd-22406-team-3-syntax-squad.onrender.com/blakbox/users",
+					"protocol": "https",
+					"host": [
+						"awd-22406-team-3-syntax-squad",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"blakbox",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "25",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"wishlistId\": \"68674eb65993218729bdfb61\",\r\n    \"productId\": \"685cc96e01f2c068f203cdac\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://awd-22406-team-3-syntax-squad.onrender.com/blakbox/wishlistProducts",
+					"protocol": "https",
+					"host": [
+						"awd-22406-team-3-syntax-squad",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"blakbox",
+						"wishlistProducts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "27 corregir",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://awd-22406-team-3-syntax-squad.onrender.com/blakbox/wishlistProducts/68674eb65993218729bdfb61/6867aa040f699e249b8f487a",
+					"protocol": "https",
+					"host": [
+						"awd-22406-team-3-syntax-squad",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"blakbox",
+						"wishlistProducts",
+						"68674eb65993218729bdfb61",
+						"6867aa040f699e249b8f487a"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "29",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"cartId\": \"68679f3208da5a7897ea537f\",\r\n    \"productId\": \"688bc3a6e240f807107b123b\",\r\n    \"quantity\": 5\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/blakbox/cartProducts",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"blakbox",
+						"cartProducts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "30",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"quantity\": 10\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/blakbox/cartProducts/68679f3208da5a7897ea537f/688bc3a6e240f807107b123b",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"blakbox",
+						"cartProducts",
+						"68679f3208da5a7897ea537f",
+						"688bc3a6e240f807107b123b"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "33",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"cartId\": \"68679f3208da5a7897ea537f\",\r\n    \"productId\": \"688bc3a6e240f807107b123b\",\r\n    \"quantity\": 5\r\n}"
+				},
+				"url": {
+					"raw": "{{baseURL}}/blakbox/shippings/68673d48225c301e83b25940",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"blakbox",
+						"shippings",
+						"68673d48225c301e83b25940"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "35",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"shippingAddress\": \"221B Baker Street, London NW1 6XE, United Kingdom\", \"shippingCompany\": \"DHL\", \"trackingNumber\": \"JD014600004012345678\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/blakbox/shippings/686a07ded903a944075f9ad5",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"blakbox",
+						"shippings",
+						"686a07ded903a944075f9ad5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "53",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"shippingAddress\": \"221B Baker Street, London NW1 6XE, United Kingdom\", \"shippingCompany\": \"DHL\", \"trackingNumber\": \"JD014600004012345678\"}"
+				},
+				"url": {
+					"raw": "{{baseURL}}/blakbox/products/price/20/120",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"blakbox",
+						"products",
+						"price",
+						"20",
+						"120"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "55",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"orderId\": \"6862519bac4b5adfd0bc2e58\", \"userId\": \"68616dc37c1eac9cf89948e5\", \"phoneNumber\": \"0987654321\", \"message\": \"Hi Aria, your order #6881e4f59b7c221cadc41301 is ready. Please coordinate your shipment by replying to this message\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/blakbox/notifications/whatsapp/send",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"blakbox",
+						"notifications",
+						"whatsapp",
+						"send"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "59",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/blakbox/carts/total?cartId=686250a1ac4b5adfd0bc2e4d",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"blakbox",
+						"carts",
+						"total"
+					],
+					"query": [
+						{
+							"key": "cartId",
+							"value": "686250a1ac4b5adfd0bc2e4d"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Extrae el token de la respuesta y lo guarda en la variable de entorno 'jwt'\r",
+							"const json = pm.response.json();\r",
+							"pm.environment.set(\"jwt\", json.token);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"diana.guerra.03@outlook.cec\",\r\n  \"password\": \"Diana1\"\r\n}\r\n/*\r\n{\r\n  \"email\": \"jg2323229@gmail.com\",\r\n  \"password\": \"Admin123\"\r\n}\r\n\r\n{\r\n  \"email\": \"diana.guerra.03@outlook.com\",\r\n  \"password\": \"Diana1\"\r\n}\r\n*/",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3007/blakbox/users/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3007",
+					"path": [
+						"blakbox",
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NWJiOTFhMGVlZmY4YjA4ZTBlMTMwYiIsImVtYWlsIjoiZGlhbmEuZ3VlcnJhLjAzQG91dGxvb2suY29tIiwidXNlclR5cGUiOiJjdXN0b21lciIsImlhdCI6MTc1NDI3OTg0NSwiZXhwIjoxNzU0MjgzNDQ1fQ.Y28KnT9nAomJPFUsFN9cSYShWrRRg7Y2aLr5SiKJXp0",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "http://awd-22406-team-3-syntax-squad.onrender.com",
+			"type": "default"
+		}
+	]
+}

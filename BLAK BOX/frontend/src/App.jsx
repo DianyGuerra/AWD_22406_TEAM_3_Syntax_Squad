@@ -1,35 +1,46 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import './App.css';
+// src/App.jsx
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
 
-// Importa tus páginas
-//import HomePage from './pages/HomePage';
-import OrderHistoryPage from './pages/OrderHistoryPage';
+import PublicLayout     from './layouts/PublicLayout';
+import LoginPage        from './pages/LoginPage';
+import SignUpPage       from './pages/SignUpPage';
+import HomePage         from './pages/HomePage';
+
+import HomeUserPage     from './pages/HomeUserPage';
 import ProductsUserPage from './pages/ProductsUserPage';
-import ProductDetail from './pages/ProductDetailPage';
-import HomeUserPage from './pages/HomeUserPage';
-import ProfileUserPage from './pages/ProfileUserPage';
-import CartUserPage from './pages/cartUserPage';
-import AdminProfilePage from './pages/AdminProfilePage';
+import ProductDetail    from './pages/ProductDetailPage';
+import CartUserPage     from './pages/cartUserPage';
+import ProfileUserPage  from './pages/ProfileUserPage';
+import OrderHistoryPage from './pages/OrderHistoryPage';
+import AuthSuccessPage  from './pages/AuthSuccessPage';
 
-function App() {
+export default function App() {
   return (
-    <BrowserRouter>
-      {/* Aquí iría tu Navbar, si ya lo tienes */}
-      <Routes>
-        {/*Rutas por parte de los clientes*/}
-        <Route path="/homeUser/" element={<HomeUserPage />} />
-        <Route path="/productsUser" element={<ProductsUserPage />} />
-        <Route path="/product/:id" element={<ProductDetail />} />
-        <Route path="/cartUser" element={<CartUserPage />} />
-        <Route path="/profileUser" element={<ProfileUserPage />} />
-        <Route path="/orders/history/:userId" element={<OrderHistoryPage />} />
+    <Routes>
+      {/* Rutas públicas con PublicLayout */}
+      <Route element={<PublicLayout />}>
+        <Route path="/"          element={<HomePage />} />
+        <Route path="/about"     element={<HomePage />} />
+        <Route path="/store"     element={<HomePage />} />
+        <Route path="/contact"   element={<HomePage />} />
+        <Route path="/login"     element={<LoginPage />} />
+        <Route path="/signup"    element={<SignUpPage />} />
+      </Route>
+
+      {/* Callback OAuth no necesita NavBar pública ni privada */}
+      <Route path="/auth-success" element={<AuthSuccessPage />} />
+
+      {/* Rutas protegidas (no usan el HomeNavBar) */}
+      <Route path="/homeUser"               element={<HomeUserPage />} />
+      <Route path="/productsUser"           element={<ProductsUserPage />} />
+      <Route path="/product/:id"            element={<ProductDetail />} />
+      <Route path="/cartUser"               element={<CartUserPage />} />
+      <Route path="/profileUser"            element={<ProfileUserPage />} />
+      <Route path="/orders/history/:userId" element={<OrderHistoryPage />} />
         <Route path="/admin/profile" element={<AdminProfilePage />} />
 
-        {/* otras rutas */}
 
-      </Routes>
-    </BrowserRouter>
+    </Routes>
   );
 }
-
-export default App;

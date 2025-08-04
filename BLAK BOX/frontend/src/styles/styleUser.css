@@ -24,6 +24,8 @@ html {
   background-color: var(--purple-deep);
   color: white;
   height: 100%;
+  padding: 0;
+  margin: 0;
 }
 
 /* Sidebar */

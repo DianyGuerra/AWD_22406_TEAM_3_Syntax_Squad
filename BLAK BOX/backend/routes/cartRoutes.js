@@ -1,16 +1,80 @@
 const express = require('express');
 const router = express.Router();
 const cartController = require('../controllers/cartController');
+const { protect, admin, isSelf } = require('../middleware/auth');
 
-// 🟢 SERVICES
-router.post('/carts/checkout', cartController.checkoutCart);
-router.get('/carts/total', cartController.getTotalCartPrice);
+/**
+ * 28. Get Cart by User ID (User) - protected
+ *    GET /blakbox/carts/users/:userId
+ *    :contentReference[oaicite:3]{index=3}
+ */
+router.get(
+  '/carts/users/:userId',
+  protect,
+  isSelf,
+  cartController.getCartByUserID
+);
 
-// ✅ CRUD
-router.get('/carts', cartController.getAllCarts);
-router.post('/carts', cartController.createCart);
-router.get('/carts/users/:userId', cartController.getCartByUserID); // más específico que /:id
-router.get('/carts/:id', cartController.getCartByID);
-router.delete('/carts/:id', cartController.deleteCart);
+/**
+ * 52. Checkout Cart (User) - protected
+ *    POST /blakbox/carts/checkout
+ *    :contentReference[oaicite:4]{index=4}
+ */
+router.post(
+  '/carts/checkout',
+  protect,
+  cartController.checkoutCart
+);
+
+/**
+ * 59. Get Total Cart Price (General) - protected
+ *    GET /blakbox/carts/total?cartId=:cartId
+ *    :contentReference[oaicite:5]{index=5}
+ */
+router.get(
+  '/carts/total',
+  protect,
+  cartController.getTotalCartPrice
+);
+
+/**
+ * Additional CRUD operations on carts
+ * – List all carts (Admin only)
+ */
+router.get(
+  '/carts',
+  protect,
+  admin,
+  cartController.getAllCarts
+);
+
+/**
+ * – Create a new cart (authenticated users)
+ */
+router.post(
+  '/carts',
+  protect,
+  cartController.createCart
+);
+
+/**
+ * – Get cart by ID (Admin only)
+ */
+router.get(
+  '/carts/:id',
+  protect,
+  admin,
+  cartController.getCartByID
+);
+
+/**
+ * – Delete cart (Admin only)
+ */
+router.delete(
+  '/carts/:id',
+  protect,
+  admin,
+  cartController.deleteCart
+);
 
 module.exports = router;

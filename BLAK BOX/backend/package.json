@@ -6,7 +6,9 @@
   "scripts": {
     "start": "nodemon index.js",
     "dev": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "test:api": "newman run blakbox.postman_collection.json -e blakbox.postman_environment.json --reporters cli,html --reporter-html-export reports/api-report.html",
+    "gen:swagger": "node swagger.js"
   },
   "keywords": [
     "nodejs",
@@ -24,9 +26,14 @@
     "dotenv": "^16.6.1",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.16.1"
+    "mongoose": "^8.16.1",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
-    "nodemon": "^3.1.10"
+    "newman": "^6.2.1",
+    "nodemon": "^3.1.10",
+    "swagger-autogen": "^2.23.7"
   }
 }

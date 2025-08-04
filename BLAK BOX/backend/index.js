@@ -2,12 +2,14 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
+const passport = require('passport');
+require('./config/passport');
 
 const app = express();
 
 app.use(
   cors({
-    origin: '*',    // ← cualquier dominio
+    origin: '*',    // ← any domain
     methods: ['GET','POST','PUT','DELETE','OPTIONS'],
     allowedHeaders: ['Content-Type','Authorization']
   })
@@ -15,6 +17,8 @@ app.use(
 
 
 app.use(express.json());
+
+app.use(passport.initialize());
 
 const userRoutes              = require('./routes/userRoutes');
 const orderRoutes             = require('./routes/orderRoutes');
@@ -30,7 +34,9 @@ const paymentRoutes           = require('./routes/paymentRoutes');
 const shippingRoutes          = require('./routes/shippingRoutes');
 const brandRoutes             = require('./routes/brandRoutes');
 const notificationsRoutes     = require('./routes/notificationsRoutes');
+const authRoutes = require('./routes/authRoutes');
 
+app.use('/blakbox', authRoutes);
 app.use('/blakbox', userRoutes);
 app.use('/blakbox', orderRoutes);
 app.use('/blakbox', orderProductRoutes);
@@ -54,3 +60,9 @@ mongoose.connect(process.env.MONGO_URI)
     app.listen(PORT);
   })
   .catch(err => console.error('❌ Connection error:', err));
+
+
+const swaggerUi    = require('swagger-ui-express');
+const swaggerFile  = require('./swagger.json');
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));

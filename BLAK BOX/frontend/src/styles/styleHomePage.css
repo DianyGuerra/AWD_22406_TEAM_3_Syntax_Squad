@@ -1,0 +1,200 @@
+@import url('https://fonts.googleapis.com/css2?family=Quantico:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+*{
+  font-family: "Quantico", sans-serif;
+}
+body {
+  font-family: 'Rajdhani', sans-serif;
+  background: #111;
+  color: #eee;
+}
+
+/* Hero */
+.hero {
+  position: relative;
+  height: 100vh;
+  background: url('/Images/gaming_background.jpg') center/cover no-repeat;
+}
+.hero .overlay {
+  position: absolute;
+  inset: 0;
+}
+.hero-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  z-index: 1;
+}
+.hero-content h1 {
+  font-size: 4rem;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
+}
+.hero-content p {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+}
+.btn-hero {
+  padding: 0.75rem 2.5rem;
+  font-size: 1.125rem;
+  background: linear-gradient(45deg, #8a2be2, #4b0082);
+  border: none;
+  border-radius: 50px;
+  color: #fff;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.btn-hero:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+}
+
+/* Sections */
+.section-title {
+  font-size: 2.5rem;
+  color: #fff;
+}
+
+/* Categories */
+.category-card {
+  background: #222;
+  border: none;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.3s;
+  color: white;
+}
+.category-card:hover {
+  transform: translateY(-5px);
+}
+.category-card img {
+  height: 200px;
+  object-fit: cover;
+}
+.category-card .card-title {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+.category-card .card-text {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+/* Brands */
+
+.brands{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 2rem 0;
+    background: url('/Images/carrousel_background.jpg') center/cover no-repeat;
+}
+.brand-card {
+  background: #000000;
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+  width: 300px;
+  height: 300px;
+}
+.brand-card img {
+  width: 240px;
+  height: 180px;
+  object-fit: contain;
+}
+.brand-card p {
+    display: flex;
+    margin-top: 16px ;
+    color: #ddd;
+    text-align: center;
+    justify-content: center;
+    vertical-align: middle;
+    font-size: 20px;
+}
+
+.brands .carousel-inner {
+  padding: 0 5rem;
+}
+
+.container-fluid.px-5 {
+  padding-left: 3rem !important;
+  padding-right: 3rem !important;
+}
+
+.btn-circle {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(161, 59, 237, 0.8);
+  border: none;
+}
+
+.carousel-control-prev.btn-circle {
+  left: 1rem;
+}
+
+.carousel-control-next.btn-circle {
+  right: 1rem;
+}
+
+.btn-circle:hover {
+  background-color: rgba(161, 59, 237, 1);
+}
+
+.btn-circle i {
+  font-size: 1.5rem;
+  color: #fff;
+}
+
+
+/* Contact */
+.contact {
+  background: #111;
+}
+.btn-contact {
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  color: #fff;
+  transition: opacity 0.3s;
+}
+.btn-whatsapp {
+  background: #25D366;
+  border: none;
+}
+.btn-email {
+  background: #0072C6;
+  border: none;
+}
+.btn-contact:hover {
+  opacity: 0.8;
+}
+
+/* Footer */
+footer {
+  background: linear-gradient(180deg, #111, #24133d);
+  color: #bbb;
+  padding: 2rem 0;
+  text-align: center;
+}
+footer a {
+  color: #ddd;
+  margin: 0 0.5rem;
+  transition: color 0.2s;
+}
+footer a:hover {
+  color: #fff;
+}
+footer .logo {
+  max-width: 80px;
+  margin-bottom: 1rem;
+}

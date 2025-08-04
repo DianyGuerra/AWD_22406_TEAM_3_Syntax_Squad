@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const jwt  = require('jsonwebtoken');
 
 //-----------------------------------------------CRUD operations for users
 
@@ -80,6 +81,7 @@ const getUserById = async (req, res) => {
 
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
+  console.log('-- LOGIN ATTEMPT --', { email, password });
 
   if (!email || !password) {
     return res.status(400).json({ message: "Email and password are required." });
@@ -87,32 +89,28 @@ const loginUser = async (req, res) => {
 
   try {
     const user = await User.findOne({ email });
+    console.log('Found user:', user?.email);
 
     if (!user) {
       return res.status(401).json({ message: "Invalid credentials." });
     }
 
+    console.log('Stored hash:', user.password);
     const isMatch = await user.comparePassword(password);
+    console.log('Password match?', isMatch);
+
     if (!isMatch) {
       return res.status(401).json({ message: "Invalid credentials." });
     }
 
-    // Actualizar última fecha de login
-    user.lastLogin = new Date();
-    await user.save();
-
-    // Generar el token JWT
+    // ✅ Si llegó aquí, credenciales válidas. Generamos JWT:
     const token = jwt.sign(
-      {
-        id: user._id,
-        email: user.email,
-        userType: user.userType
-      },
+      { id: user._id, email: user.email, userType: user.userType },
       process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRES_IN || '1h' }
+      { expiresIn: process.env.JWT_EXPIRES_IN || '3h' }
     );
 
-    return res.status(200).json({ token });
+    return res.status(200).json({ token }); 
 
   } catch (err) {
     console.error("Error during login:", err);
@@ -126,5 +124,6 @@ module.exports = {
   createNewUser,
   updateUserById,
   deleteUserById,
-  getUserById
+  getUserById,
+  loginUser
 };
