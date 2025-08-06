@@ -12,7 +12,7 @@ export default function HomeNavBar() {
           BLAK BOX
         </Link>
 
-        <ul className="nav-links">
+        <ul className="nav-linksbb">
             <li><Link to="/">Home</Link></li>
             <li><Link to="/about">About</Link></li>
             <li><Link to="/store">Store</Link></li>

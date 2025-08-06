@@ -16,7 +16,7 @@ export default function LoginPage() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     console.log('💥 handleSubmit fired', form);
     e.preventDefault();
     const { email, password } = form;
@@ -50,8 +50,6 @@ export default function LoginPage() {
         <div className="login-card">
           <h2 className="login-card__title">Log In</h2>
 
-          {error && <div className="login-card__error">{error}</div>}
-
           <button
             type="button"
             className="btn-google"
@@ -83,6 +81,15 @@ export default function LoginPage() {
               Log In
             </button>
           </form>
+
+          {error && (
+            <div className="login-alert-error">
+              <span className="alert-icon" role="img" aria-label="Error">🔒</span>
+              <span>{error}</span>
+              <button className="close-btn" onClick={() => setError('')} title="Close">&times;</button>
+            </div>
+          )}
+
 
           <p className="login-card__footer">
             Don’t have an account yet?{' '}

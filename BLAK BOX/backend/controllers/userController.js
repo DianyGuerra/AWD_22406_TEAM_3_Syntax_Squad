@@ -25,7 +25,27 @@ const createNewUser = async (req, res) => {
 
   } catch (error) {
     console.error("Error creating user:", error);
-    res.status(500).json({ message: "Server error while creating user." });
+    // Si es un error de validación (Mongoose ValidationError)
+    if (error.name === "ValidationError") {
+      // Recopila todos los mensajes, pero los traduce uno a uno
+      const messages = Object.values(error.errors).map(e => {
+        if (e.path === "firstName" && e.kind === "minlength") {
+          return "Name must have at least 3 characters.";
+        }
+        if (e.path === "lastName" && e.kind === "minlength") {
+          return "Lastname must have at least 3 characters.";
+        }
+        if (e.path === "password" && e.kind === "minlength") {
+          return "Password must have at least 6 characters.";
+        }
+        if (e.path === "phoneNumber" || e.path === "phone") {
+          return "Please enter a valid phone number.";
+        }
+        // Cualquier otro mensaje por defecto
+        return e.message;
+      });
+      return res.status(400).json({ message: messages.join('\n') });
+    }
   }
 };
 

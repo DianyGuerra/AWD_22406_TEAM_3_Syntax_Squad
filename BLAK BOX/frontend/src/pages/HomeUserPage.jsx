@@ -1,5 +1,3 @@
-// src/pages/HomeUserPage.jsx
-
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import HeaderUser           from './HeaderUser';
@@ -8,7 +6,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/styleUser.css';
 import client               from '../api/client';
 
-// Función para decodificar sin librería externa
 function decodeJwt(token) {
   try {
     const payload = token.split('.')[1];
@@ -24,13 +21,16 @@ export default function HomeUserPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    //alert('HomeUserPage mounted!');
     const token = localStorage.getItem('token');
+    console.log('GENERATED TOKEN:', token);
     if (!token) {
       console.warn('No token found, redirecting to login');
       return navigate('/login');
     }
 
     const decoded = decodeJwt(token);
+    console.log('DECODED TOKEN:', token);
     if (!decoded?.id) {
       console.warn('Token invalid or malformed, redirecting to login');
       return navigate('/login');
@@ -46,11 +46,9 @@ export default function HomeUserPage() {
       .catch(err => {
         const status = err.response?.status;
         console.error('❌ Error fetching user:', status, err);
-        // Sólo redirigimos en caso de 401/403
         if (status === 401 || status === 403) {
           navigate('/login');
         } else {
-          // Para otros errores, mostramos un mensaje en la UI
           setUser({ firstName: 'Error loading', lastName: '', email: '' });
         }
       });

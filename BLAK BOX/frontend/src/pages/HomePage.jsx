@@ -8,6 +8,7 @@ import '../styles/styleHomePage.css';
 import ContactSection from '../components/ContactSection.jsx';
 
 export default function HomePage() {
+    console.log('Renderizando HomePage');
     const [categories] = useState([
         { title: 'PC Components', img: '/Images/pc_components.png', desc: 'Motherboards, CPUs, RAM and more.' },
         { title: 'Graphic Cards', img: '/Images/graphics.jpg', desc: 'High-performance GPUs for gaming and work.' },

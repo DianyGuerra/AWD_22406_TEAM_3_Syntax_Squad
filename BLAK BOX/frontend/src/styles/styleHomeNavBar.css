@@ -4,7 +4,7 @@
 }
 
 :root {
-  --navbar-height: 30px;
+  --navbar-height: 45px;
 }
 
 .navbar-home {
@@ -40,20 +40,20 @@
   margin-right: 0.5rem;
 }
 
-.nav-links {
+.nav-linksbb {
   list-style: none;
   display: flex;
   gap: 2rem;
 }
 
-.nav-links a {
+.nav-linksbb a {
   color: #ccc;
   text-decoration: none;
   font-weight: 500;
   transition: color 0.2s;
 }
 
-.nav-links a:hover {
+.nav-linksbb a:hover {
   color: #fff;
 }
 

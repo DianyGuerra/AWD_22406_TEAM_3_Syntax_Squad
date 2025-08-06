@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
   lastName:    { type: String, required: true, trim: true, minlength: 2 },
   email:       { type: String, required: true, unique: true, lowercase: true,
                  trim: true, match: [/.+\@.+\..+/, 'Invalid email'] },
-  password:    { type: String, required: true, minlength: 6 },
+  password:    { type: String, required: true, minlength: 4 },
   userType:    { type: String, enum: ['customer','admin'], default: 'customer' },
   phoneNumber: { type: String, match: [/^\+?[0-9]{7,14}$/, 'Invalid phone'] },
 }, { collection: 'user' });

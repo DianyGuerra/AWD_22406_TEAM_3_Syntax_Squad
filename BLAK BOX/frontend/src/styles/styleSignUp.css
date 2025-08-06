@@ -24,6 +24,19 @@ html, body, #root {
   min-height: 100vh;
   width: 100vw;
   background: url('/Images/login.jpg') center/cover no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  display: flex;
+  flex-direction: column;
+}
+
+
+@media (max-width: 900px) {
+  .login-page {
+    background-attachment: fixed; /* Para móviles, evita bugs */
+  }
 }
 
 .login-hero {
@@ -202,3 +215,50 @@ html, body, #root {
 .signup-card__link:hover {
   text-decoration: underline;
 }
+
+.transition{
+  background-color: #1111;
+}
+
+.login-alert-error {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  background: linear-gradient(90deg, #d7334ca3 0%, #c98847b6 100%);
+  color: #fff;
+  border-radius: 8px;
+  padding: 0.85rem 1.3rem;
+  margin-bottom: 1.1rem;
+  font-weight: 500;
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,0.10);
+  font-size: 1.08rem;
+  position: relative;
+  animation: fadeInDown 0.35s;
+  margin-top: 20px;
+}
+
+.login-alert-error .close-btn {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.2rem;
+  cursor: pointer;
+  opacity: 0.85;
+  transition: opacity 0.2s;
+}
+.login-alert-error .close-btn:hover {
+  opacity: 1;
+}
+
+.login-alert-error .alert-icon {
+  font-size: 1.35rem;
+  font-weight: bold;
+  filter: drop-shadow(0 0 3px #f52236cc);
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-15px);}
+  to   { opacity: 1; transform: translateY(0);}
+}
+

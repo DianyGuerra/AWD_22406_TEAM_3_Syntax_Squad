@@ -1,4 +1,3 @@
-// src/App.jsx
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 
@@ -29,14 +28,10 @@ export default function App() {
         <Route path="/contact"   element={<HomePage />} />
         <Route path="/login"     element={<LoginPage />} />
         <Route path="/signup"    element={<SignUpPage />} />
-
-
       </Route>
 
-      {/* Callback OAuth no necesita NavBar pública ni privada */}
       <Route path="/auth-success" element={<AuthSuccessPage />} />
 
-      {/* Rutas protegidas (no usan el HomeNavBar) */}
       <Route path="/admin/profile"          element={<AdminProfilePage />} />
       <Route path="/admin/products" element={<AdminProductsPage />} />
       <Route path="/homeUser"               element={<HomeUserPage />} />
