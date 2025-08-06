@@ -1,0 +1,84 @@
+.products-page-container {
+  display: flex;
+}
+
+.products-content {
+  flex: 1;
+  padding: 30px;
+  margin-left: 220px;
+  color: #fff;
+}
+
+h1 {
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+.product-form {
+  background-color: #3d0f5e;
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 40px;
+}
+
+.product-form h2 {
+  color: #cfa3ff;
+  margin-bottom: 10px;
+}
+
+.product-form input,
+.product-form textarea,
+.product-form select {
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+}
+
+.product-form button {
+  padding: 10px;
+  background-color: #a25aff;
+  border: none;
+  color: #fff;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.products-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.products-table th,
+.products-table td {
+  border: 1px solid #2c2c3a;
+  padding: 10px;
+  text-align: center;
+  background-color: #1d1d2f;
+}
+
+.products-table th {
+  background-color: #5c1fa6;
+  color: #fff;
+}
+
+.update-btn {
+  background-color: #1abc9c;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin-right: 5px;
+}
+
+.delete-btn {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+}

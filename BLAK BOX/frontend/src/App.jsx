@@ -14,9 +14,12 @@ import CartUserPage     from './pages/cartUserPage';
 import ProfileUserPage  from './pages/ProfileUserPage';
 import OrderHistoryPage from './pages/OrderHistoryPage';
 import AuthSuccessPage  from './pages/AuthSuccessPage';
+import AdminProfilePage from './pages/AdminProfilePage';
+import AdminProductsPage from './pages/AdminProductsPage';
 
 export default function App() {
   return (
+    
     <Routes>
       {/* Rutas públicas con PublicLayout */}
       <Route element={<PublicLayout />}>
@@ -26,20 +29,22 @@ export default function App() {
         <Route path="/contact"   element={<HomePage />} />
         <Route path="/login"     element={<LoginPage />} />
         <Route path="/signup"    element={<SignUpPage />} />
+
+
       </Route>
 
       {/* Callback OAuth no necesita NavBar pública ni privada */}
       <Route path="/auth-success" element={<AuthSuccessPage />} />
 
       {/* Rutas protegidas (no usan el HomeNavBar) */}
+      <Route path="/admin/profile"          element={<AdminProfilePage />} />
+      <Route path="/admin/products" element={<AdminProductsPage />} />
       <Route path="/homeUser"               element={<HomeUserPage />} />
       <Route path="/productsUser"           element={<ProductsUserPage />} />
       <Route path="/product/:id"            element={<ProductDetail />} />
       <Route path="/cartUser"               element={<CartUserPage />} />
       <Route path="/profileUser"            element={<ProfileUserPage />} />
       <Route path="/orders/history/:userId" element={<OrderHistoryPage />} />
-        <Route path="/admin/profile" element={<AdminProfilePage />} />
-
 
     </Routes>
   );
