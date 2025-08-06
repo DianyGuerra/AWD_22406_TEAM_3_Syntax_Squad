@@ -1,12 +1,21 @@
-// src/components/Sidebar.jsx
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import './Sidebar.css';
 import { FaBoxOpen, FaUserShield, FaClipboardList, FaSignOutAlt, FaUser } from 'react-icons/fa';
 
 const Sidebar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const isActive = (path) => location.pathname.startsWith(path);
+
+  const handleLogout = (e) => {
+    alert("Intentando logout");
+    e.preventDefault();
+    console.log("Antes:", localStorage.getItem('token'));
+    localStorage.removeItem('token');
+    console.log("Después:", localStorage.getItem('token'));
+    navigate('/login');
+  };
 
   return (
     <aside className="sidebar">
@@ -26,9 +35,9 @@ const Sidebar = () => {
         </Link>
       </nav>
       <div className="logout">
-        <Link to="/logout">
+        <button className="logout-btn" onClick={handleLogout}>
           <FaSignOutAlt /> Log out
-        </Link>
+        </button>
       </div>
     </aside>
   );

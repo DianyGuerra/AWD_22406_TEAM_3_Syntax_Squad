@@ -59,12 +59,13 @@ body {
 
 /* Categories */
 .category-card {
-  background: #222;
+  background: #000000;
   border: none;
   border-radius: 12px;
   overflow: hidden;
   transition: transform 0.3s;
   color: white;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.8);
 }
 .category-card:hover {
   transform: translateY(-5px);

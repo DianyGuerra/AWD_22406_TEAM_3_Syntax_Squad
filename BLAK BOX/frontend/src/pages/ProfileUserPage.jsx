@@ -44,16 +44,16 @@ const ProfileUserPage = () => {
 
   const fetchProfileData = async () => {
     try {
-      const userRes = await client.get(`/blakbox/users/${userId}`);
-      const wishlistRes = await client.get(`/blakbox/wishlists/users/${userId}`);
-      const ordersRes = await client.get(`/blakbox/orders/user/${userId}`);
+      const userRes = await client.get(`/users/${userId}`);
+      const wishlistRes = await client.get(`/wishlists/users/${userId}`);
+      const ordersRes = await client.get(`/orders/user/${userId}`);
 
       setUser(userRes.data);
 
       const enrichedOrders = await Promise.all(
         ordersRes.data.map(async (order) => {
           try {
-            const prodRes = await client.get(`/blakbox/orderProducts/${order._id}`);
+            const prodRes = await client.get(`/orderProducts/${order._id}`);
             return {
               ...order,
               products: prodRes.data?.products || [],
@@ -72,7 +72,7 @@ const ProfileUserPage = () => {
 
       const productFetchPromises = wishlistRes.data.map(async (wishlist) => {
         try {
-          const response = await client.get(`/blakbox/wishlistProducts/wishlist/${wishlist._id}`);
+          const response = await client.get(`/wishlistProducts/wishlist/${wishlist._id}`);
           return Array.isArray(response.data)
             ? response.data.filter(item => item?.productId)
             : [];
@@ -114,8 +114,8 @@ const ProfileUserPage = () => {
       if (!items || items.length === 0) return;
 
       for (const item of items) {
-        await client.delete(`/blakbox/wishlistProducts/${item.wishlistId}/${productId}`);
-        await client.delete(`/blakbox/wishlists/${item.wishlistId}`);
+        await client.delete(`/wishlistProducts/${item.wishlistId}/${productId}`);
+        await client.delete(`/wishlists/${item.wishlistId}`);
       }
 
       await fetchProfileData(); 

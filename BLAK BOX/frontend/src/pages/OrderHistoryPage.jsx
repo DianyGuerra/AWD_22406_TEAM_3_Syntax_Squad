@@ -16,7 +16,7 @@ export default function OrderHistoryPage() {
   // 1) Fetch user data (first name, last name, email, phone)
   useEffect(() => {
     client
-      .get(`/blakbox/users/${userId}`)
+      .get(`/users/${userId}`)
       .then(res => setUser(res.data))
       .catch(() =>
         setUser({
@@ -31,7 +31,7 @@ export default function OrderHistoryPage() {
   // 2) Fetch order history
   useEffect(() => {
     client
-      .get(`/blakbox/orders/history/${userId}`)
+      .get(`/orders/history/${userId}`)
       .then(res => setData(res.data))
       .catch(err => console.error(err))
   }, [userId])

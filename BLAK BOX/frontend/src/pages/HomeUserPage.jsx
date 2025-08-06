@@ -59,20 +59,31 @@ export default function HomeUserPage() {
   }
 
   return (
-    <div className="bg-purple-darker text-white min-vh-100">
+    <div className="user-dashboard-bg">
       <HeaderResponsiveUser />
-      <div className="d-flex flex-column flex-lg-row min-vh-100">
-        <HeaderUser />
-        <main className="flex-fill bg-purple-darker p-4">
-          <div className="container">
-            <div className="mb-4 bg-purple-mid text-white p-3 rounded shadow-sm">
-              <h2 className="m-0">Hi, {user.firstName} {user.lastName}</h2>
-              <h2 className="m-0">Welcome to Blak Box</h2>
+      <div className="user-dashboard-layout">
+        <HeaderUser /> {/* Sidebar */}
+        <main className="dashboard-main">
+          <div className="dashboard-welcome-card">
+            <div className="user-avatar">{(user.firstName?.[0] || "U").toUpperCase()}</div>
+            <h2 className="welcome-title">Hi, <span className="highlight">{user.firstName} {user.lastName}</span></h2>
+            <div className="dashboard-email">{user.email}</div>
+            <div className="dashboard-line" />
+            <div className="dashboard-actions">
+              <button
+                className="btn-dashboard-logout"
+                onClick={() => {
+                  localStorage.removeItem('token');
+                  navigate('/login');
+                }}
+              >
+                Log out
+              </button>
             </div>
-            {/* ...el resto de tu dashboard... */}
           </div>
         </main>
       </div>
     </div>
   );
+
 }

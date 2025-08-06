@@ -1,14 +1,24 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
 const HeaderResponsiveUser = () => {
+  const navigate = useNavigate();
+
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    localStorage.removeItem('token');
+    navigate('/login');
+  };
+
   return (
     <>
       <nav className="navbar navbar-dark bg-dark d-lg-none">
         <div className="container-fluid">
           <a className="navbar-brand" href="#">
             <img
-              src="../../public/Images/Logoblanco-removebg-preview.png"
+              src="/Images/Logoblanco-removebg-preview.png"
               alt="Blak Box Logo"
               style={{ height: '50px', filter: 'invert(1) brightness(2)' }}
             />
@@ -60,7 +70,8 @@ const HeaderResponsiveUser = () => {
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link text-danger" href="">
+              {/* LOGOUT CON onClick */}
+              <a className="nav-link text-danger" href="#" onClick={handleLogout}>
                 <i className="bi bi-box-arrow-right me-2"></i> Log out
               </a>
             </li>

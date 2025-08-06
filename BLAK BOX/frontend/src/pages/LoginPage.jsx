@@ -1,11 +1,10 @@
-// src/pages/LoginPage.jsx
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../styles/styleLogin.css';
 import { FaGoogle } from 'react-icons/fa';
 import HomeNavBar from '../components/HomeNavBar';
 import Footer     from '../components/Footer';
-import { loginWithEmail } from '../api/auth';  // <— import limpio
+import { loginWithEmail } from '../api/auth';
 
 export default function LoginPage() {
   const navigate = useNavigate();

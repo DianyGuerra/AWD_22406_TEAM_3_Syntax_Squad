@@ -1,12 +1,20 @@
 import React from 'react';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import { useNavigate } from 'react-router-dom';
 
 const HeaderUser = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    localStorage.removeItem('token');
+    navigate('/login');
+  };
   return (
     <aside className="bg-dark text-white p-3 sidebar d-none d-lg-block">
       <div className="text-center mb-4">
         <img
-          src="../../public/Images/Logoblanco-removebg-preview.png"
+          src="/Images/Logoblanco-removebg-preview.png"
           alt="Blak Box Logo"
           className="img-fluid"
           style={{ maxHeight: '150px', filter: 'invert(1) brightness(2)' }}
@@ -34,10 +42,8 @@ const HeaderUser = () => {
           </a>
         </li>
         <li className="nav-item">
-          <a
-            className="nav-link text-danger"
-            href=""
-          >
+          {/* LOGOUT CON onClick */}
+          <a className="nav-link text-danger" href="#" onClick={handleLogout}>
             <i className="bi bi-box-arrow-right me-2"></i> Log out
           </a>
         </li>

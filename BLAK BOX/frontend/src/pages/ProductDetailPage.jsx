@@ -18,7 +18,7 @@ const ProductDetail = () => {
   const userId = "685bb91a0eeff8b08e0e130b"; // Diana
 
   useEffect(() => {
-    client.get(`/blakbox/products/${id}`)
+    client.get(`/products/${id}`)
       .then(res => setProduct(res.data))
       .catch(() => setNotFound(true));
   }, [id]);
@@ -29,7 +29,7 @@ const ProductDetail = () => {
     if (!window.confirm(`Do you want to add "${product.name}" to your cart?`)) return;
 
     try {
-      const productRes = await client.get(`/blakbox/products/${product.id}`);
+      const productRes = await client.get(`/products/${product.id}`);
       const currentStock = productRes.data.stock;
 
       if (currentStock <= 0) {
@@ -37,24 +37,24 @@ const ProductDetail = () => {
         return;
       }
 
-      const cartRes = await client.get(`/blakbox/carts/users/${userId}`);
+      const cartRes = await client.get(`/carts/users/${userId}`);
       let cartId;
 
       if (Array.isArray(cartRes.data) && cartRes.data.length > 0) {
         cartId = cartRes.data[0]._id;
       } else {
-        const createRes = await client.post("/blakbox/carts", { userId });
+        const createRes = await client.post("/carts", { userId });
         cartId = createRes.data._id;
       }
 
-      await client.post("/blakbox/cartProducts", {
+      await client.post("/cartProducts", {
         cartId,
         productId: product.id,
         quantity: 1,
       });
 
       const updatedStock = currentStock - 1;
-      await client.put(`/blakbox/products/${product.id}/stock`, { stock: updatedStock });
+      await client.put(`/products/${product.id}/stock`, { stock: updatedStock });
 
       setProduct(prev => ({ ...prev, stock: updatedStock }));
 
@@ -70,17 +70,17 @@ const ProductDetail = () => {
     e.preventDefault();
 
     try {
-      const res = await client.get(`/blakbox/wishlists/users/${userId}`);
+      const res = await client.get(`/wishlists/users/${userId}`);
       let wishlistId;
 
       if (res.data && res.data._id) {
         wishlistId = res.data._id;
       } else {
-        const createRes = await client.post("/blakbox/wishlists", { userId });
+        const createRes = await client.post("/wishlists", { userId });
         wishlistId = createRes.data._id;
       }
 
-      await client.post("/blakbox/wishlistProducts", {
+      await client.post("/wishlistProducts", {
         wishlistId,
         productId: product.id,
       });

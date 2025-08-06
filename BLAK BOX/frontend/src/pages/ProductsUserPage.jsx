@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import 'bootstrap-icons/font/bootstrap-icons.css'; // <-- importante para los iconos
 import "../styles/styleUser.css";
 import HeaderUser from "./HeaderUser";
 import HeaderResponsiveUser from "./HeaderResponsiveUser";
@@ -27,10 +27,9 @@ const ProductsUserPage = () => {
     const fetchData = async () => {
       try {
         const [categoriesRes, productsRes] = await Promise.all([
-          client.get("/blakbox/categories"),
-          client.get("/blakbox/products"),
+          client.get("/categories"),
+          client.get("/products"),
         ]);
-
         setCategories(categoriesRes.data);
         setProducts(productsRes.data);
       } catch (err) {
@@ -39,7 +38,6 @@ const ProductsUserPage = () => {
         setLoading(false);
       }
     };
-
     fetchData();
   }, []);
 
@@ -52,19 +50,18 @@ const ProductsUserPage = () => {
 
   const fetchProductsByPriceRange = async () => {
     if (minPrice === "" || maxPrice === "") {
-      alert("Please enter both min and max price.");
+      toast.info("Please enter both min and max price.");
       return;
     }
     if (Number(minPrice) > Number(maxPrice)) {
-      alert("Min price should be less or equal to max price.");
+      toast.warning("Min price should be less or equal to max price.");
       return;
     }
-
     setLoadingPriceFilter(true);
     setErrorPriceFilter(null);
 
     try {
-      const res = await client.get(`/blakbox/products/price/${minPrice}/${maxPrice}`);
+      const res = await client.get(`/products/price/${minPrice}/${maxPrice}`);
       setPriceFilteredProducts(res.data);
     } catch (err) {
       setErrorPriceFilter(err.message);
@@ -78,66 +75,65 @@ const ProductsUserPage = () => {
     if (!window.confirm(`Do you want to add "${productName}" to your cart?`)) return;
 
     try {
-      const productRes = await client.get(`/blakbox/products/${productId}`);
+      const productRes = await client.get(`/products/${productId}`);
       const currentStock = productRes.data.stock;
 
       if (currentStock <= 0) {
-        alert("Sorry, this product is out of stock.");
+        toast.error("Sorry, this product is out of stock.");
         return;
       }
 
       let cartId;
-      const cartRes = await client.get(`/blakbox/carts/users/${userId}`);
+      const cartRes = await client.get(`/carts/users/${userId}`);
       if (Array.isArray(cartRes.data) && cartRes.data.length > 0) {
         cartId = cartRes.data[0]._id;
       } else {
-        const createCartRes = await client.post("/blakbox/carts", { userId });
+        const createCartRes = await client.post("/carts", { userId });
         cartId = createCartRes.data._id;
       }
 
-      await client.post("/blakbox/cartProducts", {
+      await client.post("/cartProducts", {
         cartId,
         productId,
         quantity: 1,
       });
 
       const updatedStock = currentStock - 1;
-      await client.put(`/blakbox/products/${productId}/stock`, { stock: updatedStock });
+      await client.put(`/products/${productId}/stock`, { stock: updatedStock });
 
       const updatedProducts = products.map(p =>
         p._id === productId ? { ...p, stock: updatedStock } : p
       );
       setProducts(updatedProducts);
 
-      alert(`Added "${productName}" to cart!`);
+      toast.success(`Added "${productName}" to cart!`);
     } catch (error) {
       console.error(error);
-      alert("Failed to add product to cart.");
+      toast.error("Failed to add product to cart.");
     }
   };
 
-
   const addToWishlist = async (productId, productName) => {
     try {
-      const res = await client.get(`/blakbox/wishlists/users/${userId}`);
+      const res = await client.get(`/wishlists/users/${userId}`);
       let wishlistId;
 
       if (res.data && res.data._id) {
         wishlistId = res.data._id;
       } else {
-        const createRes = await client.post("/blakbox/wishlists", { userId });
+        const createRes = await client.post("/wishlists", { userId });
         wishlistId = createRes.data._id;
       }
 
-      await client.post("/blakbox/wishlistProducts", {
+      await client.post("/wishlistProducts", {
         wishlistId,
         productId,
       });
 
-      alert(`Added "${productName}" to wishlist!`);
+      toast.success(`Added "${productName}" to wishlist!`);
     } catch (err) {
       console.error(err);
-      alert("Failed to add to wishlist.");
+      toast.error("Failed to add to wishlist.");
     }
   };
 
@@ -149,13 +145,14 @@ const ProductsUserPage = () => {
   return (
     <>
       <HeaderResponsiveUser />
-      <div className="d-flex flex-column flex-lg-row min-vh-100">
+      <div className="d-flex flex-column flex-lg-row min-vh-100 bg-body">
         <HeaderUser />
 
-        <div className="container py-5">
-          <h1 className="text-center text-accent mb-4">Our Products</h1>
+        <div className="container-fluid py-5 products-bg">
+          <h1 className="text-center mb-4 fw-bold text-accent">Our Products</h1>
 
-          <div className="mb-4">
+          {/* FILTROS DENTRO DE CARD */}
+          <div className="card mb-4 shadow-sm p-3 border-0" style={{ borderRadius: '1.2rem', background: "#1a1026", color: "#fff" }}>
             <div className="row g-2 align-items-center justify-content-center">
               <div className="col-12 col-md-auto d-flex align-items-center">
                 <label htmlFor="searchInput" className="me-2 mb-0">Search:</label>
@@ -166,6 +163,7 @@ const ProductsUserPage = () => {
                   placeholder="Search products by name..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
+                  style={{ minWidth: "180px" }}
                 />
               </div>
               <div className="col-12 col-md-auto">
@@ -183,13 +181,12 @@ const ProductsUserPage = () => {
                   ))}
                 </select>
               </div>
-
-              <div className="col-12 col-md-auto d-flex align-items-center">
+              <div className="col-12 col-md-auto d-flex align-items-center padding-2">
                 <input
                   type="number"
                   placeholder="Min price"
                   className="form-control form-control-sm w-auto"
-                  style={{ maxWidth: "100px" }}
+                  style={{ maxWidth: "100px", margin: "0 0.5rem"}}
                   value={minPrice}
                   onChange={(e) => setMinPrice(e.target.value)}
                   min={0}
@@ -198,15 +195,14 @@ const ProductsUserPage = () => {
                   type="number"
                   placeholder="Max price"
                   className="form-control form-control-sm w-auto"
-                  style={{ maxWidth: "100px" }}
+                  style={{ maxWidth: "100px", margin: "0 0.5rem"}}
                   value={maxPrice}
                   onChange={(e) => setMaxPrice(e.target.value)}
                   min={0}
                 />
-                <button className="btn btn-accent" onClick={fetchProductsByPriceRange}>
-                  Filter by Price
+                <button className="btn btn-accent ms-2" onClick={fetchProductsByPriceRange}>
+                  <i className="bi bi-funnel"></i> Filter by Price
                 </button>
-
                 <button
                   className="btn btn-secondary ms-2"
                   style={{ maxWidth: "100px" }}
@@ -216,7 +212,7 @@ const ProductsUserPage = () => {
                     setPriceFilteredProducts([]);
                   }}
                 >
-                  Clear Filter
+                  <i className="bi bi-x-circle"></i> Clear
                 </button>
               </div>
             </div>
@@ -226,51 +222,53 @@ const ProductsUserPage = () => {
           {errorPriceFilter && <p className="text-danger">Error: {errorPriceFilter}</p>}
 
           {displayedProducts.length > 0 ? (
-            <div className={`row g-4 justify-content-center ${
-              displayedProducts.length <= 2
-                ? "row-cols-1 row-cols-md-2"
-                : "row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4"
-            }`}>
+            <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
               {displayedProducts.map((p) => {
                 const categoryName = p.categoryId?.categoryName || "Uncategorized";
                 return (
-                  <div
-                    key={p._id}
-                    className="col product-card"
-                    data-name={p.name.toLowerCase()}
-                    data-category={categoryName}
-                  >
+                  <div key={p._id} className="col product-card" data-name={p.name.toLowerCase()} data-category={categoryName}>
                     <div className="card bg-purple text-white h-100">
                       <div className="card-body d-flex flex-column justify-content-between">
                         <div>
                           <h5 className="card-title text-accent">{p.name}</h5>
                           <p className="card-text">{p.description}</p>
-                          <p className="text-warning small">Stock: {p.stock}</p>
-                          <p><strong>${p.price.toFixed(2)}</strong></p>
+                          <div className="mb-2">
+                            <span className="badge bg-secondary">{categoryName}</span>
+                            {p.stock > 0 ? (
+                              <span className="badge bg-success ms-2">Stock: {p.stock}</span>
+                            ) : (
+                              <span className="badge bg-danger ms-2">Out of stock</span>
+                            )}
+                          </div>
+                          <p className="h5 mt-2">
+                            <span className="badge rounded-pill bg-accent">${p.price.toFixed(2)}</span>
+                          </p>
                         </div>
-                        <div className="mt-3 d-flex justify-content-between align-items-center">
-                          <Link to={`/product/${p._id}`} className="btn btn-outline-light btn-sm">
-                            View
+                        <div className="mt-3 d-flex justify-content-between align-items-center gap-2">
+                          <Link to={`/product/${p._id}`} className="btn btn-outline-light btn-sm" title="View">
+                            <i className="bi bi-eye"></i>
                           </Link>
                           {p.stock <= 0 ? (
                             <button type="button" className="btn btn-secondary btn-sm" disabled>
-                              Out of Stock
+                              <i className="bi bi-x-circle"></i>
                             </button>
                           ) : (
                             <button
                               type="button"
-                              className="btn btn-outline-light"
+                              className="btn btn-accent btn-sm"
                               onClick={() => addToCart(p._id, p.name)}
+                              title="Add to cart"
                             >
-                              🛒
+                              <i className="bi bi-cart-plus"></i>
                             </button>
                           )}
                           <button
                             type="button"
                             className="btn btn-outline-warning btn-sm"
                             onClick={() => addToWishlist(p._id, p.name)}
+                            title="Add to wishlist"
                           >
-                            ⭐
+                            <i className="bi bi-star"></i>
                           </button>
                         </div>
                       </div>

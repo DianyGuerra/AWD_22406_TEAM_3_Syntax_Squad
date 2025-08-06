@@ -1,7 +1,6 @@
 /* Contenedor general */
 .order-history-container {
-  width: 100vw;        /* todo el ancho de la ventana */
-  padding: 1rem;
+  width: 100vw;
   margin: 0;           /* elimina márgenes automáticos */
   color: #f5f5f5;
 }

@@ -47,7 +47,7 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="login-page">
+    <div className="signup-page">
       <HomeNavBar />
       <div className="login-hero">
         <div className="login-card">

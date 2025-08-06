@@ -15,10 +15,10 @@ html, body, #root {
   height: 100%;
   margin: 0;
   padding: 0;
-  padding-top: var(--navbar-height);
+  color: pink;
 }
 
-.login-page {
+.signup-page {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -30,6 +30,7 @@ html, body, #root {
   background-attachment: fixed;
   display: flex;
   flex-direction: column;
+  padding-top: var(--navbar-height);
 }
 
 

@@ -44,7 +44,7 @@ const CartUserPage = () => {
 
   const fetchCart = async () => {
     try {
-      const res = await client.get(`/blakbox/carts/users/${userId}`);
+      const res = await client.get(`/carts/users/${userId}`);
       const carts = res.data;
       if (!carts || carts.length === 0) {
         setCartItems([]);
@@ -59,7 +59,7 @@ const CartUserPage = () => {
 
       for (const cart of carts) {
         try {
-            const res = await client.get(`/blakbox/cartProducts/${cart._id}`);
+            const res = await client.get(`/cartProducts/${cart._id}`);
             const data = res.data;
 
             if (Array.isArray(data) && data.length > 0) {
@@ -98,13 +98,13 @@ const CartUserPage = () => {
     if (!window.confirm("Are you sure you want to remove this item?")) return;
 
     try {
-      await client.delete(`/blakbox/cartProducts/${cartid}/${productId}`);
+      await client.delete(`/cartProducts/${cartid}/${productId}`);
 
-      const productStockRes = await client.get(`/blakbox/products/${productId}`);
+      const productStockRes = await client.get(`/products/${productId}`);
       const currentStock = productStockRes.data.stock;
       const newStock = currentStock + quantity;
 
-      await client.put(`/blakbox/products/${productId}/stock`, { stock: newStock });
+      await client.put(`/products/${productId}/stock`, { stock: newStock });
 
       fetchCart();
     } catch (err) {
@@ -123,11 +123,11 @@ const CartUserPage = () => {
     }
 
     try {
-        const res = await client.post(`/blakbox/carts/checkout`, { cartId });
+        const res = await client.post(`/carts/checkout`, { cartId });
         setOrderMsg(res.data.message || "Order placed successfully!");
 
         await Promise.all(
-          cartId.map(id => client.delete(`/blakbox/carts/${id}`))
+          cartId.map(id => client.delete(`/carts/${id}`))
         );
         
         setCartItems([]);
