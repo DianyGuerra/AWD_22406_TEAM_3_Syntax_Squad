@@ -46,10 +46,6 @@ const getProductsWishlistId = async (req, res) => {
       .populate('wishlistId', '_id')
       .populate('productId', 'name price brand');
 
-    if (!wishlistProduct) {
-      return res.status(404).json({ message: "WishlistProduct not found." });
-    }
-
     res.status(200).json(wishlistProduct);
   } catch (err) {
     console.error("Error getting wishlistProduct by ID:", err);
@@ -84,10 +80,7 @@ const getProductsbyWishlistId = async (req, res) => {
     const wishlistProducts = await WishlistProduct
       .find({ wishlistId })
       .populate('productId', 'name price brand');
-    if (!wishlistProducts || wishlistProducts.length === 0) {
-      return res.status(404).json({ message: "No products found in this wishlist."
-      });
-    }
+
     res.status(200).json(wishlistProducts);
   } catch (err) {
     console.error("Error getting products by wishlist ID:", err);

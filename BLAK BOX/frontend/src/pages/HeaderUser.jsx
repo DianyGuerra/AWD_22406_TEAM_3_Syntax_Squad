@@ -1,6 +1,7 @@
 import React from 'react';
-import 'bootstrap-icons/font/bootstrap-icons.css';
 import { useNavigate } from 'react-router-dom';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import '../styles/styleHeaderUser.css'; 
 
 const HeaderUser = () => {
   const navigate = useNavigate();
@@ -10,41 +11,38 @@ const HeaderUser = () => {
     localStorage.removeItem('token');
     navigate('/login');
   };
+
   return (
-    <aside className="bg-dark text-white p-3 sidebar d-none d-lg-block">
-      <div className="text-center mb-4">
-        <img
-          src="/Images/Logoblanco-removebg-preview.png"
-          alt="Blak Box Logo"
-          className="img-fluid"
-          style={{ maxHeight: '150px', filter: 'invert(1) brightness(2)' }}
-        />
-      </div>
-      <ul className="nav flex-column">
+    <aside className="sidebar">
+      <img
+        src="/Images/Logoblanco-removebg-preview.png"
+        alt="Blak Box Logo"
+        className="logo"
+      />
+      <ul className="nav">
         <li className="nav-item">
-          <a className="nav-link text-white" href="/user/home">
-            <i className="bi bi-house-door-fill me-2"></i> Home
+          <a className="nav-link" href="/user/home">
+            <i className="bi bi-house-door-fill"></i> Home
           </a>
         </li>
         <li className="nav-item">
-          <a className="nav-link text-white" href="/user/products">
-            <i className="bi bi-box-seam me-2"></i> Products
+          <a className="nav-link" href="/user/products">
+            <i className="bi bi-box-seam"></i> Products
           </a>
         </li>
         <li className="nav-item">
-          <a className="nav-link text-white" href="/user/cart">
-            <i className="bi bi-cart3 me-2"></i> Cart
+          <a className="nav-link" href="/user/cart">
+            <i className="bi bi-cart3"></i> Cart
           </a>
         </li>
         <li className="nav-item">
-          <a className="nav-link text-white" href="/user/profile">
-            <i className="bi bi-person-circle me-2"></i> Profile
+          <a className="nav-link" href="/user/profile">
+            <i className="bi bi-person-circle"></i> Profile
           </a>
         </li>
         <li className="nav-item">
-          {/* LOGOUT CON onClick */}
           <a className="nav-link text-danger" href="#" onClick={handleLogout}>
-            <i className="bi bi-box-arrow-right me-2"></i> Log out
+            <i className="bi bi-box-arrow-right"></i> Log out
           </a>
         </li>
       </ul>

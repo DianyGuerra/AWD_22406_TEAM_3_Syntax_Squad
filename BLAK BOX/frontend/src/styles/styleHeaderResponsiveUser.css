@@ -1,0 +1,110 @@
+/* HeaderResponsiveUser.css */
+
+/* Mobile Navbar */
+.mobile-navbar {
+  display: none;
+  background-color: #1e1e2f;
+  padding: 0.75rem 1rem;
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-logo {
+  height: 50px;
+  filter: invert(1) brightness(2);
+}
+
+.hamburger {
+  background: none;
+  color: white;
+  font-size: 2rem;
+  border: none;
+  cursor: pointer;
+}
+
+@media (max-width: 991px) {
+  .mobile-navbar {
+    display: block;
+  }
+}
+
+/* Offcanvas Menu */
+.offcanvas-menu {
+  position: fixed;
+  top: 0;
+  left: -260px;
+  width: 250px;
+  height: 100%;
+  background-color: #1e1e2f;
+  color: white;
+  z-index: 1000;
+  padding: 1rem;
+  transition: left 0.3s ease-in-out;
+}
+
+.offcanvas-menu.open {
+  left: 0;
+}
+
+.offcanvas-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.offcanvas-body {
+  margin-top: 1rem;
+}
+
+.nav-list {
+  list-style: none;
+  padding: 0;
+}
+
+.nav-list li {
+  margin-bottom: 1rem;
+}
+
+.nav-list a {
+  text-decoration: none;
+  color: white;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s;
+}
+
+.nav-list a i {
+  margin-right: 0.5rem;
+}
+
+.nav-list a:hover {
+  color: #00cec9;
+}
+
+.text-danger:hover {
+  color: #ff7675;
+}
+
+/* Overlay when menu is open */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}

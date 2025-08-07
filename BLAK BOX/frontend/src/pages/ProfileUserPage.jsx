@@ -65,6 +65,7 @@ const ProfileUserPage = () => {
       const wishlistRes = await client.get(`/wishlists/users/${userId}`);
       const ordersRes = await client.get(`/orders/user/${userId}`);
 
+      console.log(userRes, wishlistRes, ordersRes);
       setUser(userRes.data);
 
       const enrichedOrders = await Promise.all(

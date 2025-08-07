@@ -73,10 +73,6 @@ const getOrderByUserId = async (req, res) => {
     const orders = await Order.find({ userId })
       .populate('userId', 'firstName lastName email')
       .sort({ orderDate: -1 });
-    if (orders.length === 0) {
-      return res.status(404).json({ message: "No orders found for this user."
-      });
-    }
     res.status(200).json(orders);
   } catch (err) {
     console.error("Error getting orders by user ID:", err);

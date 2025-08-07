@@ -33,7 +33,6 @@ const createWishlist = async (req, res) => {
 const getWishlistbyID = async (req, res) => {
   try {
       const wishlist = await Wishlist.findById(req.params.id).populate('userId', 'firstName lastName email');
-      if (!wishlist) return res.status(404).json({ message: "Wishlist not found" });
       res.status(200).json(wishlist);
   } catch (err) {
       res.status(500).json({ message: "Server error while getting wishlist by ID" });
@@ -52,7 +51,6 @@ const deleteWishlist = async (req, res) => {
 const getWishlistByUserID = async (req, res) => {
     try {
         const wishlist = await Wishlist.find({ userId: req.params.userId });
-        if (!wishlist) return res.status(404).json({ message: "Wishlist not found" });
         res.status(200).json(wishlist);
     } catch (err) {
         res.status(500).json({ message: "Server error while getting wishlist by user ID" });

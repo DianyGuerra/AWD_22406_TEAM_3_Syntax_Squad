@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { decodeJwt } from "../utils/auth"; 
+import { decodeJwt } from "../utils/auth";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap-icons/font/bootstrap-icons.css'; 
+import 'bootstrap-icons/font/bootstrap-icons.css';
 import "../styles/styleUser.css";
 import HeaderUser from "./HeaderUser";
 import HeaderResponsiveUser from "./HeaderResponsiveUser";
@@ -15,15 +15,24 @@ const ProductsUserPage = () => {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [priceFilteredProducts, setPriceFilteredProducts] = useState([]);
   const [loadingPriceFilter, setLoadingPriceFilter] = useState(false);
   const [errorPriceFilter, setErrorPriceFilter] = useState(null);
-
   const [userId, setUserId] = useState(null);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 992);
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 992);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -39,7 +48,6 @@ const ProductsUserPage = () => {
     }
 
     setUserId(decoded.id);
-    console.log('User ID:', decoded.id);
 
     const fetchData = async () => {
       try {
@@ -59,6 +67,7 @@ const ProductsUserPage = () => {
     fetchData();
   }, [navigate]);
 
+
   const filteredProducts = products.filter((product) => {
     const categoryName = product.categoryId?.categoryName || "";
     const matchesCategory = selectedCategory === "all" || categoryName === selectedCategory;
@@ -68,11 +77,11 @@ const ProductsUserPage = () => {
 
   const fetchProductsByPriceRange = async () => {
     if (minPrice === "" || maxPrice === "") {
-      toast.info("Please enter both min and max price.");
+      alert("Please enter both min and max price.");
       return;
     }
     if (Number(minPrice) > Number(maxPrice)) {
-      toast.warning("Min price should be less or equal to max price.");
+      alert("Min price should be less or equal to max price.");
       return;
     }
     setLoadingPriceFilter(true);
@@ -98,7 +107,7 @@ const ProductsUserPage = () => {
       const currentStock = productRes.data.stock;
 
       if (currentStock <= 0) {
-        toast.error("Sorry, this product is out of stock.");
+        alert("Sorry, this product is out of stock.");
         return;
       }
 
@@ -125,10 +134,10 @@ const ProductsUserPage = () => {
       );
       setProducts(updatedProducts);
 
-      toast.success(`Added "${productName}" to cart!`);
+      alert(`Added "${productName}" to cart!`);
     } catch (error) {
       console.error(error);
-      toast.error("Failed to add product to cart.");
+      alert("Failed to add product to cart.");
     }
   };
 
@@ -150,10 +159,10 @@ const ProductsUserPage = () => {
         productId,
       });
 
-      toast.success(`Added "${productName}" to wishlist!`);
+      alert(`Added "${productName}" to wishlist!`);
     } catch (err) {
       console.error(err);
-      toast.error("Failed to add to wishlist.");
+      alert("Failed to add to wishlist.");
     }
   };
 
@@ -164,11 +173,10 @@ const ProductsUserPage = () => {
 
   return (
     <>
-      <HeaderResponsiveUser />
-      <div className="d-flex flex-column flex-lg-row min-vh-100 bg-body">
-        <HeaderUser />
+      {isMobile ? <HeaderResponsiveUser /> : <HeaderUser />}
 
-        <div className="container-fluid py-5 products-bg">
+    <div className="container-fluid py-4" style={{ marginTop: isMobile ? "4.5rem" : "0" }}>
+        <div className="page-content container">
           <h1 className="text-center mb-4 fw-bold text-accent">Our Products</h1>
 
           {/* FILTROS DENTRO DE CARD */}
@@ -301,7 +309,7 @@ const ProductsUserPage = () => {
             <p className="text-center text-muted mt-4">No products found.</p>
           )}
         </div>
-      </div>
+        </div>
     </>
   );
 };

@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import '../styles/styleUser.css';
+import  '../styles/styleDetailsProductPage.css';
 
 import HeaderResponsiveUser from './HeaderResponsiveUser';
 import HeaderUser from './HeaderUser';
@@ -17,6 +15,16 @@ const ProductDetail = () => {
   const [notFound, setNotFound] = useState(false);
   const [msg, setMsg] = useState('');
   const [userId, setUserId] = useState(null);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 992);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 992);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -125,49 +133,46 @@ const ProductDetail = () => {
   }
 
   return (
-    <div className="bg-purple-darker text-white min-vh-100">
-      <HeaderResponsiveUser />
-      <div className="d-flex flex-column flex-lg-row min-vh-100">
-        <HeaderUser />
-        <main className="flex-fill p-4">
+    <div className="product-detail-page">
+      {isMobile ? <HeaderResponsiveUser /> : <HeaderUser />}
+      <div className="layout" style={{ marginTop: isMobile ? "4.5rem" : "0" }}>
+        <main className="main-content page-content container">
           <div className="container">
-            <Link to="/user/products" className="text-accent mb-4 d-inline-block text-decoration-none">
+            <Link to="/user/products" className="back-link">
               ← Back to Products
             </Link>
 
-            <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '50vh', minWidth: '160vh' }}>
-              <div className="row">
-                <div className="text-center d-flex flex-column align-items-center">
-                  <h2 className="text-accent">{product.name}</h2>
-                  <p>{product.description}</p>
-                  <p><strong>Stock:</strong> {product.stock}</p>
-                  <p><strong>Category:</strong> {product.category?.categoryName}</p>
-                  {product.category?.categoryDescription && (
-                    <p><strong>Category Description:</strong> {product.category.categoryDescription}</p>
+            <div className="product-box">
+              <div className="product-content">
+                <h2 className="product-title">{product.name}</h2>
+                <p>{product.description}</p>
+                <p><strong>Stock:</strong> {product.stock}</p>
+                <p><strong>Category:</strong> {product.category?.categoryName}</p>
+                {product.category?.categoryDescription && (
+                  <p><strong>Category Description:</strong> {product.category.categoryDescription}</p>
+                )}
+                <h4 className="product-price">${product.price.toFixed(2)}</h4>
+
+                <div className="actions">
+                  {product.stock <= 0 ? (
+                    <button className="custom-btn btn-secondary small-btn" disabled>Out of Stock</button>
+                  ) : (
+                    <button className="custom-btn btn-accent small-btn" onClick={handleAddToCart}>
+                      🛒 Add to Cart
+                    </button>
                   )}
-                  <h4>${product.price.toFixed(2)}</h4><br />
 
-                  <div className="d-flex mt-3 gap-2">
-                    {product.stock <= 0 ? (
-                      <button className="btn btn-secondary btn-sm" disabled>Out of Stock</button>
-                    ) : (
-                      <button className="btn btn-accent btn-sm" onClick={handleAddToCart}>
-                        🛒 Add to Cart
-                      </button>
-                    )}
-
-                    <form onSubmit={handleAddToWishlist}>
-                      <button type="submit" className="btn btn-outline-warning">
-                        ⭐ Favorite
-                      </button>
-                    </form>
-                  </div>
+                  <form onSubmit={handleAddToWishlist}>
+                    <button type="submit" className="custom-btn btn-outline-warning small-btn">
+                      ⭐ Favorite
+                    </button>
+                  </form>
                 </div>
               </div>
             </div>
 
             {msg && (
-              <div className="alert alert-info text-center mt-4">
+              <div className="custom-alert">
                 {msg}
               </div>
             )}

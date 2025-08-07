@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import "../styles/styleUser.css";
+import "../styles/styleCartPage.css";
 import client from "../api/client";
 import HeaderUser from "./HeaderUser";
 import HeaderResponsiveUser from "./HeaderResponsiveUser";
@@ -17,7 +15,16 @@ const CartUserPage = () => {
   const [paymentMethod, setPaymentMethod] = useState("");
   const [orderMsg, setOrderMsg] = useState("");
   const [error, setError] = useState(null);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 992);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 992);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -46,7 +53,7 @@ const CartUserPage = () => {
       const key = item.productId._id;
       if (grouped[key]) {
         grouped[key].quantity += item.quantity;
-        grouped[key].cartProductIds.push(item._id); 
+        grouped[key].cartProductIds.push(item._id);
       } else {
         grouped[key] = {
           ...item,
@@ -89,8 +96,6 @@ const CartUserPage = () => {
             }, 0);
 
             totalAmount += cartTotal;
-          } else {
-            console.log(`Cart ${cart._id} is empty or has invalid data.`);
           }
         } catch (err) {
           console.log(`Error loading cart ${cart._id}:`, err.response?.data || err.message);
@@ -102,7 +107,6 @@ const CartUserPage = () => {
       setCartItems(groupedItems);
       setTotal(totalAmount);
       setCartId(carts.map(c => c._id));
-
     } catch (err) {
       console.error(err);
       setError("Failed to load carts.");
@@ -154,15 +158,19 @@ const CartUserPage = () => {
   };
 
   if (loading) return <div>Loading...</div>;
-  if (error) return <div className="text-danger text-center mt-3">Error: {error}</div>;
+  if (error) return <div className="text-center mt-3 text-danger">Error: {error}</div>;
 
   return (
     <>
-      <HeaderResponsiveUser />
-      <div className="d-flex flex-column flex-lg-row min-vh-100">
-        <HeaderUser />
-        <div className="container py-5">
-          <h1 className="text-center text-accent mb-4">Your Cart</h1>
+      <div className="cart-user-page">
+      {isMobile ? <HeaderResponsiveUser /> : <HeaderUser />}
+
+      <div
+        className="d-flex flex-column flex-lg-row min-vh-100"
+        style={{ marginTop: isMobile ? "4.5rem" : "0" }}
+      >
+        <div className="page-content container py-4">
+          <h1 className="text-center mb-4">Your Cart</h1>
 
           {cartItems.length === 0 ? (
             <p className="text-center">Your cart is empty.</p>
@@ -173,12 +181,12 @@ const CartUserPage = () => {
                 const subtotal = productId.price * quantity;
 
                 return (
-                  <div key={productId._id} className="card bg-purple text-white mb-3">
+                  <div key={productId._id} className="card mb-3">
                     <div className="card-body d-flex justify-content-between align-items-center">
                       <div>
-                        <h5 className="card-title">{productId.name}</h5>
-                        <p className="card-text">Price: ${productId.price.toFixed(2)} x {quantity}</p>
-                        <p className="card-text">Subtotal: ${subtotal.toFixed(2)}</p>
+                        <h5>{productId.name}</h5>
+                        <p className="mb-1">Price: ${productId.price.toFixed(2)} x {quantity}</p>
+                        <p className="mb-0 fw-bold">Subtotal: ${subtotal.toFixed(2)}</p>
                       </div>
                       <button
                         className="btn btn-danger btn-sm"
@@ -191,11 +199,14 @@ const CartUserPage = () => {
                 );
               })}
 
-              <div className="d-flex justify-content-between align-items-center flex-column flex-md-row gap-3 mt-4">
+              <div className="d-flex flex-column flex-md-row align-items-center justify-content-between gap-3 mt-4">
                 <h4>Total: ${total.toFixed(2)}</h4>
-                <form onSubmit={handleCheckout} className="d-flex flex-column flex-md-row align-items-center gap-2">
+                <form
+                  onSubmit={handleCheckout}
+                  className="d-flex flex-column flex-md-row align-items-center gap-2"
+                >
                   <select
-                    className="form-select bg-dark text-white border-secondary"
+                    className="form-select"
                     value={paymentMethod}
                     onChange={(e) => setPaymentMethod(e.target.value)}
                     required
@@ -206,18 +217,21 @@ const CartUserPage = () => {
                     <option value="PayPal">PayPal</option>
                     <option value="Bank Transfer">Bank Transfer</option>
                   </select>
-                  <button type="submit" className="btn btn-accent">Proceed to Payment</button>
+                  <button type="submit" className="btn btn-accent">
+                    Proceed to Payment
+                  </button>
                 </form>
               </div>
             </>
           )}
 
           {orderMsg && (
-            <div className="alert alert-info text-center mt-4">
+            <div className="alert alert-success text-center mt-4">
               {orderMsg}
             </div>
           )}
         </div>
+      </div>
       </div>
     </>
   );

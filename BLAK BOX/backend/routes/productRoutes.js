@@ -43,7 +43,6 @@ router.get(
 router.put(
   '/products/:productId/stock',
   protect,
-  admin,
   productController.updateProductStock
 );
 
