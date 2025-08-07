@@ -10,31 +10,36 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const [form,  setForm]  = useState({ email: '', password: '' });
   const [error, setError] = useState('');
+  const ADMIN_EMAIL = "lassosebastian66@gmail.com";
 
   const handleChange = e => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
-    console.log('💥 handleSubmit fired', form);
     e.preventDefault();
     const { email, password } = form;
+
     if (!email || !password) {
       setError('Please fill in both fields');
       return;
     }
+
     try {
       setError('');
-      await loginWithEmail(email, password);
-      
-      console.log('➡️ About to navigate to /user/home');
-      window.location.href = '/user/home';
-      console.log('✅ navigate call complete');
+      const { token, user } = await loginWithEmail(email, password);
+
+      // Redirigir según el correo
+      if (email === ADMIN_EMAIL) {
+        window.location.href = '/admin/profile';
+      } else {
+        window.location.href = '/user/home';
+      }
     } catch (err) {
       console.error(err);
       setError(err.response?.data?.message || err.message || 'Login failed');
     }
-  };
+};
 
   const handleGoogle = () => {
     const apiRoot = import.meta.env.VITE_API_URL || 'http://localhost:3007';
