@@ -35,7 +35,7 @@ exports.admin = (req, res, next) => {
 };
 
 exports.isSelf = (req, res, next) => {
-  if (req.user._id.toString() !== req.params.id) {
+  if (req.user._id.toString() !== req.params.userId) {
     return res.status(403).json({ message: 'Forbidden: not your own resource.' });
   }
   next();

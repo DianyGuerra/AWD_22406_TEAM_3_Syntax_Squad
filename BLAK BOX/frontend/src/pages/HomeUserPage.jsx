@@ -5,16 +5,7 @@ import HeaderResponsiveUser from './HeaderResponsiveUser';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/styleUser.css';
 import client               from '../api/client';
-
-function decodeJwt(token) {
-  try {
-    const payload = token.split('.')[1];
-    const json = atob(payload.replace(/-/g, '+').replace(/_/g, '/'));
-    return JSON.parse(json);
-  } catch {
-    return null;
-  }
-}
+import { decodeJwt } from "../utils/auth"; 
 
 export default function HomeUserPage() {
   const [user, setUser] = useState(null);

@@ -24,7 +24,6 @@ router.get(
 router.get(
   '/wishlists/:id',
   protect,
-  isSelf,
   wishlistController.getWishlistbyID
 );
 
@@ -47,7 +46,6 @@ router.post(
 router.delete(
   '/wishlists/:id',
   protect,
-  isSelf,
   wishlistController.deleteWishlist
 );
 

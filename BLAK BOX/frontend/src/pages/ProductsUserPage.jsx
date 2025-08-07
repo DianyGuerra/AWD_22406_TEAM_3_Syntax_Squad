@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { decodeJwt } from "../utils/auth"; 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap-icons/font/bootstrap-icons.css'; // <-- importante para los iconos
+import 'bootstrap-icons/font/bootstrap-icons.css'; 
 import "../styles/styleUser.css";
 import HeaderUser from "./HeaderUser";
 import HeaderResponsiveUser from "./HeaderResponsiveUser";
@@ -21,9 +22,25 @@ const ProductsUserPage = () => {
   const [loadingPriceFilter, setLoadingPriceFilter] = useState(false);
   const [errorPriceFilter, setErrorPriceFilter] = useState(null);
 
-  const userId = "685bb91a0eeff8b08e0e130b"; // Diana
+  const [userId, setUserId] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      navigate('/login');
+      return;
+    }
+
+    const decoded = decodeJwt(token);
+    if (!decoded?.id) {
+      navigate('/login');
+      return;
+    }
+
+    setUserId(decoded.id);
+    console.log('User ID:', decoded.id);
+
     const fetchData = async () => {
       try {
         const [categoriesRes, productsRes] = await Promise.all([
@@ -38,8 +55,9 @@ const ProductsUserPage = () => {
         setLoading(false);
       }
     };
+
     fetchData();
-  }, []);
+  }, [navigate]);
 
   const filteredProducts = products.filter((product) => {
     const categoryName = product.categoryId?.categoryName || "";
@@ -72,6 +90,7 @@ const ProductsUserPage = () => {
   };
 
   const addToCart = async (productId, productName) => {
+    console.log(userId, productId, productName);
     if (!window.confirm(`Do you want to add "${productName}" to your cart?`)) return;
 
     try {
@@ -114,6 +133,7 @@ const ProductsUserPage = () => {
   };
 
   const addToWishlist = async (productId, productName) => {
+    console.log(userId, productId, productName);
     try {
       const res = await client.get(`/wishlists/users/${userId}`);
       let wishlistId;

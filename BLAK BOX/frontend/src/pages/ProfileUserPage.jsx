@@ -1,30 +1,48 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "../styles/styleUser.css";
 import HeaderUser from "./HeaderUser";
 import HeaderResponsiveUser from "./HeaderResponsiveUser";
 import client from "../api/client";
+import { decodeJwt } from "../utils/auth"; 
 
 const ProfileUserPage = () => {
+  const [userId, setUserId] = useState(null);
   const [user, setUser] = useState(null);
   const [wishlistProducts, setWishlistProducts] = useState([]);
   const [orders, setOrders] = useState([]);
   const [profileMsg, setProfileMsg] = useState("");
   const [groupedWishlistItems, setGroupedWishlistItems] = useState(new Map());
-
-
-  const userId = "685bb91a0eeff8b08e0e130b"; // Diana
+  const navigate = useNavigate();
 
   useEffect(() => {
-    fetchProfileData();
+    const token = localStorage.getItem('token');
+    if (!token) {
+      navigate('/login');
+      return;
+    }
+
+    const decoded = decodeJwt(token);
+    if (!decoded?.id) {
+      navigate('/login');
+      return;
+    }
+
+    setUserId(decoded.id);
+  }, [navigate]);
+
+  useEffect(() => {
+    if (userId) {
+      fetchProfileData();
+    }
   }, [userId]);
 
   const groupOrderProducts = (products) => {
     const grouped = {};
 
     products.forEach((product) => {
-      const key = product.name; // también puedes usar product.productId si es único
+      const key = product.name;
 
       if (!grouped[key]) {
         grouped[key] = {
@@ -40,7 +58,6 @@ const ProfileUserPage = () => {
 
     return Object.values(grouped);
   };
-
 
   const fetchProfileData = async () => {
     try {
@@ -107,7 +124,6 @@ const ProfileUserPage = () => {
     }
   };
 
-
   const handleRemoveFromWishlist = async (productId) => {
     try {
       const items = groupedWishlistItems.get(productId);
@@ -125,7 +141,6 @@ const ProfileUserPage = () => {
     }
   };
 
-
   if (!user) return <div className="text-white p-5">Loading profile...</div>;
 
   return (
@@ -142,7 +157,7 @@ const ProfileUserPage = () => {
             <p><strong className="text-accent">Email:</strong> {user.email}</p>
             <p><strong className="text-accent">Phone number:</strong> {user.phoneNumber}</p>
             <p><strong className="text-accent">Order History: </strong> 
-              <Link to={`/orders/history/${userId}`} style={{color: "white"}}>Order History</Link>
+              <Link to={`/orders/history`} style={{color: "white"}}>Order History</Link>
             </p>
           </div>
 

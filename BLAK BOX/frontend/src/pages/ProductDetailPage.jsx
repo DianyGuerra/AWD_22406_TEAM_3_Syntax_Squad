@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import '../styles/styleUser.css';
@@ -7,15 +7,33 @@ import '../styles/styleUser.css';
 import HeaderResponsiveUser from './HeaderResponsiveUser';
 import HeaderUser from './HeaderUser';
 import client from '../api/client'; 
+import { decodeJwt } from '../utils/auth'; 
 
 const ProductDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const [product, setProduct] = useState(null);
   const [notFound, setNotFound] = useState(false);
   const [msg, setMsg] = useState('');
+  const [userId, setUserId] = useState(null);
 
-  const userId = "685bb91a0eeff8b08e0e130b"; // Diana
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      navigate('/login');
+      return;
+    }
+
+    const decoded = decodeJwt(token);
+    if (!decoded?.id) {
+      navigate('/login');
+      return;
+    }
+
+    setUserId(decoded.id);
+    console.log('User ID:', decoded.id);
+  }, [navigate]);
 
   useEffect(() => {
     client.get(`/products/${id}`)
@@ -24,12 +42,12 @@ const ProductDetail = () => {
   }, [id]);
 
   const handleAddToCart = async () => {
-    if (!product) return;
+    if (!product || !userId) return;
 
     if (!window.confirm(`Do you want to add "${product.name}" to your cart?`)) return;
 
     try {
-      const productRes = await client.get(`/products/${product.id}`);
+      const productRes = await client.get(`/products/${product._id}`);
       const currentStock = productRes.data.stock;
 
       if (currentStock <= 0) {
@@ -49,12 +67,12 @@ const ProductDetail = () => {
 
       await client.post("/cartProducts", {
         cartId,
-        productId: product.id,
+        productId: product._id,
         quantity: 1,
       });
 
       const updatedStock = currentStock - 1;
-      await client.put(`/products/${product.id}/stock`, { stock: updatedStock });
+      await client.put(`/products/${product._id}/stock`, { stock: updatedStock });
 
       setProduct(prev => ({ ...prev, stock: updatedStock }));
 
@@ -65,9 +83,10 @@ const ProductDetail = () => {
     }
   };
 
-
   const handleAddToWishlist = async (e) => {
     e.preventDefault();
+
+    if (!userId || !product) return;
 
     try {
       const res = await client.get(`/wishlists/users/${userId}`);
@@ -82,7 +101,7 @@ const ProductDetail = () => {
 
       await client.post("/wishlistProducts", {
         wishlistId,
-        productId: product.id,
+        productId: product._id,
       });
 
       setMsg(`Added "${product.name}" to wishlist!`);
@@ -96,7 +115,7 @@ const ProductDetail = () => {
     return (
       <div className="bg-purple-darker text-white min-vh-100 text-center p-5">
         <h2 className="text-danger">Product not found</h2>
-        <Link to="/products" className="btn btn-outline-light mt-3">Back to Products</Link>
+        <Link to="/user/products" className="btn btn-outline-light mt-3">Back to Products</Link>
       </div>
     );
   }
@@ -108,13 +127,11 @@ const ProductDetail = () => {
   return (
     <div className="bg-purple-darker text-white min-vh-100">
       <HeaderResponsiveUser />
-
       <div className="d-flex flex-column flex-lg-row min-vh-100">
         <HeaderUser />
-
         <main className="flex-fill p-4">
           <div className="container">
-            <Link to="/productsUser" className="text-accent mb-4 d-inline-block text-decoration-none">
+            <Link to="/user/products" className="text-accent mb-4 d-inline-block text-decoration-none">
               ← Back to Products
             </Link>
 
@@ -135,7 +152,7 @@ const ProductDetail = () => {
                       <button className="btn btn-secondary btn-sm" disabled>Out of Stock</button>
                     ) : (
                       <button className="btn btn-accent btn-sm" onClick={handleAddToCart}>
-                        🛒Add to Cart
+                        🛒 Add to Cart
                       </button>
                     )}
 

@@ -34,12 +34,12 @@ export default function App() {
 
       <Route path="/admin/profile"          element={<AdminProfilePage />} />
       <Route path="/admin/products" element={<AdminProductsPage />} />
-      <Route path="/homeUser"               element={<HomeUserPage />} />
-      <Route path="/productsUser"           element={<ProductsUserPage />} />
+      <Route path="/user/home"               element={<HomeUserPage />} />
+      <Route path="/user/products"           element={<ProductsUserPage />} />
       <Route path="/product/:id"            element={<ProductDetail />} />
-      <Route path="/cartUser"               element={<CartUserPage />} />
-      <Route path="/profileUser"            element={<ProfileUserPage />} />
-      <Route path="/orders/history/:userId" element={<OrderHistoryPage />} />
+      <Route path="/user/cart"               element={<CartUserPage />} />
+      <Route path="/user/profile"            element={<ProfileUserPage />} />
+      <Route path="/orders/history" element={<OrderHistoryPage />} />
 
     </Routes>
   );

@@ -27,8 +27,8 @@ export default function LoginPage() {
       setError('');
       await loginWithEmail(email, password);
       
-      console.log('➡️ About to navigate to /homeUser');
-      window.location.href = '/homeUser';
+      console.log('➡️ About to navigate to /user/home');
+      window.location.href = '/user/home';
       console.log('✅ navigate call complete');
     } catch (err) {
       console.error(err);

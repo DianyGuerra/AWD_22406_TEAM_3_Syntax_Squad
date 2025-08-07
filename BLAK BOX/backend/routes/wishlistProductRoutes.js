@@ -46,7 +46,6 @@ router.get(
 router.delete(
   '/wishlistProducts/:wishlistId/:productId',
   protect,
-  isSelf,
   wishlistProductController.deleteProductFromWishlist
 );
 
@@ -58,7 +57,6 @@ router.delete(
 router.get(
   '/wishlistProducts/wishlist/:wishlistId',
   protect,
-  isSelf,
   wishlistProductController.getProductsbyWishlistId
 );
 

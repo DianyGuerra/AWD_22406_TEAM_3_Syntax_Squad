@@ -11,8 +11,8 @@ router.post('/users/login', userController.loginUser);
 router.get('/users', protect, admin, userController.getAllUsers);
 
 // 🔒 Protected routes: Only the authenticated user can access their own data
-router.get('/users/:id', protect, isSelf, userController.getUserById);
-router.put('/users/:id', protect, isSelf, userController.updateUserById);
-router.delete('/users/:id', protect, isSelf, userController.deleteUserById);
+router.get('/users/:userId', protect, isSelf, userController.getUserById);
+router.put('/users/:userId', protect, isSelf, userController.updateUserById);
+router.delete('/users/:userId', protect, isSelf, userController.deleteUserById);
 
 module.exports = router;

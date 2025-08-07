@@ -51,7 +51,7 @@ const createNewUser = async (req, res) => {
 
 //PUT update user by ID
 const updateUserById = async (req, res) => {
-  const userId = req.params.id;
+  const userId = req.params.userId;
   const { firstName, lastName, email, password, phoneNumber } = req.body;
   try {
     const updatedUser = await User.findByIdAndUpdate(userId, { firstName, lastName, email, password, phoneNumber }, { new: true });
@@ -67,7 +67,7 @@ const updateUserById = async (req, res) => {
 
 //DELETE user by ID
 const deleteUserById = async (req, res) => {
-  const userId = req.params.id;
+  const userId = req.params.userId;
   try {
     const deletedUser = await User.findByIdAndDelete(userId);
     if (!deletedUser) {
@@ -86,7 +86,7 @@ const deleteUserById = async (req, res) => {
 
 //GET user by ID
 const getUserById = async (req, res) => {
-  const userId = req.params.id;
+  const userId = req.params.userId;
   try {
     const user = await User.findById(userId); 
     if (!user) {

@@ -50,22 +50,22 @@ const HeaderResponsiveUser = () => {
         <div className="offcanvas-body">
           <ul className="nav flex-column">
             <li className="nav-item">
-              <a className="nav-link text-white" href="/homeUser">
+              <a className="nav-link text-white" href="/user/home">
                 <i className="bi bi-house-door-fill me-2"></i> Home
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link text-white" href="/productsUser">
+              <a className="nav-link text-white" href="/user/products">
                 <i className="bi bi-box-seam me-2"></i> Products
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link text-white" href="/cartUser">
+              <a className="nav-link text-white" href="/user/cart">
                 <i className="bi bi-cart3 me-2"></i> Cart
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link text-white" href="/profileUser">
+              <a className="nav-link text-white" href="/user/profile">
                 <i className="bi bi-person-circle me-2"></i> Profile
               </a>
             </li>

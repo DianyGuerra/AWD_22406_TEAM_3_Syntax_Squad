@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import "../styles/styleUser.css";
 import client from "../api/client";
 import HeaderUser from "./HeaderUser";
 import HeaderResponsiveUser from "./HeaderResponsiveUser";
+import { decodeJwt } from "../utils/auth";
 
 const CartUserPage = () => {
+  const [userId, setUserId] = useState(null);
   const [cartItems, setCartItems] = useState([]);
   const [cartId, setCartId] = useState(null);
   const [total, setTotal] = useState(0);
@@ -14,12 +17,27 @@ const CartUserPage = () => {
   const [paymentMethod, setPaymentMethod] = useState("");
   const [orderMsg, setOrderMsg] = useState("");
   const [error, setError] = useState(null);
-
-  const userId = "685bb91a0eeff8b08e0e130b"; // Diana
+  const navigate = useNavigate();
 
   useEffect(() => {
-    fetchCart();
-  }, []);
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
+    const decoded = decodeJwt(token);
+    if (!decoded?.id) {
+      navigate("/login");
+      return;
+    }
+
+    setUserId(decoded.id);
+  }, [navigate]);
+
+  useEffect(() => {
+    if (userId) fetchCart();
+  }, [userId]);
 
   const groupCartItems = (items) => {
     const grouped = {};
@@ -41,11 +59,11 @@ const CartUserPage = () => {
     return Object.values(grouped);
   };
 
-
   const fetchCart = async () => {
     try {
       const res = await client.get(`/carts/users/${userId}`);
       const carts = res.data;
+
       if (!carts || carts.length === 0) {
         setCartItems([]);
         setCartId(null);
@@ -59,26 +77,25 @@ const CartUserPage = () => {
 
       for (const cart of carts) {
         try {
-            const res = await client.get(`/cartProducts/${cart._id}`);
-            const data = res.data;
+          const res = await client.get(`/cartProducts/${cart._id}`);
+          const data = res.data;
 
-            if (Array.isArray(data) && data.length > 0) {
+          if (Array.isArray(data) && data.length > 0) {
             const itemsWithCartId = data.map(item => ({ ...item, cartId: cart._id }));
             allCartItems = allCartItems.concat(itemsWithCartId);
 
             const cartTotal = data.reduce((sum, item) => {
-                return sum + item.productId.price * item.quantity;
+              return sum + item.productId.price * item.quantity;
             }, 0);
 
             totalAmount += cartTotal;
-            } else {
+          } else {
             console.log(`Cart ${cart._id} is empty or has invalid data.`);
-            }
-
+          }
         } catch (err) {
-            console.log(`Error loading cart ${cart._id}:`, err.response?.data || err.message);
+          console.log(`Error loading cart ${cart._id}:`, err.response?.data || err.message);
         }
-    }
+      }
 
       const groupedItems = groupCartItems(allCartItems);
 
@@ -113,32 +130,28 @@ const CartUserPage = () => {
     }
   };
 
-
   const handleCheckout = async (e) => {
     e.preventDefault();
 
     if (!paymentMethod) {
-        alert("Please select a payment method.");
-        return;
+      alert("Please select a payment method.");
+      return;
     }
 
     try {
-        const res = await client.post(`/carts/checkout`, { cartId });
-        setOrderMsg(res.data.message || "Order placed successfully!");
+      const res = await client.post(`/carts/checkout`, { cartId });
+      setOrderMsg(res.data.message || "Order placed successfully!");
 
-        await Promise.all(
-          cartId.map(id => client.delete(`/carts/${id}`))
-        );
-        
-        setCartItems([]);
-        setTotal(0);
-        fetchCart(); 
+      await Promise.all(cartId.map(id => client.delete(`/carts/${id}`)));
+
+      setCartItems([]);
+      setTotal(0);
+      fetchCart();
     } catch (err) {
-        console.error(err);
-        setError("Checkout failed.");
+      console.error(err);
+      setError("Checkout failed.");
     }
-    };
-
+  };
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div className="text-danger text-center mt-3">Error: {error}</div>;
@@ -156,7 +169,7 @@ const CartUserPage = () => {
           ) : (
             <>
               {cartItems.map((item) => {
-                const {productId, quantity } = item;
+                const { productId, quantity } = item;
                 const subtotal = productId.price * quantity;
 
                 return (
@@ -167,7 +180,10 @@ const CartUserPage = () => {
                         <p className="card-text">Price: ${productId.price.toFixed(2)} x {quantity}</p>
                         <p className="card-text">Subtotal: ${subtotal.toFixed(2)}</p>
                       </div>
-                      <button className="btn btn-danger btn-sm" onClick={() => removeItem(productId._id, 1, item.cartId)}>
+                      <button
+                        className="btn btn-danger btn-sm"
+                        onClick={() => removeItem(productId._id, 1, item.cartId)}
+                      >
                         Delete
                       </button>
                     </div>
