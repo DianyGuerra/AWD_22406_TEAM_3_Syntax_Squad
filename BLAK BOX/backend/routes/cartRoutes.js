@@ -68,12 +68,11 @@ router.get(
 );
 
 /**
- * – Delete cart (Admin only)
+ * – Delete cart
  */
 router.delete(
   '/carts/:id',
   protect,
-  admin,
   cartController.deleteCart
 );
 

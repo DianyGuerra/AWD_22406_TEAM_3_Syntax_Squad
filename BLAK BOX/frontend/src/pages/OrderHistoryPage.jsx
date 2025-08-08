@@ -7,7 +7,8 @@ import {
   FaUserCircle
 } from 'react-icons/fa';
 import client from '../api/client';
-import { decodeJwt } from '../utils/auth'; 
+import { decodeJwt } from '../utils/auth';
+import "../styles/styleUser.css";
 
 export default function OrderHistoryPage() {
   const [userId, setUserId] = useState(null);
