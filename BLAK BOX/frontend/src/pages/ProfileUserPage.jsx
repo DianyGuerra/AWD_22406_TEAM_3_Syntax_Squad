@@ -17,7 +17,6 @@ const ProfileUserPage = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 992);
   const navigate = useNavigate();
 
-  // Detectar si es móvil o no
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 992);
     window.addEventListener("resize", handleResize);

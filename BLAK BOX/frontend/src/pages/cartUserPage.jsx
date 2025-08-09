@@ -134,7 +134,7 @@ const CartUserPage = () => {
     }
   };
 
-  const handleCheckout = async (e) => {
+  const handleCheckout = async (e, total) => {
     e.preventDefault();
 
     if (!paymentMethod) {
@@ -144,8 +144,13 @@ const CartUserPage = () => {
 
     try {
       const res = await client.post(`/carts/checkout`, { cartId });
+      console.log(res.data);
       setOrderMsg(res.data.message || "Order placed successfully!");
 
+      const orderId = res.data.orderId;
+      const transactionId = paymentMethod + userId + orderId + total;
+      const paymentRes = await client.post(`/payments`, {userId, orderId, total, paymentMethod, transactionId});
+      console.log(paymentRes);
       await Promise.all(cartId.map(id => client.delete(`/carts/${id}`)));
 
       setCartItems([]);
@@ -202,7 +207,7 @@ const CartUserPage = () => {
               <div className="d-flex flex-column flex-md-row align-items-center justify-content-between gap-3 mt-4">
                 <h4>Total: ${total.toFixed(2)}</h4>
                 <form
-                  onSubmit={handleCheckout}
+                  onSubmit={(e) => handleCheckout(e, total.toFixed(2))}
                   className="d-flex flex-column flex-md-row align-items-center gap-2"
                 >
                   <select
