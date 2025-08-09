@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/styleCartPage.css";
 import client from "../api/client";
-import HeaderUser from "./HeaderUser";
-import HeaderResponsiveUser from "./HeaderResponsiveUser";
+import HeaderUser from "../components/HeaderUser";
+import HeaderResponsiveUser from "../components/HeaderResponsiveUser";
 import { decodeJwt } from "../utils/auth";
 
 const CartUserPage = () => {

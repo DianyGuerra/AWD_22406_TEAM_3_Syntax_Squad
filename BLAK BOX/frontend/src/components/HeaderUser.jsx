@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import '../styles/styleHeaderUser.css'; 
+import './styleHeaderUser.css'
 
 const HeaderUser = () => {
   const navigate = useNavigate();

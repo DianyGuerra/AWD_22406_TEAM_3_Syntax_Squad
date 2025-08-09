@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import HeaderUser from './HeaderUser';
-import HeaderResponsiveUser from './HeaderResponsiveUser';
+import HeaderUser from '../components/HeaderUser';
+import HeaderResponsiveUser from '../components/HeaderResponsiveUser';
 import '../styles/styleHomeUser.css';
 import client from '../api/client';
 import { decodeJwt } from "../utils/auth";

@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "../styles/styleUser.css";
-import HeaderUser from "./HeaderUser";
-import HeaderResponsiveUser from "./HeaderResponsiveUser";
+import HeaderUser from "../components/HeaderUser";
+import HeaderResponsiveUser from "../components/HeaderResponsiveUser";
 import client from "../api/client";
 import { decodeJwt } from "../utils/auth"; 
 
@@ -14,7 +14,15 @@ const ProfileUserPage = () => {
   const [orders, setOrders] = useState([]);
   const [profileMsg, setProfileMsg] = useState("");
   const [groupedWishlistItems, setGroupedWishlistItems] = useState(new Map());
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 992);
   const navigate = useNavigate();
+
+  // Detectar si es móvil o no
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 992);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -65,7 +73,6 @@ const ProfileUserPage = () => {
       const wishlistRes = await client.get(`/wishlists/users/${userId}`);
       const ordersRes = await client.get(`/orders/user/${userId}`);
 
-      console.log(userRes, wishlistRes, ordersRes);
       setUser(userRes.data);
 
       const enrichedOrders = await Promise.all(
@@ -146,10 +153,11 @@ const ProfileUserPage = () => {
 
   return (
     <>
-      <HeaderResponsiveUser />
-      <div className="d-flex flex-column flex-lg-row min-vh-100 bg-purple-darker text-white">
-        <HeaderUser />
-        <div className="container py-5">
+      {isMobile ? <HeaderResponsiveUser /> : <HeaderUser />}
+      <div className="d-flex flex-column flex-lg-row min-vh-100 bg-purple-darker text-white"
+           style={{ marginTop: isMobile ? "4.5rem" : "0" }}
+      >
+        <div className="container py-5 page-content">
           <h1 className="text-center text-accent">User Profile</h1>
 
           <div className="text-box bg-purple">

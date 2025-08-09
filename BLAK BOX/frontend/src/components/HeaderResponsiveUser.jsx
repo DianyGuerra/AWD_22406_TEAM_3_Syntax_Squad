@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../styles/styleHeaderResponsiveUser.css'; 
+import './styleHeaderResponsiveUser.css';
+
 const HeaderResponsiveUser = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);

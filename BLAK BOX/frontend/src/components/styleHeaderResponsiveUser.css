@@ -1,6 +1,4 @@
-/* HeaderResponsiveUser.css */
 
-/* Mobile Navbar */
 .mobile-navbar {
   display: none;
   background-color: #1e1e2f;
@@ -32,7 +30,6 @@
   }
 }
 
-/* Offcanvas Menu */
 .offcanvas-menu {
   position: fixed;
   top: 0;
@@ -98,7 +95,6 @@
   color: #ff7675;
 }
 
-/* Overlay when menu is open */
 .overlay {
   position: fixed;
   top: 0;
@@ -106,5 +102,5 @@
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 999;
+  z-index: 0;
 }

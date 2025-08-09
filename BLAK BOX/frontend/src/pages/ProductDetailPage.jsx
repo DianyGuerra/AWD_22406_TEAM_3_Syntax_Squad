@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import  '../styles/styleDetailsProductPage.css';
 
-import HeaderResponsiveUser from './HeaderResponsiveUser';
-import HeaderUser from './HeaderUser';
+import HeaderResponsiveUser from '../components/HeaderResponsiveUser';
+import HeaderUser from '../components/HeaderUser';
 import client from '../api/client'; 
 import { decodeJwt } from '../utils/auth'; 
 

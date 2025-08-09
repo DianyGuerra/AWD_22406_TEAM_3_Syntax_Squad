@@ -4,8 +4,8 @@ import { decodeJwt } from "../utils/auth";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import "../styles/styleUser.css";
-import HeaderUser from "./HeaderUser";
-import HeaderResponsiveUser from "./HeaderResponsiveUser";
+import HeaderUser from "../components/HeaderUser";
+import HeaderResponsiveUser from "../components/HeaderResponsiveUser";
 import client from "../api/client";
 
 const ProductsUserPage = () => {
@@ -117,6 +117,7 @@ const ProductsUserPage = () => {
         cartId = cartRes.data[0]._id;
       } else {
         const createCartRes = await client.post("/carts", { userId });
+        console.log(`CartRes: "${createCartRes}"`);
         cartId = createCartRes.data._id;
       }
 
@@ -175,7 +176,7 @@ const ProductsUserPage = () => {
     <>
       {isMobile ? <HeaderResponsiveUser /> : <HeaderUser />}
 
-    <div className="container-fluid py-4" style={{ marginTop: isMobile ? "4.5rem" : "0" }}>
+    <div style={{ marginTop: isMobile ? "4.5rem" : "0" }}>
         <div className="page-content container">
           <h1 className="text-center mb-4 fw-bold text-accent">Our Products</h1>
 
