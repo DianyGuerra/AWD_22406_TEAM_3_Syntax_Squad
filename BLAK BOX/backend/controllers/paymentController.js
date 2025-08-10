@@ -21,6 +21,11 @@ const createNewPayment = async (req, res) => {
     return res.status(400).json({ message: "All fields are required." });
   }
 
+  const validMethods = ['credit_card', 'debit_card', 'paypal', 'bank_transfer', 'cash_on_delivery'];
+  if (!validMethods.includes(paymentMethod)) {
+    return res.status(400).json({ message: "Invalid payment method." });
+  }
+
   try {
     const newPayment = new Payment({
       userId,

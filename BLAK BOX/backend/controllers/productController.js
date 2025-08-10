@@ -84,27 +84,27 @@ const getProductById = async (req, res) => {
   try {
     const { productId } = req.params;
     const product = await Product.findById(productId)
-      .populate('categoryId', 'categoryName');
+      .populate('categoryId', 'categoryName categoryDescription')
+      .lean();
 
     if (!product) {
       return res.status(404).json({ message: 'Product not found' });
     }
 
-    res.status(200).json({
-      id: product._id,
-      name: product.name,
-      price: product.price,
-      stock: product.stock,
-      description: product.description,
-      brand: product.brand,
-      category: product.categoryId,
-    });
+    const { categoryId, _id, ...rest } = product;
+    const result = {
+      ...rest,
+      id: _id,
+      category: categoryId
+    };
 
+    res.status(200).json(result);
   } catch (error) {
     console.error("Error", error);
     res.status(500).json({ message: 'Server Error' });
   }
 };
+
 
 // Get products by price range
 const getProductsByPriceRange = async (req, res) => {

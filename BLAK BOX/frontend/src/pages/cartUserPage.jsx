@@ -80,22 +80,15 @@ const CartUserPage = () => {
       }
 
       let allCartItems = [];
-      let totalAmount = 0;
 
       for (const cart of carts) {
         try {
-          const res = await client.get(`/cartProducts/${cart._id}`);
-          const data = res.data;
+          const resItems = await client.get(`/cartProducts/${cart._id}`);
+          const data = resItems.data;
 
           if (Array.isArray(data) && data.length > 0) {
             const itemsWithCartId = data.map(item => ({ ...item, cartId: cart._id }));
             allCartItems = allCartItems.concat(itemsWithCartId);
-
-            const cartTotal = data.reduce((sum, item) => {
-              return sum + item.productId.price * item.quantity;
-            }, 0);
-
-            totalAmount += cartTotal;
           }
         } catch (err) {
           console.log(`Error loading cart ${cart._id}:`, err.response?.data || err.message);
@@ -103,9 +96,20 @@ const CartUserPage = () => {
       }
 
       const groupedItems = groupCartItems(allCartItems);
-
       setCartItems(groupedItems);
-      setTotal(totalAmount);
+
+      if (carts.length === 1) {
+        const totalRes = await client.get(`/carts/total?cartId=${carts[0]._id}`);
+        setTotal(totalRes.data.total);
+      } else {
+        let combinedTotal = 0;
+        for (const cart of carts) {
+          const totalRes = await client.get(`/carts/total?cartId=${cart._id}`);
+          combinedTotal += totalRes.data.total;
+        }
+        setTotal(combinedTotal);
+      }
+
       setCartId(carts.map(c => c._id));
     } catch (err) {
       console.error(err);
@@ -134,7 +138,7 @@ const CartUserPage = () => {
     }
   };
 
-  const handleCheckout = async (e, total) => {
+  const handleCheckout = async (e, amount) => {
     e.preventDefault();
 
     if (!paymentMethod) {
@@ -148,8 +152,8 @@ const CartUserPage = () => {
       setOrderMsg(res.data.message || "Order placed successfully!");
 
       const orderId = res.data.orderId;
-      const transactionId = paymentMethod + userId + orderId + total;
-      const paymentRes = await client.post(`/payments`, {userId, orderId, total, paymentMethod, transactionId});
+      const transactionId = userId + orderId;
+      const paymentRes = await client.post(`/payments`, {userId, orderId, amount, paymentMethod, transactionId});
       console.log(paymentRes);
       await Promise.all(cartId.map(id => client.delete(`/carts/${id}`)));
 
@@ -217,10 +221,10 @@ const CartUserPage = () => {
                     required
                   >
                     <option value="" disabled>Select Payment Method</option>
-                    <option value="Credit Card">Credit Card</option>
-                    <option value="Debit Card">Debit Card</option>
-                    <option value="PayPal">PayPal</option>
-                    <option value="Bank Transfer">Bank Transfer</option>
+                    <option value="credit_card">Credit Card</option>
+                    <option value="debit_card">Debit Card</option>
+                    <option value="paypal">PayPal</option>
+                    <option value="bank_transfer">Bank Transfer</option>
                   </select>
                   <button type="submit" className="btn btn-accent">
                     Proceed to Payment
