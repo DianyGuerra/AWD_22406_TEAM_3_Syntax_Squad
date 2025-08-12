@@ -15,6 +15,8 @@ import OrderHistoryPage from './pages/OrderHistoryPage';
 import AuthSuccessPage  from './pages/AuthSuccessPage';
 import AdminProfilePage from './pages/AdminProfilePage';
 import AdminProductsPage from './pages/AdminProductsPage';
+import AdminOrdersPage from './pages/AdminOrdersPage';
+const AdminOrderDetailPage = () => <div>Order detail coming soon…</div>;
 
 export default function App() {
   return (
@@ -40,6 +42,8 @@ export default function App() {
       <Route path="/user/cart"               element={<CartUserPage />} />
       <Route path="/user/profile"            element={<ProfileUserPage />} />
       <Route path="/orders/history" element={<OrderHistoryPage />} />
+      <Route path="/admin/orders" element={<AdminOrdersPage />} />
+      <Route path="/admin/orders/:orderId" element={<AdminOrderDetailPage />} />
 
     </Routes>
   );

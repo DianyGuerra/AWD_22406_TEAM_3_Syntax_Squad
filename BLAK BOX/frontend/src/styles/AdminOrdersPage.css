@@ -1,0 +1,105 @@
+/* Layout similar a products */
+.orders-page-container {
+  display: flex;
+}
+
+.orders-content {
+  flex: 1;
+  padding: 30px;
+  margin-left: 220px;
+  color: #fff;
+}
+
+/* Header */
+.orders-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.orders-header h1 {
+  font-size: 28px;
+  margin: 0;
+}
+
+.refresh-btn {
+  border: none;
+  cursor: pointer;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #5a189a; /* paleta */
+  color: #fff;
+}
+.refresh-btn:hover { background: #7b2cbf; }
+
+/* Table */
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.orders-table th,
+.orders-table td {
+  border: 1px solid #2c2c3a;
+  padding: 10px;
+  text-align: left;
+  background-color: #1f023b; /* paleta oscuro */
+}
+
+.orders-table th {
+  background-color: #5a189a; /* header morado */
+  color: #fff;
+}
+
+.mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
+
+/* Customer cell */
+.customer .name { display: block; font-weight: 600; }
+.customer .email { display: block; font-size: 12px; opacity: 0.8; }
+
+/* Status badge */
+.status-badge {
+  text-transform: capitalize;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  background: #3c096c; /* base */
+  color: #c77dff;
+  border: 1px solid #9d4edd;
+}
+.status-badge.pending { background: #3c096c; }
+.status-badge.paid { background: #1b4332; color: #b7f3cf; border-color: #1b4332; }
+.status-badge.cancelled, .status-badge.canceled { background: #5a0000; color: #ffb3b3; border-color: #7a0000; }
+
+/* Actions */
+.actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.action-btn.view { background: #7b2cbf; color: #fff; }
+.action-btn.view:hover { background: #9d4edd; }
+
+/* Messages */
+.orders-loading, .orders-error {
+  padding: 12px 14px;
+  border-radius: 8px;
+  margin-bottom: 14px;
+}
+.orders-loading { background: #3c096c; color: #fff; }
+.orders-error { background: #5a0000; color: #fff; }
