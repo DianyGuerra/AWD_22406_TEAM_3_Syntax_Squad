@@ -48,15 +48,15 @@ export default function HomePage() {
             <a href="/store" className="btn btn-hero">Shop Now</a>
             </div>
         </section>
-
+        
         {/* Categories Section */}
-        <section className="categories py-5">
+        <section className="categories py-5 m-3">
             <div className="container-fluid px-0">
             <h2 className="section-title text-center mb-4">Our Store</h2>
             <div className="row">
                 {categories.map(cat => (
                 <div key={cat.title} className="col-md-4 mb-4">
-                    <div className="card category-card">
+                    <div className="category-card">
                     <img src={cat.img} className="card-img-top" alt={cat.title} />
                     <div className="card-body">
                         <h5 className="card-title">{cat.title}</h5>
@@ -88,27 +88,24 @@ export default function HomePage() {
                 >
                 <div className="carousel-inner">
                     {chunks.map((group, idx) => (
-                    <div
-                        key={idx}
+                        <div
+                        key={`slide-${idx}`}  // key para cada slide
                         className={`carousel-item ${idx === 0 ? 'active' : ''}`}
-                    >
+                        >
                         <div className="row justify-content-center">
-                        {group.map((b) => (
-                            <div key={b.id} className="col-md-4 mb-4 d-flex justify-content-center">
-                            <div className="brand-card p-3">
-                                <img
-                                src={b.logoUrl}
-                                alt={b.name}
-                                className="img-fluid"
-                                />
+                            {group.map((b) => (
+                            <div key={`brand-${b.name}`} className="col-md-4 mb-4 d-flex justify-content-center">
+                                <div className="brand-card p-3">
+                                <img src={b.logoUrl} alt={b.name} className="img-fluid" />
                                 <p className="mt-2">{b.name}</p>
+                                </div>
                             </div>
-                            </div>
-                        ))}
+                            ))}
                         </div>
-                    </div>
+                        </div>
                     ))}
                 </div>
+
 
                 {/* Controls */}
                 <button

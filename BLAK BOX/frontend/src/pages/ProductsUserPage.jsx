@@ -1,12 +1,38 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { decodeJwt } from "../utils/auth";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap-icons/font/bootstrap-icons.css';
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
 import "../styles/styleUser.css";
 import HeaderUser from "../components/HeaderUser";
 import HeaderResponsiveUser from "../components/HeaderResponsiveUser";
 import client from "../api/client";
+
+/** Truncate component: shows a shortened text with "Ver más / Ver menos" */
+function Truncate({ text = "", limit = 140 }) {
+  const [expanded, setExpanded] = useState(false);
+
+  if (!text) return null;
+
+  const isLong = text.length > limit;
+  const short = isLong ? text.slice(0, limit).trim() + "…" : text;
+
+  return (
+    <p className="card-text">
+      {expanded ? text : short}{" "}
+      {isLong && (
+        <button
+          type="button"
+          className="link-unstyled"
+          onClick={() => setExpanded((v) => !v)}
+          aria-expanded={expanded}
+        >
+          {expanded ? "Ver menos" : "Ver más"}
+        </button>
+      )}
+    </p>
+  );
+}
 
 const ProductsUserPage = () => {
   const [categories, setCategories] = useState([]);
@@ -29,24 +55,22 @@ const ProductsUserPage = () => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 992);
     };
-
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (!token) {
-      navigate('/login');
+      navigate("/login");
       return;
     }
 
     const decoded = decodeJwt(token);
     if (!decoded?.id) {
-      navigate('/login');
+      navigate("/login");
       return;
     }
-
     setUserId(decoded.id);
 
     const fetchData = async () => {
@@ -67,11 +91,13 @@ const ProductsUserPage = () => {
     fetchData();
   }, [navigate]);
 
-
   const filteredProducts = products.filter((product) => {
     const categoryName = product.categoryId?.categoryName || "";
-    const matchesCategory = selectedCategory === "all" || categoryName === selectedCategory;
-    const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory =
+      selectedCategory === "all" || categoryName === selectedCategory;
+    const matchesSearch = product.name
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
@@ -99,8 +125,8 @@ const ProductsUserPage = () => {
   };
 
   const addToCart = async (productId, productName) => {
-    console.log(userId, productId, productName);
-    if (!window.confirm(`Do you want to add "${productName}" to your cart?`)) return;
+    if (!window.confirm(`Do you want to add "${productName}" to your cart?`))
+      return;
 
     try {
       const productRes = await client.get(`/products/${productId}`);
@@ -117,7 +143,6 @@ const ProductsUserPage = () => {
         cartId = cartRes.data[0]._id;
       } else {
         const createCartRes = await client.post("/carts", { userId });
-        console.log(`CartRes: "${createCartRes}"`);
         cartId = createCartRes.data._id;
       }
 
@@ -130,7 +155,7 @@ const ProductsUserPage = () => {
       const updatedStock = currentStock - 1;
       await client.put(`/products/${productId}/stock`, { stock: updatedStock });
 
-      const updatedProducts = products.map(p =>
+      const updatedProducts = products.map((p) =>
         p._id === productId ? { ...p, stock: updatedStock } : p
       );
       setProducts(updatedProducts);
@@ -143,7 +168,6 @@ const ProductsUserPage = () => {
   };
 
   const addToWishlist = async (productId, productName) => {
-    console.log(userId, productId, productName);
     try {
       const res = await client.get(`/wishlists/users/${userId}`);
       let wishlistId;
@@ -170,21 +194,27 @@ const ProductsUserPage = () => {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
-  const displayedProducts = priceFilteredProducts.length > 0 ? priceFilteredProducts : filteredProducts;
+  const displayedProducts =
+    priceFilteredProducts.length > 0 ? priceFilteredProducts : filteredProducts;
 
   return (
     <>
       {isMobile ? <HeaderResponsiveUser /> : <HeaderUser />}
 
-    <div style={{ marginTop: isMobile ? "4.5rem" : "0" }}>
+      <div style={{ marginTop: isMobile ? "4.5rem" : "0" }}>
         <div className="page-content container">
           <h1 className="text-center mb-4 fw-bold text-accent">Our Products</h1>
 
-          {/* FILTROS DENTRO DE CARD */}
-          <div className="card mb-4 shadow-sm p-3 border-0" style={{ borderRadius: '1.2rem', background: "#1a1026", color: "#fff" }}>
+          {/* Filters */}
+          <div
+            className="card mb-4 shadow-sm p-3 border-0"
+            style={{ borderRadius: "1.2rem", background: "#1a1026", color: "#fff" }}
+          >
             <div className="row g-2 align-items-center justify-content-center">
               <div className="col-12 col-md-auto d-flex align-items-center">
-                <label htmlFor="searchInput" className="me-2 mb-0">Search:</label>
+                <label htmlFor="searchInput" className="me-2 mb-0">
+                  Search:
+                </label>
                 <input
                   type="text"
                   id="searchInput"
@@ -215,7 +245,7 @@ const ProductsUserPage = () => {
                   type="number"
                   placeholder="Min price"
                   className="form-control form-control-sm w-auto"
-                  style={{ maxWidth: "100px", margin: "0 0.5rem"}}
+                  style={{ maxWidth: "100px", margin: "0 0.5rem" }}
                   value={minPrice}
                   onChange={(e) => setMinPrice(e.target.value)}
                   min={0}
@@ -224,7 +254,7 @@ const ProductsUserPage = () => {
                   type="number"
                   placeholder="Max price"
                   className="form-control form-control-sm w-auto"
-                  style={{ maxWidth: "100px", margin: "0 0.5rem"}}
+                  style={{ maxWidth: "100px", margin: "0 0.5rem" }}
                   value={maxPrice}
                   onChange={(e) => setMaxPrice(e.target.value)}
                   min={0}
@@ -255,12 +285,18 @@ const ProductsUserPage = () => {
               {displayedProducts.map((p) => {
                 const categoryName = p.categoryId?.categoryName || "Uncategorized";
                 return (
-                  <div key={p._id} className="col product-card" data-name={p.name.toLowerCase()} data-category={categoryName}>
+                  <div
+                    key={p._id}
+                    className="col product-card"
+                    data-name={p.name.toLowerCase()}
+                    data-category={categoryName}
+                  >
                     <div className="card bg-purple text-white h-100">
-                      <div className="card-body d-flex flex-column justify-content-between">
-                        <div>
+                      <div className="card-body d-flex flex-column">
+                        {/* TOP: title + description + badges + price */}
+                        <div className="card-body-top">
                           <h5 className="card-title text-accent">{p.name}</h5>
-                          <p className="card-text">{p.description}</p>
+                          <Truncate text={p.description} limit={140} />
                           <div className="mb-2">
                             <span className="badge bg-secondary">{categoryName}</span>
                             {p.stock > 0 ? (
@@ -270,11 +306,19 @@ const ProductsUserPage = () => {
                             )}
                           </div>
                           <p className="h5 mt-2">
-                            <span className="badge rounded-pill bg-accent">${p.price.toFixed(2)}</span>
+                            <span className="badge rounded-pill bg-accent">
+                              ${p.price.toFixed(2)}
+                            </span>
                           </p>
                         </div>
-                        <div className="mt-3 d-flex justify-content-between align-items-center gap-2">
-                          <Link to={`/product/${p._id}`} className="btn btn-outline-light btn-sm" title="View">
+
+                        {/* BOTTOM: actions */}
+                        <div className="mt-auto d-flex justify-content-between align-items-center gap-2">
+                          <Link
+                            to={`/product/${p._id}`}
+                            className="btn btn-outline-light btn-sm"
+                            title="View"
+                          >
                             <i className="bi bi-eye"></i>
                           </Link>
                           {p.stock <= 0 ? (
@@ -310,7 +354,7 @@ const ProductsUserPage = () => {
             <p className="text-center text-muted mt-4">No products found.</p>
           )}
         </div>
-        </div>
+      </div>
     </>
   );
 };

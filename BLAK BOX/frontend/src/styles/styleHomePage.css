@@ -27,6 +27,7 @@ body {
   justify-content: center;
   text-align: center;
   z-index: 1;
+  color: #fff;
 }
 .hero-content h1 {
   font-size: 4rem;
@@ -67,21 +68,36 @@ body {
   color: white;
   box-shadow: 0 4px 16px rgba(0,0,0,0.8);
 }
+
 .category-card:hover {
   transform: translateY(-5px);
 }
+
 .category-card img {
   height: 200px;
   object-fit: cover;
 }
+
+/* Contenedor del texto */
+.category-card .card-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Alinea a la izquierda */
+  padding: 1rem; /* Espacio interior uniforme */
+}
+
 .category-card .card-title {
   font-size: 1.25rem;
   margin-bottom: 0.5rem;
+  text-align: left; /* Asegura alineación izquierda */
 }
+
 .category-card .card-text {
   font-size: 0.9rem;
   opacity: 0.8;
+  text-align: left; /* Asegura alineación izquierda */
 }
+
 
 /* Brands */
 

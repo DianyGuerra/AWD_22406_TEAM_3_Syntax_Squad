@@ -7,7 +7,7 @@ import HeaderUser from '../components/HeaderUser';
 import client from '../api/client'; 
 import { decodeJwt } from '../utils/auth'; 
 
-const UNSPLASH_ACCESS_KEY = 'rQDRXnMfSfpBZukO6vyE24tEioc7CItd5kkoR2ZooMs'; 
+const UNSPLASH_ACCESS_KEY = import.meta.env.VITE_UNSPLASH_ACCESS_KEY;
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -78,13 +78,24 @@ const ProductDetail = () => {
   useEffect(() => {
     const fetchImage = async () => {
       try {
-        const query = product?.name || product?.category?.categoryName || "product";
+        const query =
+          product?.name ||
+          product?.category?.categoryName ||
+          "product";
         if (!query) return;
 
-        const res = await fetch(`https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&client_id=${UNSPLASH_ACCESS_KEY}&per_page=1`);
+        if (!UNSPLASH_ACCESS_KEY) {
+          console.warn("Missing VITE_UNSPLASH_ACCESS_KEY");
+          setImageUrl(null);
+          return;
+        }
+
+        const res = await fetch(
+          `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&client_id=${UNSPLASH_ACCESS_KEY}&per_page=1`
+        );
         const data = await res.json();
 
-        if (data.results && data.results.length > 0) {
+        if (Array.isArray(data.results) && data.results.length > 0) {
           setImageUrl(data.results[0].urls.small);
         } else {
           setImageUrl(null);
@@ -97,6 +108,7 @@ const ProductDetail = () => {
 
     fetchImage();
   }, [product]);
+
 
   const handleAddToCart = async () => {
     if (!product || !userId) return;
