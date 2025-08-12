@@ -5,24 +5,26 @@ import client from '../api/client';
 import '../styles/AdminOrdersPage.css';
 
 const ORDERS_URL = 'https://awd-22406-team-3-syntax-squad.onrender.com/blakbox/orders';
-const USER_URL = (userId) => `https://awd-22406-team-3-syntax-squad.onrender.com/users/${userId}`;
+const USER_URL = (userId) => `https://awd-22406-team-3-syntax-squad.onrender.com/blakbox/users/${userId}`;
 
 export default function AdminOrdersPage() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState('');
 
-  // cache para no repetir pedidos de /users/:id
   const usersCache = useMemo(() => new Map(), []);
 
   const fetchUserById = async (userId) => {
     if (!userId) return null;
     if (usersCache.has(userId)) return usersCache.get(userId);
+
     try {
       const { data } = await client.get(USER_URL(userId));
-      usersCache.set(userId, data);
-      return data;
+      const userData = data.user || data;
+      usersCache.set(userId, userData);
+      return userData;
     } catch (e) {
+      console.error(`Error fetching user ${userId}`, e);
       usersCache.set(userId, null);
       return null;
     }
@@ -32,14 +34,24 @@ export default function AdminOrdersPage() {
     setLoading(true);
     setErrorMsg('');
     try {
-      const { data } = await client.get(ORDERS_URL); // absoluto: ignora baseURL si la tienes
-      // Enriquecer con nombre de usuario
+      const { data } = await client.get(ORDERS_URL);
+
       const enriched = await Promise.all(
         (Array.isArray(data) ? data : []).map(async (o) => {
           const user = await fetchUserById(o.userId);
-          const fullName = user
-            ? `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.email || o.userId
-            : o.userId;
+
+          let fullName = '';
+          if (user) {
+            const firstName = user.firstName || '';
+            const lastName = user.lastName || '';
+            fullName = `${firstName} ${lastName}`.trim();
+            if (!fullName) {
+              fullName = user.email || o.userId;
+            }
+          } else {
+            fullName = o.userId;
+          }
+
           return {
             ...o,
             customerName: fullName,
@@ -47,6 +59,7 @@ export default function AdminOrdersPage() {
           };
         })
       );
+
       setOrders(enriched);
     } catch (err) {
       console.error(err);
@@ -58,8 +71,20 @@ export default function AdminOrdersPage() {
 
   useEffect(() => {
     fetchOrders();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const getStatusClass = (status) => {
+    switch (status) {
+      case 'completed':
+        return 'status-completed';
+      case 'pending':
+        return 'status-pending';
+      case 'cancelled':
+        return 'status-cancelled';
+      default:
+        return '';
+    }
+  };
 
   return (
     <div className="orders-page-container">
@@ -79,10 +104,9 @@ export default function AdminOrdersPage() {
           <table className="orders-table">
             <thead>
               <tr>
-                <th>Order ID</th>
                 <th>Customer</th>
                 <th>Order Date</th>
-                <th>Total</th>
+                
                 <th>Status</th>
                 <th style={{ width: 80 }}>Actions</th>
               </tr>
@@ -90,7 +114,6 @@ export default function AdminOrdersPage() {
             <tbody>
               {orders.map((o) => (
                 <tr key={o._id}>
-                  <td className="mono">{o._id}</td>
                   <td>
                     <div className="customer">
                       <span className="name">{o.customerName}</span>
@@ -98,9 +121,8 @@ export default function AdminOrdersPage() {
                     </div>
                   </td>
                   <td>{new Date(o.orderDate).toLocaleString()}</td>
-                  <td>${Number(o.total || 0).toFixed(2)}</td>
                   <td>
-                    <span className={`status-badge ${o.status || 'pending'}`}>
+                    <span className={`status-badge ${getStatusClass(o.status)}`}>
                       {o.status || 'pending'}
                     </span>
                   </td>
@@ -117,7 +139,7 @@ export default function AdminOrdersPage() {
               ))}
               {orders.length === 0 && (
                 <tr>
-                  <td colSpan={6} style={{ textAlign: 'center', opacity: 0.7 }}>
+                  <td colSpan={5} style={{ textAlign: 'center', opacity: 0.7 }}>
                     No orders found
                   </td>
                 </tr>

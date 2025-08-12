@@ -1,0 +1,159 @@
+.order-detail-page {
+  display: flex;
+}
+
+.order-detail-content {
+  flex: 1;
+  padding: 30px;
+  margin-left: 220px; /* si tu Sidebar ocupa ese ancho */
+  color: #fff;
+}
+
+.od-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.od-header .breadcrumb a {
+  color: #c77dff;
+  text-decoration: none;
+  font-weight: 600;
+}
+.od-header .breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.status-badge {
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-weight: 700;
+  text-transform: capitalize;
+  font-size: 0.9rem;
+}
+
+.status-completed { background: #28a745; color: #fff; }
+.status-pending   { background: #ff9800; color: #fff; }
+.status-cancelled { background: #e74c3c; color: #fff; }
+
+.od-loading,
+.od-error {
+  background: #1f023b;
+  border: 1px solid #3c096c;
+  padding: 12px 14px;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+.invoice-card {
+  background: #1f023b;
+  border: 1px solid #3c096c;
+  border-radius: 14px;
+  padding: 20px;
+  margin-top: 10px;
+}
+
+.invoice-row {
+  display: flex;
+  gap: 24px;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.invoice-card h3 {
+  margin: 0 0 8px;
+  color: #c77dff;
+}
+
+.inv-customer .name {
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+.inv-customer .email {
+  opacity: 0.85;
+  font-size: 0.9rem;
+}
+
+.inv-info .label {
+  opacity: 0.75;
+  margin-right: 6px;
+}
+
+.inv-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  font-size: 0.95rem;
+}
+
+.inv-table th, .inv-table td {
+  border: 1px solid #3c096c;
+  padding: 10px;
+  background: #10002b;
+}
+
+.inv-table thead th {
+  background: #5a189a;
+  color: #fff;
+  text-align: center;
+}
+
+.inv-table td.prod-name {
+  text-align: left;
+}
+
+.inv-table tfoot td.total-label {
+  text-align: right;
+  font-weight: 700;
+}
+.inv-table tfoot td.total-value {
+  font-weight: 800;
+}
+
+.status-panel {
+  margin-top: 18px;
+  background: #1f023b;
+  border: 1px solid #3c096c;
+  border-radius: 14px;
+  padding: 16px;
+}
+
+.status-panel h3 {
+  margin: 0 0 10px;
+  color: #c77dff;
+}
+
+.status-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.status-select {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #5a189a;
+  background: #10002b;
+  color: #fff;
+  min-width: 180px;
+}
+
+.save-status-btn {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 10px;
+  background: #7b2cbf;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+.save-status-btn:hover {
+  background: #5a189a;
+}
+
+.hint {
+  margin-top: 8px;
+  opacity: 0.8;
+  font-size: 0.85rem;
+}

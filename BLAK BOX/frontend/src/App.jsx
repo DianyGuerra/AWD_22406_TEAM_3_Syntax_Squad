@@ -16,7 +16,7 @@ import AuthSuccessPage  from './pages/AuthSuccessPage';
 import AdminProfilePage from './pages/AdminProfilePage';
 import AdminProductsPage from './pages/AdminProductsPage';
 import AdminOrdersPage from './pages/AdminOrdersPage';
-const AdminOrderDetailPage = () => <div>Order detail coming soon…</div>;
+import AdminOrderDetailPage from './pages/AdminOrderDetailPage';
 
 export default function App() {
   return (
