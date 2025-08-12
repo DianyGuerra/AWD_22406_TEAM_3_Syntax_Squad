@@ -10,7 +10,7 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const [form,  setForm]  = useState({ email: '', password: '' });
   const [error, setError] = useState('');
-  const ADMIN_EMAIL = "lassosebastian66@gmail.com";
+  const ADMIN_EMAIL = "admin@gmail.com";
 
   const handleChange = e => {
     setForm({ ...form, [e.target.name]: e.target.value });
