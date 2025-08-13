@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import client from '../api/client';
 import '../styles/AdminPaymentsPage.css';
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 const PAYMENTS_URL = 'https://awd-22406-team-3-syntax-squad.onrender.com/blakbox/payments';
 const USER_URL = (userId) =>
@@ -30,6 +32,41 @@ export default function AdminPaymentsPage() {
     }
   };
 
+  const handlePrintReport = () => {
+    const doc = new jsPDF();
+
+    // 🏷️ Encabezado
+    doc.setFontSize(18);
+    doc.text("Reporte de Pagos", 14, 20);
+
+    doc.setFontSize(12);
+    doc.text(`Generado: ${new Date().toLocaleString()}`, 14, 28);
+
+    // 📊 Preparar datos para tabla
+    const tableData = payments.map(p => [
+      p.customerName || p.userId,
+      p.orderId,
+      `$${Number(p.amount || 0).toFixed(2)}`,
+      p.paymentMethod,
+      p.status,
+      p.paymentDate ? new Date(p.paymentDate).toLocaleDateString() : '—'
+    ]);
+
+    // 📄 Agregar tabla
+    doc.autoTable({
+      head: [["Cliente", "Orden", "Monto", "Método", "Estado", "Fecha"]],
+      body: tableData,
+      startY: 35
+    });
+
+    // 💰 Calcular total
+    const totalAmount = payments.reduce((sum, p) => sum + (p.amount || 0), 0);
+    doc.setFontSize(14);
+    doc.text(`Total Pagos: $${totalAmount.toFixed(2)}`, 14, doc.lastAutoTable.finalY + 10);
+
+    // 💾 Descargar PDF
+    doc.save(`reporte_pagos_${Date.now()}.pdf`);
+  };
   const fetchPayments = async () => {
     setLoading(true);
     setErrorMsg('');
@@ -108,11 +145,22 @@ export default function AdminPaymentsPage() {
       <Sidebar />
       <div className="payments-content">
         <div className="payments-header">
-          <h1>Payments Manager</h1>
+        <h1>Payments Manager</h1>
+        <div style={{ display: "flex", gap: "10px" }}>
           <button className="refresh-btn" onClick={fetchPayments} title="Refrescar">
             <i className="fas fa-sync-alt" />
           </button>
+          <button
+            className="print-btn"
+            onClick={handlePrintReport}
+            title="Imprimir reporte"
+          >
+            <i className="fas fa-file-pdf" style={{ marginRight: "5px" }} />
+            Imprimir PDF
+          </button>
         </div>
+      </div>
+
 
         {loading && <div className="payments-loading">Loading payments…</div>}
         {errorMsg && <div className="payments-error">{errorMsg}</div>}
