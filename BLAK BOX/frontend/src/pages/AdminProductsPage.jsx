@@ -164,19 +164,20 @@ const AdminProductsPage = () => {
         {/* Tabla de productos */}
         <table className="products-table inline-edit">
           <thead>
-            <tr>
-              <th>Image</th>
-              <th>Name</th>
-              <th>Brand</th>
-              <th>Image URL</th>
-              <th>Description</th>
-              <th>Price</th>
-              <th>Stock</th>
-              <th>Discount</th>
-              <th>Category</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
+          <tr>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Brand</th>
+            <th style={{ width: '100px', maxWidth: '100px', overflow: 'hidden' }}>URL</th> {/* aquí */}
+            <th>Description</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Discount</th>
+            <th>Category</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
           <tbody>
             {products.map(p => {
               const isLowStock = lowStockIds.includes(p._id);
@@ -212,9 +213,17 @@ const AdminProductsPage = () => {
                     contentEditable
                     suppressContentEditableWarning
                     onBlur={e => updateProductField(p._id, 'imageUrl', e.target.innerText)}
+                    style={{
+                      maxWidth: '100px',
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      cursor: 'text'
+                    }}
                   >
                     {p.imageUrl}
                   </td>
+
                   <td
                     contentEditable
                     suppressContentEditableWarning
