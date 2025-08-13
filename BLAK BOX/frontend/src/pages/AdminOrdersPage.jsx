@@ -1,32 +1,25 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import client from '../api/client';
 import '../styles/AdminOrdersPage.css';
 
 const ORDERS_URL = 'https://awd-22406-team-3-syntax-squad.onrender.com/blakbox/orders';
-const USER_URL = (userId) => `https://awd-22406-team-3-syntax-squad.onrender.com/blakbox/users/${userId}`;
+const USERS_URL = 'https://awd-22406-team-3-syntax-squad.onrender.com/blakbox/users';
 
 export default function AdminOrdersPage() {
   const [orders, setOrders] = useState([]);
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState('');
 
-  const usersCache = useMemo(() => new Map(), []);
-
-  const fetchUserById = async (userId) => {
-    if (!userId) return null;
-    if (usersCache.has(userId)) return usersCache.get(userId);
-
+  const fetchUsers = async () => {
     try {
-      const { data } = await client.get(USER_URL(userId));
-      const userData = data.user || data;
-      usersCache.set(userId, userData);
-      return userData;
+      const { data } = await client.get(USERS_URL);
+      setUsers(Array.isArray(data) ? data : []);
     } catch (e) {
-      console.error(`Error fetching user ${userId}`, e);
-      usersCache.set(userId, null);
-      return null;
+      console.error('Error fetching users', e);
+      setUsers([]);
     }
   };
 
@@ -35,30 +28,30 @@ export default function AdminOrdersPage() {
     setErrorMsg('');
     try {
       const { data } = await client.get(ORDERS_URL);
+      const ordersList = Array.isArray(data) ? data : [];
 
-      const enriched = await Promise.all(
-        (Array.isArray(data) ? data : []).map(async (o) => {
-          const user = await fetchUserById(o.userId);
+      // Enriquecer órdenes con datos de usuario
+      const enriched = ordersList.map((o) => {
+        const user = users.find((u) => u._id === o.userId);
 
-          let fullName = '';
-          if (user) {
-            const firstName = user.firstName || '';
-            const lastName = user.lastName || '';
-            fullName = `${firstName} ${lastName}`.trim();
-            if (!fullName) {
-              fullName = user.email || o.userId;
-            }
-          } else {
-            fullName = o.userId;
+        let fullName = '';
+        if (user) {
+          const firstName = user.firstName || '';
+          const lastName = user.lastName || '';
+          fullName = `${firstName} ${lastName}`.trim();
+          if (!fullName) {
+            fullName = user.email || o.userId;
           }
+        } else {
+          fullName = o.userId;
+        }
 
-          return {
-            ...o,
-            customerName: fullName,
-            customerEmail: user?.email || '',
-          };
-        })
-      );
+        return {
+          ...o,
+          customerName: fullName,
+          customerEmail: user?.email || '',
+        };
+      });
 
       setOrders(enriched);
     } catch (err) {
@@ -70,7 +63,12 @@ export default function AdminOrdersPage() {
   };
 
   useEffect(() => {
-    fetchOrders();
+    // Primero cargamos usuarios y luego órdenes
+    const init = async () => {
+      await fetchUsers();
+      await fetchOrders();
+    };
+    init();
   }, []);
 
   const getStatusClass = (status) => {

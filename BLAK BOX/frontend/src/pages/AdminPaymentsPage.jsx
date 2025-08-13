@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import client from '../api/client';
@@ -7,31 +7,67 @@ import jsPDF from "jspdf";
 import "jspdf-autotable";
 
 const PAYMENTS_URL = 'https://awd-22406-team-3-syntax-squad.onrender.com/blakbox/payments';
-const USER_URL = (userId) =>
-  `https://awd-22406-team-3-syntax-squad.onrender.com/blakbox/users/${userId}`;
+const USERS_URL = 'https://awd-22406-team-3-syntax-squad.onrender.com/blakbox/users';
 
 export default function AdminPaymentsPage() {
   const [payments, setPayments] = useState([]);
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState('');
 
-  const usersCache = useMemo(() => new Map(), []);
-
-  const fetchUserById = async (userId) => {
-    if (!userId) return null;
-    if (usersCache.has(userId)) return usersCache.get(userId);
+  // 📥 Cargar todos los usuarios una sola vez
+  const fetchUsers = async () => {
     try {
-      const { data } = await client.get(USER_URL(userId));
-      const userData = data.user || data;
-      usersCache.set(userId, userData);
-      return userData;
-    } catch (e) {
-      console.error('Error fetching user', e);
-      usersCache.set(userId, null);
-      return null;
+      const { data } = await client.get(USERS_URL);
+      if (Array.isArray(data)) {
+        setUsers(data);
+      } else {
+        setUsers([]);
+      }
+    } catch (err) {
+      console.error("Error cargando usuarios", err);
+      setUsers([]);
     }
   };
 
+  // 📥 Cargar pagos y asociar con usuarios
+  const fetchPayments = async () => {
+    setLoading(true);
+    setErrorMsg('');
+    try {
+      const { data } = await client.get(PAYMENTS_URL);
+      const list = Array.isArray(data) ? data : [];
+
+      // Asociar nombre de cliente con userId
+      const enriched = list.map((p) => {
+        const user = users.find(u => u._id === p.userId);
+        let fullName = '';
+        if (user) {
+          const fn = user.firstName || '';
+          const ln = user.lastName || '';
+          fullName = `${fn} ${ln}`.trim();
+          if (!fullName) fullName = user.email || p.userId;
+        } else {
+          fullName = p.userId;
+        }
+
+        return {
+          ...p,
+          customerName: fullName,
+          customerEmail: user?.email || '',
+        };
+      });
+
+      setPayments(enriched);
+    } catch (err) {
+      console.error(err);
+      setErrorMsg('Error cargando pagos.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 🖨️ Generar PDF de pagos
   const handlePrintReport = () => {
     const doc = new jsPDF();
 
@@ -42,7 +78,7 @@ export default function AdminPaymentsPage() {
     doc.setFontSize(12);
     doc.text(`Generado: ${new Date().toLocaleString()}`, 14, 28);
 
-    // 📊 Preparar datos para tabla
+    // 📊 Datos para tabla
     const tableData = payments.map(p => [
       p.customerName || p.userId,
       p.orderId,
@@ -59,7 +95,7 @@ export default function AdminPaymentsPage() {
       startY: 35
     });
 
-    // 💰 Calcular total
+    // 💰 Total
     const totalAmount = payments.reduce((sum, p) => sum + (p.amount || 0), 0);
     doc.setFontSize(14);
     doc.text(`Total Pagos: $${totalAmount.toFixed(2)}`, 14, doc.lastAutoTable.finalY + 10);
@@ -67,46 +103,21 @@ export default function AdminPaymentsPage() {
     // 💾 Descargar PDF
     doc.save(`reporte_pagos_${Date.now()}.pdf`);
   };
-  const fetchPayments = async () => {
-    setLoading(true);
-    setErrorMsg('');
-    try {
-      const { data } = await client.get(PAYMENTS_URL);
-      const list = Array.isArray(data) ? data : [];
 
-      const enriched = await Promise.all(
-        list.map(async (p) => {
-          const user = await fetchUserById(p.userId);
-          let fullName = '';
-          if (user) {
-            const fn = user.firstName || '';
-            const ln = user.lastName || '';
-            fullName = `${fn} ${ln}`.trim();
-            if (!fullName) fullName = user.email || p.userId;
-          } else {
-            fullName = p.userId;
-          }
-
-          return {
-            ...p,
-            customerName: fullName,
-            customerEmail: user?.email || '',
-          };
-        })
-      );
-
-      setPayments(enriched);
-    } catch (err) {
-      console.error(err);
-      setErrorMsg('Error cargando pagos.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  // 🚀 Cargar datos al montar
   useEffect(() => {
-    fetchPayments();
+    const loadData = async () => {
+      await fetchUsers();
+    };
+    loadData();
   }, []);
+
+  // 📌 Recargar pagos cuando ya tengamos usuarios
+  useEffect(() => {
+    if (users.length > 0) {
+      fetchPayments();
+    }
+  }, [users]);
 
   const getStatusClass = (status) => {
     switch (status) {
@@ -145,22 +156,21 @@ export default function AdminPaymentsPage() {
       <Sidebar />
       <div className="payments-content">
         <div className="payments-header">
-        <h1>Payments Manager</h1>
-        <div style={{ display: "flex", gap: "10px" }}>
-          <button className="refresh-btn" onClick={fetchPayments} title="Refrescar">
-            <i className="fas fa-sync-alt" />
-          </button>
-          <button
-            className="print-btn"
-            onClick={handlePrintReport}
-            title="Imprimir reporte"
-          >
-            <i className="fas fa-file-pdf" style={{ marginRight: "5px" }} />
-            Imprimir PDF
-          </button>
+          <h1>Payments Manager</h1>
+          <div style={{ display: "flex", gap: "10px" }}>
+            <button className="refresh-btn" onClick={fetchPayments} title="Refrescar">
+              <i className="fas fa-sync-alt" />
+            </button>
+            <button
+              className="print-btn"
+              onClick={handlePrintReport}
+              title="Imprimir reporte"
+            >
+              <i className="fas fa-file-pdf" style={{ marginRight: "5px" }} />
+              Imprimir PDF
+            </button>
+          </div>
         </div>
-      </div>
-
 
         {loading && <div className="payments-loading">Loading payments…</div>}
         {errorMsg && <div className="payments-error">{errorMsg}</div>}
