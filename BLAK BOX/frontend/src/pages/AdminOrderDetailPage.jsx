@@ -234,9 +234,13 @@ export default function AdminOrderDetailPage() {
                   className="status-select"
                 >
                   <option value="pending">pending</option>
+                  <option value="paid">paid</option>
+                  <option value="shipped">shipped</option>
+                  <option value="delivered">delivered</option>
                   <option value="completed">completed</option>
                   <option value="cancelled">cancelled</option>
                 </select>
+
                 <button
                   className="save-status-btn"
                   onClick={handleSaveStatus}

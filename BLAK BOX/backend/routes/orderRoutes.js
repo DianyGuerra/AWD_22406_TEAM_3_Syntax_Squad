@@ -87,4 +87,9 @@ router.put(
   orderController.cancelOrderById
 );
 
+router.put(
+  '/orders/:orderId', OrderController.updateOrderStatus
+);
+
+
 module.exports = router;

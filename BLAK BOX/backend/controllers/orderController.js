@@ -187,6 +187,39 @@ const cancelOrderById = async (req, res) => {
   }
 };
 
+// Update order status by ID
+const updateOrderStatus = async (req, res) => {
+  const { orderId } = req.params;
+  const { status } = req.body;
+
+  if (!orderId) {
+    return res.status(400).json({ message: "Order ID is required." });
+  }
+  if (!status) {
+    return res.status(400).json({ message: "Status is required." });
+  }
+
+  if (!['pending', 'paid', 'shipped', 'delivered', 'completed', 'cancelled'].includes(status)) {
+    return res.status(400).json({ message: "Invalid status value." });
+  }
+
+  try {
+    const order = await Order.findById(orderId);
+    if (!order) {
+      return res.status(404).json({ message: "Order not found." });
+    }
+
+    order.status = status;
+    await order.save();
+
+    res.status(200).json({ message: "Order status updated successfully.", order });
+  } catch (error) {
+    console.error("Error updating order status:", error);
+    res.status(500).json({ message: "Server error while updating order status." });
+  }
+};
+
+
 module.exports = {
   getAllOrders,
   createNewOrder,
@@ -194,5 +227,6 @@ module.exports = {
   getOrderByUserId,
   getOrderById,
   getOrderHistoryByUserId,
-  cancelOrderById
+  cancelOrderById,
+  updateOrderStatus
 };
