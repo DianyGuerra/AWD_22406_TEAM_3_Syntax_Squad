@@ -20,16 +20,30 @@ const getAllProducts = async (req, res) => {
 //POST: Create a new product
 const createProduct = async (req, res) => {
   try {
-    const { name, price, category, stock, imageUrl } = req.body;
+    const {
+      name,
+      description,
+      brand,
+      price,
+      stock,
+      categoryId,
+      discount,
+      features,
+      sales,
+      imageUrl
+    } = req.body;
 
     const newProduct = new Product({
       name,
+      description,
+      brand,
       price,
       stock,
-      brand: "--",
-      description: "--",
-      categoryId: category,
-      imageUrl: imageUrl || "", 
+      categoryId,
+      discount,
+      features,
+      sales,
+      imageUrl
     });
 
     await newProduct.save();
@@ -40,6 +54,7 @@ const createProduct = async (req, res) => {
     res.status(500).json({ message: 'Server error while creating product' });
   }
 };
+
 
 
 
