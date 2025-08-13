@@ -14,7 +14,8 @@ const AdminProductsPage = () => {
     stock: '',
     categoryId: '',
     brand: '',
-    discount: '0%'
+    discount: '0%',
+    imageUrl: '' // Nuevo campo
   });
 
   const fetchProducts = async () => {
@@ -59,7 +60,7 @@ const AdminProductsPage = () => {
       setProducts(updated);
       await client.put(`/products/${id}`, { [field]: value });
       alert(`Producto actualizado correctamente (${field})`);
-      fetchLowStock(); // 🔹 Recargar lista de low stock después de actualizar
+      fetchLowStock();
     } catch (error) {
       console.error('Error updating product:', error);
       alert('Error al actualizar el producto');
@@ -77,7 +78,7 @@ const AdminProductsPage = () => {
       await client.delete(`/products/${id}`);
       setProducts(products.filter(p => p._id !== id));
       alert("Producto eliminado correctamente");
-      fetchLowStock(); // 🔹 Recargar low stock
+      fetchLowStock();
     } catch (error) {
       alert("Error al eliminar el producto");
     }
@@ -99,10 +100,11 @@ const AdminProductsPage = () => {
         stock: '',
         categoryId: '',
         brand: '',
-        discount: '0%'
+        discount: '0%',
+        imageUrl: ''
       });
       fetchProducts();
-      fetchLowStock(); // 🔹 Recargar low stock
+      fetchLowStock();
     } catch (error) {
       alert('Error al agregar el producto');
     }
@@ -122,6 +124,15 @@ const AdminProductsPage = () => {
 
           <label>Brand</label>
           <input name="brand" value={formData.brand} onChange={handleChange} required />
+
+          <label>Image URL</label>
+          <input
+            name="imageUrl"
+            value={formData.imageUrl}
+            onChange={handleChange}
+            placeholder="https://..."
+            required
+          />
 
           <label>Description</label>
           <textarea name="description" value={formData.description} onChange={handleChange} required />
@@ -154,8 +165,10 @@ const AdminProductsPage = () => {
         <table className="products-table inline-edit">
           <thead>
             <tr>
+              <th>Image</th>
               <th>Name</th>
               <th>Brand</th>
+              <th>Image URL</th>
               <th>Description</th>
               <th>Price</th>
               <th>Stock</th>
@@ -169,6 +182,18 @@ const AdminProductsPage = () => {
               const isLowStock = lowStockIds.includes(p._id);
               return (
                 <tr key={p._id} className={isLowStock ? 'low-stock-row' : ''}>
+                  <td>
+                    <img
+                      src={p.imageUrl || 'https://via.placeholder.com/60'}
+                      alt={p.name}
+                      style={{
+                        width: '60px',
+                        height: '60px',
+                        objectFit: 'cover',
+                        borderRadius: '4px'
+                      }}
+                    />
+                  </td>
                   <td
                     contentEditable
                     suppressContentEditableWarning
@@ -182,6 +207,13 @@ const AdminProductsPage = () => {
                     onBlur={e => updateProductField(p._id, 'brand', e.target.innerText)}
                   >
                     {p.brand}
+                  </td>
+                  <td
+                    contentEditable
+                    suppressContentEditableWarning
+                    onBlur={e => updateProductField(p._id, 'imageUrl', e.target.innerText)}
+                  >
+                    {p.imageUrl}
                   </td>
                   <td
                     contentEditable
