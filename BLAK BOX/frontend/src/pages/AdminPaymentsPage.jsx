@@ -4,7 +4,8 @@ import Sidebar from '../components/Sidebar';
 import client from '../api/client';
 import '../styles/AdminPaymentsPage.css';
 import jsPDF from "jspdf";
-import "jspdf-autotable";
+import autoTable from "jspdf-autotable";
+
 
 const PAYMENTS_URL = 'https://awd-22406-team-3-syntax-squad.onrender.com/blakbox/payments';
 const USERS_URL = 'https://awd-22406-team-3-syntax-squad.onrender.com/blakbox/users';
@@ -67,7 +68,6 @@ export default function AdminPaymentsPage() {
     }
   };
 
-  // 🖨️ Generar PDF de pagos
   const handlePrintReport = () => {
     const doc = new jsPDF();
 
@@ -89,7 +89,7 @@ export default function AdminPaymentsPage() {
     ]);
 
     // 📄 Agregar tabla
-    doc.autoTable({
+    autoTable(doc, {
       head: [["Cliente", "Orden", "Monto", "Método", "Estado", "Fecha"]],
       body: tableData,
       startY: 35
@@ -103,6 +103,7 @@ export default function AdminPaymentsPage() {
     // 💾 Descargar PDF
     doc.save(`reporte_pagos_${Date.now()}.pdf`);
   };
+
 
   // 🚀 Cargar datos al montar
   useEffect(() => {
