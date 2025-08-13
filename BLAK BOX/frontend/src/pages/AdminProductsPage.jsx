@@ -59,6 +59,7 @@ const AdminProductsPage = () => {
       setProducts(updated);
       await client.put(`/products/${id}`, { [field]: value });
       alert(`Producto actualizado correctamente (${field})`);
+      fetchLowStock(); // 🔹 Recargar lista de low stock después de actualizar
     } catch (error) {
       console.error('Error updating product:', error);
       alert('Error al actualizar el producto');
@@ -76,6 +77,7 @@ const AdminProductsPage = () => {
       await client.delete(`/products/${id}`);
       setProducts(products.filter(p => p._id !== id));
       alert("Producto eliminado correctamente");
+      fetchLowStock(); // 🔹 Recargar low stock
     } catch (error) {
       alert("Error al eliminar el producto");
     }
@@ -100,6 +102,7 @@ const AdminProductsPage = () => {
         discount: '0%'
       });
       fetchProducts();
+      fetchLowStock(); // 🔹 Recargar low stock
     } catch (error) {
       alert('Error al agregar el producto');
     }
@@ -199,7 +202,13 @@ const AdminProductsPage = () => {
                     suppressContentEditableWarning
                     onBlur={e => updateProductField(p._id, 'stock', parseInt(e.target.innerText))}
                   >
-                    {p.stock}
+                    {isLowStock ? (
+                      <span className="low-stock-badge" title="Low stock!">
+                        <i className="fas fa-exclamation-triangle"></i> {p.stock}
+                      </span>
+                    ) : (
+                      p.stock
+                    )}
                   </td>
                   <td>
                     <select

@@ -1,0 +1,165 @@
+.payments-page-container {
+  display: flex;
+  min-height: 100vh;
+  background: #0f1220; /* mismo fondo que admin */
+  color: #e8e8ea;
+}
+
+.payments-content {
+  flex: 1;
+  padding: 24px;
+  margin-left: 240px; /* ancho del sidebar */
+}
+
+.payments-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.payments-header h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.refresh-btn {
+  border: none;
+  background: #23263a;
+  color: #d7d7dc;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.refresh-btn:hover {
+  background: #2b2f47;
+}
+
+.payments-loading,
+.payments-error {
+  background: #23263a;
+  border: 1px solid #2f3351;
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 8px;
+}
+
+.payments-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #181b2b;
+  border: 1px solid #2f3351;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.payments-table thead th {
+  background: #1f2336;
+  color: #bfc4d6;
+  text-align: left;
+  font-weight: 600;
+  padding: 14px 16px;
+  border-bottom: 1px solid #2f3351;
+  font-size: 13px;
+  letter-spacing: .2px;
+}
+
+.payments-table tbody td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #242949;
+  vertical-align: middle;
+  font-size: 14px;
+}
+
+.payments-table tbody tr:hover {
+  background: #1b1f33;
+}
+
+.customer .name {
+  display: block;
+  font-weight: 600;
+  color: #eaeaf2;
+}
+.customer .email {
+  display: block;
+  font-size: 12px;
+  color: #9aa1bd;
+}
+
+.mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 13px;
+  color: #cbd1ea;
+}
+
+.amount {
+  font-weight: 700;
+  color: #f4f6ff;
+}
+
+.method .method-chip {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  background: #23263a;
+  border: 1px solid #2f3351;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  text-transform: capitalize;
+}
+.method .method-label {
+  opacity: .95;
+}
+
+/* Status badges (consistente con Orders) */
+.status-badge {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: capitalize;
+  border: 1px solid transparent;
+}
+.status-confirmed {
+  background: rgba(52, 199, 89, .15);
+  color: #34c759;
+  border-color: rgba(52, 199, 89, .25);
+}
+.status-pending {
+  background: rgba(255, 204, 0, .12);
+  color: #ffcc00;
+  border-color: rgba(255, 204, 0, .25);
+}
+.status-refunded {
+  background: rgba(10, 132, 255, .12);
+  color: #0a84ff;
+  border-color: rgba(10, 132, 255, .25);
+}
+.status-failed {
+  background: rgba(255, 69, 58, .15);
+  color: #ff453a;
+  border-color: rgba(255, 69, 58, .25);
+}
+
+.actions .action-btn {
+  border: none;
+  background: #23263a;
+  color: #d7d7dc;
+  padding: 8px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.actions .action-btn:hover {
+  background: #2b2f47;
+}
+.actions .action-btn.view i {
+  font-size: 14px;
+}
