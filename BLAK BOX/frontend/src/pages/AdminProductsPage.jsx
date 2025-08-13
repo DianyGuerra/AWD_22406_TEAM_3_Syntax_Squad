@@ -5,6 +5,7 @@ import '../styles/AdminProductsPage.css';
 
 const AdminProductsPage = () => {
   const [products, setProducts] = useState([]);
+  const [lowStockIds, setLowStockIds] = useState([]);
   const [categories, setCategories] = useState([]);
   const [editingProductId, setEditingProductId] = useState(null);
   const [editData, setEditData] = useState({});
@@ -28,6 +29,18 @@ const AdminProductsPage = () => {
     }
   };
 
+  const fetchLowStock = async () => {
+    try {
+      const res = await client.get('/products/low-stock');
+      const ids = Array.isArray(res.data)
+        ? res.data.map(p => p._id || p.id)
+        : [];
+      setLowStockIds(ids);
+    } catch (error) {
+      console.error('Error fetching low stock:', error);
+    }
+  };
+
   const fetchCategories = async () => {
     try {
       const res = await client.get('/categories');
@@ -39,6 +52,7 @@ const AdminProductsPage = () => {
 
   useEffect(() => {
     fetchProducts();
+    fetchLowStock();
     fetchCategories();
   }, []);
 
@@ -61,6 +75,7 @@ const AdminProductsPage = () => {
         discount: '0%'
       });
       fetchProducts();
+      fetchLowStock();
     } catch (error) {
       alert('Error al agregar el producto');
     }
@@ -71,7 +86,7 @@ const AdminProductsPage = () => {
     if (!confirmDelete) return;
     try {
       await client.delete(`/products/${id}`);
-      setProducts(products.filter(p => p._id !== id)); // Actualiza tabla sin recargar
+      setProducts(products.filter(p => p._id !== id));
       alert("Producto eliminado correctamente");
     } catch (error) {
       alert("Error al eliminar el producto");
@@ -93,6 +108,7 @@ const AdminProductsPage = () => {
       setProducts(products.map(p => (p._id === id ? editData : p)));
       setEditingProductId(null);
       alert("Producto actualizado correctamente");
+      fetchLowStock();
     } catch (error) {
       alert("Error al actualizar el producto");
     }
@@ -147,47 +163,57 @@ const AdminProductsPage = () => {
             </tr>
           </thead>
           <tbody>
-            {products.map(p => (
-              <tr key={p._id}>
-                {editingProductId === p._id ? (
-                  <>
-                    <td><input value={editData.name} onChange={(e) => handleEditChange(e, 'name')} /></td>
-                    <td><input value={editData.brand} onChange={(e) => handleEditChange(e, 'brand')} /></td>
-                    <td><input value={editData.description} onChange={(e) => handleEditChange(e, 'description')} /></td>
-                    <td><input type="number" value={editData.price} onChange={(e) => handleEditChange(e, 'price')} /></td>
-                    <td><input type="number" value={editData.stock} onChange={(e) => handleEditChange(e, 'stock')} /></td>
-                    <td>
-                      <select value={editData.categoryId?._id || ''} onChange={(e) => handleEditChange(e, 'categoryId')}>
-                        <option value="">Select</option>
-                        {categories.map((cat, idx) => (
-                          <option key={idx} value={cat._id}>{cat.categoryName}</option>
-                        ))}
-                      </select>
-                    </td>
-                    <td>
-                      <button onClick={() => saveEdit(p._id)}><i className="fas fa-save"></i></button>
-                      <button onClick={() => setEditingProductId(null)}><i className="fas fa-times"></i></button>
-                    </td>
-                  </>
-                ) : (
-                  <>
-                    <td>{p.name}</td>
-                    <td>{p.brand}</td>
-                    <td>{p.description}</td>
-                    <td>${p.price.toFixed(2)}</td>
-                    <td>{p.stock}</td>
-                    <td>{p.categoryId?.categoryName || 'Sin categoría'}</td>
-                    <td>
-                      <button onClick={() => startEditing(p)}><i className="fas fa-edit"></i></button>
-                      <button onClick={() => handleDelete(p._id)}><i className="fas fa-trash-alt"></i></button>
-                    </td>
-                  </>
-                )}
-              </tr>
-            ))}
+            {products.map(p => {
+              const isLowStock = lowStockIds.includes(p._id);
+              return (
+                <tr key={p._id} className={isLowStock ? "low-stock-row" : ""}>
+                  {editingProductId === p._id ? (
+                    <>
+                      <td><input value={editData.name} onChange={(e) => handleEditChange(e, 'name')} /></td>
+                      <td><input value={editData.brand} onChange={(e) => handleEditChange(e, 'brand')} /></td>
+                      <td><input value={editData.description} onChange={(e) => handleEditChange(e, 'description')} /></td>
+                      <td><input type="number" value={editData.price} onChange={(e) => handleEditChange(e, 'price')} /></td>
+                      <td><input type="number" value={editData.stock} onChange={(e) => handleEditChange(e, 'stock')} /></td>
+                      <td>
+                        <select value={editData.categoryId?._id || ''} onChange={(e) => handleEditChange(e, 'categoryId')}>
+                          <option value="">Select</option>
+                          {categories.map((cat, idx) => (
+                            <option key={idx} value={cat._id}>{cat.categoryName}</option>
+                          ))}
+                        </select>
+                      </td>
+                      <td>
+                        <button onClick={() => saveEdit(p._id)}><i className="fas fa-save"></i></button>
+                        <button onClick={() => setEditingProductId(null)}><i className="fas fa-times"></i></button>
+                      </td>
+                    </>
+                  ) : (
+                    <>
+                      <td>{p.name}</td>
+                      <td>{p.brand}</td>
+                      <td>{p.description}</td>
+                      <td>${p.price.toFixed(2)}</td>
+                      <td>
+                        {isLowStock ? (
+                          <span className="low-stock-badge" title="Low stock!">
+                            <i className="fas fa-exclamation-triangle"></i> {p.stock}
+                          </span>
+                        ) : (
+                          p.stock
+                        )}
+                      </td>
+                      <td>{p.categoryId?.categoryName || 'Sin categoría'}</td>
+                      <td>
+                        <button onClick={() => startEditing(p)}><i className="fas fa-edit"></i></button>
+                        <button onClick={() => handleDelete(p._id)}><i className="fas fa-trash-alt"></i></button>
+                      </td>
+                    </>
+                  )}
+                </tr>
+              );
+            })}
           </tbody>
         </table>
-
       </div>
     </div>
   );

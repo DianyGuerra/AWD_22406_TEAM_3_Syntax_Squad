@@ -107,3 +107,22 @@ h1 {
 .action-btn i {
   font-size: 18px;
 }
+
+.low-stock-row {
+  background-color: rgba(255, 193, 7, 0.15); /* amarillo translúcido */
+}
+
+.low-stock-badge {
+  background-color: #ff4d4d;
+  color: white;
+  padding: 3px 6px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.low-stock-badge i {
+  color: white;
+}
