@@ -7,19 +7,21 @@ import '../styles/AdminOrderDetailPage.css';
 const ORDER_PRODUCTS_URL = 'https://awd-22406-team-3-syntax-squad.onrender.com/blakbox/orderProducts';
 const ORDERS_URL = 'https://awd-22406-team-3-syntax-squad.onrender.com/blakbox/orders';
 const USER_URL = (userId) => `https://awd-22406-team-3-syntax-squad.onrender.com/blakbox/users/${userId}`;
+const ORDER_HISTORY_URL = (userId) => `https://awd-22406-team-3-syntax-squad.onrender.com/blakbox/orders/history/${userId}`;
 
 export default function AdminOrderDetailPage() {
   const { orderId } = useParams();
 
   const [items, setItems] = useState([]);
-  const [orderMeta, setOrderMeta] = useState(null); // { _id, userId, orderDate, total, status }
-  const [customer, setCustomer] = useState(null);   // { firstName, lastName, email }
+  const [orderMeta, setOrderMeta] = useState(null);
+  const [customer, setCustomer] = useState(null);
   const [statusDraft, setStatusDraft] = useState('');
+  const [orderHistory, setOrderHistory] = useState(null);
+
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
-  // cache sencillo para no pedir el mismo usuario varias veces
   const usersCache = useMemo(() => new Map(), []);
 
   const fetchUserById = async (userId) => {
@@ -37,13 +39,11 @@ export default function AdminOrderDetailPage() {
     }
   };
 
-  // Intenta traer la orden por /orders/:id; si no existe, cae a /orders y filtra
   const fetchOrderMeta = async (id) => {
     try {
       const { data } = await client.get(`${ORDERS_URL}/${id}`);
-      return data.order || data; // por si el backend envía {order: {...}}
+      return data.order || data;
     } catch {
-      // fallback: trae todas y busca una
       const { data } = await client.get(ORDERS_URL);
       const list = Array.isArray(data) ? data : [];
       return list.find((o) => o._id === id) || null;
@@ -54,23 +54,26 @@ export default function AdminOrderDetailPage() {
     setLoading(true);
     setErrorMsg('');
     try {
-      // 1) Todos los orderProducts y filtramos por orderId
       const { data: opData } = await client.get(ORDER_PRODUCTS_URL);
       const allOP = Array.isArray(opData) ? opData : [];
-      const itemsForOrder = allOP.filter(
-        (r) => r?.orderId?._id === orderId
-      );
+      const itemsForOrder = allOP.filter((r) => r?.orderId?._id === orderId);
       setItems(itemsForOrder);
 
-      // 2) Meta de la orden (usuario, fecha, total, status)
       const meta = await fetchOrderMeta(orderId);
       setOrderMeta(meta || null);
       setStatusDraft(meta?.status || 'pending');
 
-      // 3) Usuario
       if (meta?.userId) {
         const u = await fetchUserById(meta.userId);
         setCustomer(u || null);
+
+        // 🔹 Fetch order history
+        try {
+          const { data: historyData } = await client.get(ORDER_HISTORY_URL(meta.userId));
+          setOrderHistory(historyData);
+        } catch (err) {
+          console.error('Error fetching order history', err);
+        }
       } else {
         setCustomer(null);
       }
@@ -84,7 +87,6 @@ export default function AdminOrderDetailPage() {
 
   useEffect(() => {
     fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orderId]);
 
   const subtotal = useMemo(() => {
@@ -120,18 +122,16 @@ export default function AdminOrderDetailPage() {
     if (!orderMeta?._id) return;
     setSaving(true);
     try {
-      // Intenta PUT; si falla, intenta PATCH
       try {
         await client.put(`${ORDERS_URL}/${orderMeta._id}`, { status: statusDraft });
       } catch {
         await client.patch(`${ORDERS_URL}/${orderMeta._id}`, { status: statusDraft });
       }
-      // refresca meta local
       setOrderMeta((prev) => ({ ...prev, status: statusDraft }));
       alert('Estado actualizado correctamente.');
     } catch (e) {
       console.error(e);
-      alert('No se pudo actualizar el estado. Verifica el endpoint en el backend.');
+      alert('No se pudo actualizar el estado.');
     } finally {
       setSaving(false);
     }
@@ -162,7 +162,7 @@ export default function AdminOrderDetailPage() {
 
         {!loading && !errorMsg && (
           <>
-            {/* Encabezado tipo factura */}
+            {/* Invoice card */}
             <div className="invoice-card">
               <div className="invoice-row">
                 <div>
@@ -182,7 +182,7 @@ export default function AdminOrderDetailPage() {
                 </div>
               </div>
 
-              {/* Tabla de items */}
+              {/* Items table */}
               <table className="inv-table">
                 <thead>
                   <tr>
@@ -220,13 +220,11 @@ export default function AdminOrderDetailPage() {
                     <td colSpan={3} className="total-label">Subtotal</td>
                     <td className="total-value">${subtotal.toFixed(2)}</td>
                   </tr>
-                  
-                  
                 </tfoot>
               </table>
             </div>
 
-            {/* Panel de actualización de estado */}
+            {/* Update order status */}
             <div className="status-panel">
               <h3>Update Order Status</h3>
               <div className="status-row">
@@ -243,15 +241,52 @@ export default function AdminOrderDetailPage() {
                   className="save-status-btn"
                   onClick={handleSaveStatus}
                   disabled={saving}
-                  title="Guardar estado"
                 >
                   {saving ? 'Saving…' : 'Save'}
                 </button>
               </div>
-              <p className="hint">
-                
-              </p>
             </div>
+
+            {/* Order history section */}
+            {orderHistory && (
+              <div className="order-history-card">
+                <h3>Order History for {fullName}</h3>
+                <p><strong>Total Orders:</strong> {orderHistory.totalOrders}</p>
+                <p><strong>Total Spent:</strong> ${orderHistory.totalSpent.toFixed(2)}</p>
+                <p><strong>Last Order:</strong> {new Date(orderHistory.lastOrderDate).toLocaleString()}</p>
+
+                {Object.entries(orderHistory.history).map(([year, months]) => (
+                  <div key={year} className="year-section">
+                    <h4>{year}</h4>
+                    {Object.entries(months).map(([month, orders]) => (
+                      <div key={month} className="month-section">
+                        <h5>{month}</h5>
+                        <table className="history-table">
+                          <thead>
+                            <tr>
+                              <th>Order ID</th>
+                              <th>Date</th>
+                              <th>Total</th>
+                              <th>Status</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {orders.map((o) => (
+                              <tr key={o.orderId}>
+                                <td>{o.orderId}</td>
+                                <td>{new Date(o.orderDate).toLocaleString()}</td>
+                                <td>${o.total.toFixed(2)}</td>
+                                <td>{o.status}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            )}
           </>
         )}
       </div>

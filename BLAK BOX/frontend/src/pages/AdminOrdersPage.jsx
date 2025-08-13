@@ -86,6 +86,18 @@ export default function AdminOrdersPage() {
     }
   };
 
+  const handleDeleteOrder = async (orderId) => {
+    if (!window.confirm('¿Seguro que deseas eliminar esta orden?')) return;
+    try {
+      await client.delete(`${ORDERS_URL}/${orderId}`);
+      setOrders((prev) => prev.filter((o) => o._id !== orderId));
+      alert('Orden eliminada exitosamente.');
+    } catch (err) {
+      console.error(err);
+      alert('No se pudo eliminar la orden.');
+    }
+  };
+
   return (
     <div className="orders-page-container">
       <Sidebar />
@@ -106,9 +118,8 @@ export default function AdminOrdersPage() {
               <tr>
                 <th>Customer</th>
                 <th>Order Date</th>
-                
                 <th>Status</th>
-                <th style={{ width: 80 }}>Actions</th>
+                <th style={{ width: 110 }}>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -134,6 +145,14 @@ export default function AdminOrdersPage() {
                     >
                       <i className="fas fa-eye" />
                     </Link>
+                    <button
+                      className="action-btn delete"
+                      title="Eliminar orden"
+                      onClick={() => handleDeleteOrder(o._id)}
+                      style={{ marginLeft: '6px', background: '#ff4d4d', color: '#fff' }}
+                    >
+                      <i className="fas fa-trash" />
+                    </button>
                   </td>
                 </tr>
               ))}
